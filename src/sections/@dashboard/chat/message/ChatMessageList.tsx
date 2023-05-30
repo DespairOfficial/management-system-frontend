@@ -50,7 +50,7 @@ export default function ChatMessageList({ conversation }: Props) {
       >
         {conversation.messages.map((message) => (
           <ChatMessageItem
-            key={message.id}
+            key={message.id ?? Math.random()}
             message={message}
             conversation={conversation}
             onOpenLightbox={() => handleOpenLightbox(message.body)}

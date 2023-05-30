@@ -22,7 +22,8 @@ type Props = {
 
 export default function ChatRoomAttachments({ conversation, isCollapse, onCollapse }: Props) {
   const totalAttachments = uniq(flatten(conversation.messages.map((item) => item.attachments)));
-
+	console.log(totalAttachments);
+	
   return (
     <Stack
       flexGrow={1}
@@ -58,7 +59,7 @@ export default function ChatRoomAttachments({ conversation, isCollapse, onCollap
       >
         <Scrollbar>
           {totalAttachments.map((attachment, index) => (
-            <AttachmentItem key={attachment.name + index} attachment={attachment} />
+            attachment && <AttachmentItem key={attachment.name + index} attachment={attachment} />
           ))}
         </Scrollbar>
       </Box>

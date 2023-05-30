@@ -14,7 +14,7 @@ import ChatNavItem from './ChatNavItem';
 
 // ----------------------------------------------------------------------
 
-const CURRENT_USER_ID = 0;
+const CURRENT_USER_ID = +(localStorage.getItem('userId') ?? 0);;
 
 type Props = {
   conversations: IChatConversationsState;
@@ -48,8 +48,8 @@ export default function ChatNavList({
         (participant) => participant.id !== CURRENT_USER_ID
       );
 
-      if (otherParticipant?.username) {
-        conversationKey = otherParticipant?.username;
+      if (otherParticipant?.userName) {
+        conversationKey = otherParticipant?.userName;
       }
     }
 
@@ -63,7 +63,7 @@ export default function ChatNavList({
       {(loading ? [...Array(12)] : conversations.allIds).map((conversationId, index) =>
         conversationId ? (
           <ChatNavItem
-            key={conversationId}
+            key={`conversation_${conversationId}`}
             openNav={openNav}
             conversation={conversations.byId[conversationId]}
             isSelected={selected(conversationId)}

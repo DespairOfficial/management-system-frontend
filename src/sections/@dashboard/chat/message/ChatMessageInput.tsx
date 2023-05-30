@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, ChangeEvent } from 'react';
 // @mui
 import { Stack, InputBase, InputBaseProps, IconButton, InputAdornment } from '@mui/material';
 // utils
@@ -10,7 +10,7 @@ import Iconify from '../../../../components/iconify';
 
 // ----------------------------------------------------------------------
 
-const CURRENT_USER_ID = 1;
+const CURRENT_USER_ID = +(localStorage.getItem('userId') ?? 0);
 
 interface Props extends InputBaseProps {
   conversationId: number | null;
@@ -28,8 +28,21 @@ export default function ChatMessageInput({
 
   const [message, setMessage] = useState('');
 
+  const [attachments, setAttachments] = useState<File[]>([]);
+
   const handleClickAttach = () => {
     fileInputRef.current?.click();
+  };
+
+  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target?.files;
+    const attachmentsList = [];
+    if (files) {
+      for (let i = 0; i < files.length; i+=1) {
+        attachmentsList.push(files[i]);
+      }
+    }
+    setAttachments(attachmentsList);
   };
 
   const handleSend = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -39,7 +52,7 @@ export default function ChatMessageInput({
           conversationId,
           message,
           contentType: 'text',
-          attachments: [],
+          attachments,
           createdAt: new Date(),
           senderId: CURRENT_USER_ID,
         });
@@ -87,7 +100,13 @@ export default function ChatMessageInput({
         {...other}
       />
 
-      <input type="file" ref={fileInputRef} style={{ display: 'none' }} />
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        onChange={(e) => onChangeHandler(e)}
+        multiple
+      />
     </>
   );
 }

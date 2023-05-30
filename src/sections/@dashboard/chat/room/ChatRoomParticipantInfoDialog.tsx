@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default function ChatRoomParticipantInfoDialog({ participant, open, onClose }: Props) {
-  const { name, avatar, role, address } = participant;
+  const { name, image, role, address } = participant;
 
   return (
     <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose}>
@@ -25,7 +25,7 @@ export default function ChatRoomParticipantInfoDialog({ participant, open, onClo
 
       <DialogContent sx={{ p: 5 }}>
         <Stack direction="row" spacing={3}>
-          <CustomAvatar alt={name} src={avatar} name={name} sx={{ width: 96, height: 96 }} />
+          <CustomAvatar alt={name} src={image} name={name} sx={{ width: 96, height: 96 }} />
 
           <Stack spacing={1}>
             <Typography variant="caption" sx={{ color: 'primary.main' }}>

@@ -48,8 +48,8 @@ export type IChatContact = {
 export type IChatParticipant = {
   id: number;
   name: string;
-  username: string;
-  avatar: string;
+  userName: string;
+  image: string;
   address?: string;
   phone?: string;
   email?: string;
@@ -70,7 +70,7 @@ export type IChatSendMessage = {
   conversationId: number;
   message: string;
   contentType: 'text';
-  attachments: string[];
+  attachments: File[];
   createdAt: Date | string | number;
   senderId: number;
 };

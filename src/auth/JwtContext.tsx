@@ -102,6 +102,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const response = await axios.get('/api/auth/init');
 
         const { user } = response.data;
+        if (user) {
+          localStorage.setItem('userId', user.id);
+        }
 
         dispatch({
           type: Types.INITIAL,

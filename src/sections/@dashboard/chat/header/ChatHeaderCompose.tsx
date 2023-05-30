@@ -74,7 +74,7 @@ export default function ChatHeaderCompose({
           />
         )}
         renderOption={(props, recipient, { inputValue, selected }) => {
-          const { name, avatar } = recipient;
+          const { name, image } = recipient;
           const matches = match(name, inputValue);
           const parts = parse(name, matches);
 
@@ -96,7 +96,7 @@ export default function ChatHeaderCompose({
                   position: 'relative',
                 }}
               >
-                <Avatar alt={name} src={avatar} />
+                <Avatar alt={name} src={image} />
                 <Box
                   sx={{
                     top: 0,
@@ -142,7 +142,7 @@ export default function ChatHeaderCompose({
               key={recipient.id}
               size="small"
               label={recipient.name}
-              avatar={<Avatar alt={recipient.name} src={recipient.avatar} />}
+              avatar={<Avatar alt={recipient.name} src={recipient.image} />}
             />
           ))
         }

@@ -25,7 +25,7 @@ export default function ChatRoomSingle({ participant, isCollapse, onCollapse }: 
       <Stack alignItems="center" sx={{ py: 4 }}>
         <Avatar
           alt={participant.name}
-          src={participant.avatar}
+          src={participant.image}
           sx={{ width: 96, height: 96, mb: 2 }}
         />
 

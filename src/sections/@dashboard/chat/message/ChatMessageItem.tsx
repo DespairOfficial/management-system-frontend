@@ -8,7 +8,7 @@ import Image from '../../../../components/image';
 
 // ----------------------------------------------------------------------
 
-const CURRENT_USER_ID = 0;
+const CURRENT_USER_ID = +(localStorage.getItem('userId') ?? 0);
 
 type Props = {
   message: IChatMessage;
@@ -20,14 +20,14 @@ export default function ChatMessageItem({ message, conversation, onOpenLightbox 
   const sender = conversation.participants.find(
     (participant) => participant.id === message.senderId
   );
-
+		
   const senderDetails =
     message.senderId === CURRENT_USER_ID
       ? {
           type: 'me',
         }
       : {
-          avatar: sender?.avatar,
+          avatar: sender?.image,
           name: sender?.name,
         };
 
@@ -35,7 +35,7 @@ export default function ChatMessageItem({ message, conversation, onOpenLightbox 
 
   const isImage = message.contentType === 'image';
 
-  const firstName = senderDetails.name && senderDetails.name.split(' ')[0];
+  const name = senderDetails.name && senderDetails.name.split(' ')[0];
 
   return (
     <Stack direction="row" justifyContent={currentUser ? 'flex-end' : 'unset'} sx={{ mb: 3 }}>
@@ -58,7 +58,7 @@ export default function ChatMessageItem({ message, conversation, onOpenLightbox 
             }),
           }}
         >
-          {!currentUser && `${firstName},`} &nbsp;
+          {!currentUser && `${name},`} &nbsp;
           {formatDistanceToNowStrict(new Date(message.createdAt), {
             addSuffix: true,
           })}

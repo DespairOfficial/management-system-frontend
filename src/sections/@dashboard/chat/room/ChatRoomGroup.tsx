@@ -70,7 +70,7 @@ type ParticipantProps = {
 };
 
 function Participant({ participant, open, onClose, onOpen }: ParticipantProps) {
-  const { name, avatar, status, role } = participant;
+  const { name, image, status, role } = participant;
 
   return (
     <>
@@ -78,7 +78,7 @@ function Participant({ participant, open, onClose, onOpen }: ParticipantProps) {
         <ListItemAvatar>
           <CustomAvatar
             alt={name}
-            src={avatar}
+            src={image}
             BadgeProps={{
               badgeContent: <BadgeStatus status={status} />,
             }}

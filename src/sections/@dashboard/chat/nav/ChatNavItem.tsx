@@ -16,7 +16,7 @@ import BadgeStatus from '../../../../components/badge-status';
 
 // ----------------------------------------------------------------------
 
-const CURRENT_USER_ID = 0;
+const CURRENT_USER_ID = +(localStorage.getItem('userId') ?? 0);;
 
 type Props = {
   conversation: IChatConversation;
@@ -28,7 +28,8 @@ type Props = {
 export default function ChatNavItem({ conversation, openNav, isSelected, onSelect }: Props) {
   const details = getDetails(conversation, CURRENT_USER_ID);
 
-  const lastActivity = conversation.messages[conversation.messages.length - 1]?.createdAt ?? Date.now();
+  const lastActivity =
+    conversation.messages[conversation.messages.length - 1]?.createdAt ?? Date.now();
 
   const isGroup = details.otherParticipants.length > 1;
 
@@ -59,9 +60,9 @@ export default function ChatNavItem({ conversation, openNav, isSelected, onSelec
             <CustomAvatarGroup compact sx={{ width: 48, height: 48 }}>
               {details.otherParticipants.slice(0, 2).map((participant) => (
                 <CustomAvatar
-                  key={participant.id}
+                  key={`user_custom_avatar_${participant.id ?? Math.random()}`}
                   alt={participant.name}
-                  src={participant.avatar}
+                  src={participant.image}
                 />
               ))}
             </CustomAvatarGroup>
@@ -70,7 +71,7 @@ export default function ChatNavItem({ conversation, openNav, isSelected, onSelec
           <CustomAvatar
             key={details.otherParticipants[0].id}
             alt={details.otherParticipants[0].name}
-            src={details.otherParticipants[0].avatar}
+            src={details.otherParticipants[0].image}
             BadgeProps={{
               badgeContent: <BadgeStatus status={details.otherParticipants[0].status} />,
             }}
@@ -119,6 +120,7 @@ export default function ChatNavItem({ conversation, openNav, isSelected, onSelec
 // ----------------------------------------------------------------------
 
 const getDetails = (conversation: IChatConversation, currentUserId: number) => {
+
   const otherParticipants = conversation.participants.filter(
     (participant) => participant.id !== currentUserId
   );
