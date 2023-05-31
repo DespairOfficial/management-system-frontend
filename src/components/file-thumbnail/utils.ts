@@ -128,6 +128,7 @@ export function fileNameByUrl(fileUrl: string) {
 
 export function fileData(file: ExtendFile | string) {
   // Url
+
   if (typeof file === 'string') {
     return {
       key: file,

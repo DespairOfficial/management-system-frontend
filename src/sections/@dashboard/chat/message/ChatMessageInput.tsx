@@ -45,7 +45,7 @@ export default function ChatMessageInput({
     setAttachments(attachmentsList);
   };
 
-  const handleSend = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleSend = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     if (event.key === 'Enter') {
       if (onSend && message && conversationId) {
         onSend({

@@ -15,7 +15,6 @@ type Props = {
 
 export default function ChatMessageList({ conversation }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
-
   const [selectedImage, setSelectedImage] = useState<number>(-1);
 
   useEffect(() => {
@@ -27,9 +26,12 @@ export default function ChatMessageList({ conversation }: Props) {
     scrollMessagesToBottom();
   }, [conversation.messages]);
 
-  const imagesLightbox = conversation.messages
-    .filter((messages) => messages.contentType === 'image')
-    .map((messages) => ({ src: messages.body }));
+  const imagesLightbox: { src: string }[] = [];
+  conversation.messages.forEach((message) =>
+    message.attachments.forEach((attachment) => {
+      imagesLightbox.push({ src: attachment.path });
+    })
+  );
 
   const handleOpenLightbox = (imageUrl: string) => {
     const imageIndex = imagesLightbox.findIndex((image) => image.src === imageUrl);

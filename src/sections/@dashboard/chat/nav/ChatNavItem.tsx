@@ -16,7 +16,7 @@ import BadgeStatus from '../../../../components/badge-status';
 
 // ----------------------------------------------------------------------
 
-const CURRENT_USER_ID = +(localStorage.getItem('userId') ?? 0);;
+const CURRENT_USER_ID = +(localStorage.getItem('userId') ?? 0);
 
 type Props = {
   conversation: IChatConversation;
@@ -120,7 +120,6 @@ export default function ChatNavItem({ conversation, openNav, isSelected, onSelec
 // ----------------------------------------------------------------------
 
 const getDetails = (conversation: IChatConversation, currentUserId: number) => {
-
   const otherParticipants = conversation.participants.filter(
     (participant) => participant.id !== currentUserId
   );
@@ -133,7 +132,8 @@ const getDetails = (conversation: IChatConversation, currentUserId: number) => {
   if (lastMessage) {
     const sender = lastMessage.senderId === currentUserId ? 'You: ' : '';
 
-    const message = lastMessage.contentType === 'image' ? 'Sent a photo' : lastMessage.body;
+    // const message = lastMessage.contentType === 'image' ? 'Sent a photo' : lastMessage.body;
+    const message = lastMessage.attachments.length > 0 ? 'Sent a file' : lastMessage.body;
 
     displayText = `${sender}${message}`;
   }

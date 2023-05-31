@@ -5,6 +5,8 @@ import { Avatar, Typography, Stack } from '@mui/material';
 import { IChatConversation, IChatMessage } from '../../../../@types/chat';
 // components
 import Image from '../../../../components/image';
+import { HOST_API_KEY } from '../../../../config-global';
+import { AttachmentItem } from '../room/ChatRoomAttachments';
 
 // ----------------------------------------------------------------------
 
@@ -20,7 +22,7 @@ export default function ChatMessageItem({ message, conversation, onOpenLightbox 
   const sender = conversation.participants.find(
     (participant) => participant.id === message.senderId
   );
-		
+
   const senderDetails =
     message.senderId === CURRENT_USER_ID
       ? {
@@ -33,7 +35,7 @@ export default function ChatMessageItem({ message, conversation, onOpenLightbox 
 
   const currentUser = senderDetails.type === 'me';
 
-  const isImage = message.contentType === 'image';
+  const isImage = message.contentType === 'text';
 
   const name = senderDetails.name && senderDetails.name.split(' ')[0];
 
@@ -77,14 +79,14 @@ export default function ChatMessageItem({ message, conversation, onOpenLightbox 
               color: 'grey.800',
               bgcolor: 'primary.lighter',
             }),
-            ...(isImage && {
-              p: 0,
-            }),
+            // ...(isImage && {
+            //   p: 0,
+            // }),
           }}
         >
-          {isImage ? (
+          {/* {isImage ? (
             <Image
-              alt="attachment"
+              alt={`image${message.id}`}
               src={message.body}
               onClick={() => onOpenLightbox(message.body)}
               sx={{
@@ -96,7 +98,27 @@ export default function ChatMessageItem({ message, conversation, onOpenLightbox 
             />
           ) : (
             message.body
-          )}
+          )} */}
+          {message.body}
+          {message.attachments.map((attachment, index) => {
+            if (attachment.type.split('/')[0] === 'image') {
+              return (
+                <Image
+                  key={attachment.path}
+                  alt="attachment"
+                  src={`${HOST_API_KEY}/${attachment.path}`}
+                  onClick={() => onOpenLightbox(attachment.path)}
+                  sx={{
+                    cursor: 'pointer',
+                    '&:hover': {
+                      opacity: 0.9,
+                    },
+                  }}
+                />
+              );
+            }
+            return <AttachmentItem key={attachment.name + index} attachment={attachment} />;
+          })}
         </Stack>
       </Stack>
     </Stack>

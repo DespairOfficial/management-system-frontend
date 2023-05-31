@@ -6,8 +6,8 @@ export type IChatAttachment = {
   type: string;
   path: string;
   preview: string;
-  dateCreated: Date;
-  dateModified: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type IChatTextMessage = {
@@ -28,7 +28,7 @@ export type IChatImageMessage = {
   senderId: number;
 };
 
-export type IChatMessage = IChatTextMessage | IChatImageMessage;
+export type IChatMessage = IChatTextMessage
 
 // ----------------------------------------------------------------------
 
@@ -74,6 +74,20 @@ export type IChatSendMessage = {
   createdAt: Date | string | number;
   senderId: number;
 };
+
+export interface ICreateMessage {
+  body: string;
+  conversationId: number;
+  contentType: string;
+  attachments: ICreateAttachment[];
+}
+
+export interface ICreateAttachment {
+  name: string;
+  size: number;
+  type: string;
+  file: File;
+}
 
 // ----------------------------------------------------------------------
 

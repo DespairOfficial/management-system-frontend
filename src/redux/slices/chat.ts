@@ -1,10 +1,41 @@
 import keyBy from 'lodash/keyBy';
-import { createSlice, Dispatch } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
 import { socket } from '../../socket';
 // utils
 import axios from '../../utils/axios';
 // @types
-import { IChatState } from '../../@types/chat';
+import { IChatState, IChatMessage, IChatSendMessage, ICreateMessage } from '../../@types/chat';
+
+// ----------------------------------------------------------------------
+
+export const sendSocketMessage = createAsyncThunk(
+  'chat/sendMessage',
+  async (args: IChatSendMessage, thunkAPI) => {
+    const attachmentsTyped: File[] = args.attachments;
+    const attachmentsFiles = attachmentsTyped.map((file) => ({
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      file,
+    }));
+
+    const newMessage: ICreateMessage = {
+      body: args.message,
+      conversationId: args.conversationId,
+      contentType: args.contentType,
+      attachments: attachmentsFiles,
+    };
+    const response = await new Promise<IChatMessage>((res, rej) => {
+      socket.emit('message:post', newMessage, (message: IChatMessage) => {
+        if (!message) {
+          rej();
+        }
+        res(message);
+      });
+    });
+    return response;
+  }
+);
 
 // ----------------------------------------------------------------------
 
@@ -71,22 +102,22 @@ const slice = createSlice({
     },
 
     // ON SEND MESSAGE
-    sendMessage(state, action) {
-      const conversation = action.payload;
-      const { conversationId, messageId, message, contentType, attachments, createdAt, senderId } =
-        conversation;
+    // sendMessage(state, action) {
+    //   const conversation = action.payload;
+    //   const { conversationId, messageId, message, contentType, attachments, createdAt, senderId } =
+    //     conversation;
 
-      const newMessage = {
-        id: messageId,
-        body: message,
-        contentType,
-        attachments,
-        createdAt,
-        senderId,
-      };
-      sendMessageSocket(message, conversationId, contentType, attachments);
-      state.conversations.byId[conversationId].messages.push(newMessage);
-    },
+    //   const attachmentsTyped: File[] = attachments;
+    //   const attachmentsFiles = attachmentsTyped.map((file) => ({
+    //     name: file.name,
+    //     size: file.size,
+    //     type: file.type,
+    //     file,
+    //   }));
+
+    //   const newMessage = sendMessageSocket(message, conversationId, contentType, attachmentsFiles);
+    //   state.conversations.byId[conversationId].messages.push(newMessage);
+    // },
 
     markConversationAsReadSuccess(state, action) {
       const { conversationId } = action.payload;
@@ -112,13 +143,18 @@ const slice = createSlice({
       state.recipients = recipients;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(sendSocketMessage.fulfilled, (state, action) => {
+      state.conversations.byId[action.meta.arg.conversationId].messages.push(action.payload);
+    });
+  },
 });
 
 // Reducer
 export default slice.reducer;
 
 // Actions
-export const { addRecipients, sendMessage, resetActiveConversation } = slice.actions;
+export const { addRecipients, resetActiveConversation } = slice.actions;
 
 // ----------------------------------------------------------------------
 
@@ -191,17 +227,3 @@ export function getParticipants(conversationKey: string) {
 }
 
 // ----------------------------------------------------------------------
-
-function sendMessageSocket(
-  body: string,
-  conversationId: number,
-  contentType: string,
-  attachments: string[]
-) {
-  socket.emit('message:post', {
-    body,
-    conversationId,
-    contentType,
-    attachments,
-  });
-}

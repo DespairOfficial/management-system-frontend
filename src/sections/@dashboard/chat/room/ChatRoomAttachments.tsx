@@ -22,7 +22,6 @@ type Props = {
 
 export default function ChatRoomAttachments({ conversation, isCollapse, onCollapse }: Props) {
   const totalAttachments = uniq(flatten(conversation.messages.map((item) => item.attachments)));
-	console.log(totalAttachments);
 	
   return (
     <Stack
@@ -58,9 +57,10 @@ export default function ChatRoomAttachments({ conversation, isCollapse, onCollap
         }}
       >
         <Scrollbar>
-          {totalAttachments.map((attachment, index) => (
-            attachment && <AttachmentItem key={attachment.name + index} attachment={attachment} />
-          ))}
+          {totalAttachments.map(
+            (attachment, index) =>
+              attachment && <AttachmentItem key={attachment.name + index} attachment={attachment} />
+          )}
         </Scrollbar>
       </Box>
     </Stack>
@@ -73,7 +73,8 @@ type AttachmentItemProps = {
   attachment: IChatAttachment;
 };
 
-function AttachmentItem({ attachment }: AttachmentItemProps) {
+export function AttachmentItem({ attachment }: AttachmentItemProps) {
+
   return (
     <Stack direction="row" alignItems="center" sx={{ mt: 2, px: 2.5 }}>
       <Stack
@@ -91,7 +92,7 @@ function AttachmentItem({ attachment }: AttachmentItemProps) {
       >
         <FileThumbnail
           imageView
-          file={attachment.preview}
+          file={attachment.path}
           onDownload={() => console.log('DOWNLOAD')}
           sx={{ width: 28, height: 28 }}
         />
@@ -103,7 +104,7 @@ function AttachmentItem({ attachment }: AttachmentItemProps) {
         </Typography>
 
         <Typography noWrap variant="caption" sx={{ color: 'text.secondary', display: 'block' }}>
-          {fDateTime(attachment.dateCreated)}
+          {fDateTime(attachment.createdAt)}
         </Typography>
       </Stack>
     </Stack>

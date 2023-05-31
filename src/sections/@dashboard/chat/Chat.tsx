@@ -9,7 +9,7 @@ import {
   getParticipants,
   getConversations,
   addRecipients,
-  sendMessage,
+  sendSocketMessage,
   markConversationAsRead,
   resetActiveConversation,
   getContacts,
@@ -103,7 +103,8 @@ export default function Chat() {
 
   const handleSendMessage = async (value: IChatSendMessage) => {
     try {
-      dispatch(sendMessage(value));
+			console.log(value);
+      dispatch(sendSocketMessage(value));
     } catch (error) {
       console.error(error);
     }
