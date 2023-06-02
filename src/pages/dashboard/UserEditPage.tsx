@@ -12,6 +12,7 @@ import { useSettingsContext } from '../../components/settings';
 import CustomBreadcrumbs from '../../components/custom-breadcrumbs';
 // sections
 import UserNewEditForm from '../../sections/@dashboard/user/UserNewEditForm';
+import { useAuthContext } from '../../auth/useAuthContext';
 
 // ----------------------------------------------------------------------
 
@@ -20,7 +21,7 @@ export default function UserEditPage() {
 
   const { name } = useParams();
 
-  const currentUser = _userList.find((user) => paramCase(user.name) === name);
+  const { user: currentUser } = useAuthContext();
 
   return (
     <>
@@ -40,7 +41,7 @@ export default function UserEditPage() {
               name: 'User',
               href: PATH_DASHBOARD.user.list,
             },
-            { name: currentUser?.name },
+            { name: currentUser?.username },
           ]}
         />
 

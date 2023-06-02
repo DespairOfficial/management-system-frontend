@@ -24,10 +24,10 @@ enum Types {
 type Payload = {
   [Types.INITIAL]: {
     isAuthenticated: boolean;
-    user: AuthUserType;
+    user: AuthUserType | null;
   };
   [Types.LOGIN]: {
-    user: AuthUserType;
+    user: AuthUserType | null;
   };
   [Types.REGISTER]: {
     user: AuthUserType;
@@ -101,10 +101,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         const response = await axios.get('/api/auth/init');
 
-        const { user } = response.data;
-        if (user) {
-          localStorage.setItem('userId', user.id);
-        }
+        const user: AuthUserType = response.data;
 
         dispatch({
           type: Types.INITIAL,

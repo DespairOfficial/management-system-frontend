@@ -85,7 +85,7 @@ export default function UserProfilePage() {
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             { name: 'User', href: PATH_DASHBOARD.user.root },
-            { name: user?.displayName },
+            { name: user?.username },
           ]}
         />
         <Card
@@ -95,7 +95,7 @@ export default function UserProfilePage() {
             position: 'relative',
           }}
         >
-          <ProfileCover name={user?.displayName} role={_userAbout.role} cover={_userAbout.cover} />
+          <ProfileCover name={user?.name ?? ''} role={_userAbout.role} cover={_userAbout.cover} />
 
           <Tabs
             value={currentTab}

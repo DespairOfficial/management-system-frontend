@@ -47,7 +47,7 @@ export default function GeneralEcommercePage() {
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
             <AppWelcome
-              title={`Congratulations! \n ${user?.displayName}`}
+              title={`Congratulations! \n ${user?.username}`}
               description="Best seller of the month You have done 57.6% more sales today."
               img={
                 <MotivationIllustration

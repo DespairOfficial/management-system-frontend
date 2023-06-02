@@ -10,7 +10,7 @@ import { AttachmentItem } from '../room/ChatRoomAttachments';
 
 // ----------------------------------------------------------------------
 
-const CURRENT_USER_ID = +(localStorage.getItem('userId') ?? 0);
+const CURRENT_USER_ID = localStorage.getItem('userId');
 
 type Props = {
   message: IChatMessage;

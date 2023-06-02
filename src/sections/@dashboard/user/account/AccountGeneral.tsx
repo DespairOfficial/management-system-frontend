@@ -25,9 +25,9 @@ import FormProvider, {
 // ----------------------------------------------------------------------
 
 type FormValuesProps = {
-  displayName: string;
+  username: string;
   email: string;
-  photoURL: CustomFile | string | null;
+  image: File | string | null;
   phoneNumber: string | null;
   country: string | null;
   address: string | null;
@@ -42,32 +42,25 @@ export default function AccountGeneral() {
   const { enqueueSnackbar } = useSnackbar();
 
   const { user } = useAuthContext();
-
+	
   const UpdateUserSchema = Yup.object().shape({
-    displayName: Yup.string().required('Name is required'),
+    username: Yup.string().required('Name is required'),
     email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-    photoURL: Yup.mixed().required('Avatar is required'),
+    image: Yup.mixed().required('Avatar is required'),
     phoneNumber: Yup.string().required('Phone number is required'),
     country: Yup.string().required('Country is required'),
     address: Yup.string().required('Address is required'),
-    state: Yup.string().required('State is required'),
     city: Yup.string().required('City is required'),
-    zipCode: Yup.string().required('Zip code is required'),
     about: Yup.string().required('About is required'),
   });
 
   const defaultValues = {
-    displayName: user?.displayName || '',
     email: user?.email || '',
-    photoURL: user?.photoURL || null,
+    image: user?.image || null,
     phoneNumber: user?.phoneNumber || '',
     country: user?.country || '',
     address: user?.address || '',
-    state: user?.state || '',
-    city: user?.city || '',
-    zipCode: user?.zipCode || '',
     about: user?.about || '',
-    isPublic: user?.isPublic || false,
   };
 
   const methods = useForm<FormValuesProps>({
@@ -100,7 +93,7 @@ export default function AccountGeneral() {
       });
 
       if (file) {
-        setValue('photoURL', newFile, { shouldValidate: true });
+        setValue('image', newFile, { shouldValidate: true });
       }
     },
     [setValue]
@@ -112,7 +105,7 @@ export default function AccountGeneral() {
         <Grid item xs={12} md={4}>
           <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
             <RHFUploadAvatar
-              name="photoURL"
+              name="image"
               maxSize={3145728}
               onDrop={handleDrop}
               helperText={
@@ -152,7 +145,7 @@ export default function AccountGeneral() {
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFTextField name="displayName" label="Name" />
+              <RHFTextField name="username" label="Name" />
 
               <RHFTextField name="email" label="Email Address" />
 

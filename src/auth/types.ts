@@ -1,3 +1,4 @@
+import { IUser } from './../@types/user';
 // ----------------------------------------------------------------------
 
 export type ActionMapType<M extends { [index: string]: any }> = {
@@ -11,12 +12,12 @@ export type ActionMapType<M extends { [index: string]: any }> = {
       };
 };
 
-export type AuthUserType = null | Record<string, any>;
+export interface AuthUserType extends IUser {}
 
 export type AuthStateType = {
   isAuthenticated: boolean;
   isInitialized: boolean;
-  user: AuthUserType;
+  user: AuthUserType | null;
 };
 
 // ----------------------------------------------------------------------
@@ -25,7 +26,7 @@ export type JWTContextType = {
   method: string;
   isAuthenticated: boolean;
   isInitialized: boolean;
-  user: AuthUserType;
+  user: AuthUserType | null;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
   logout: () => void;

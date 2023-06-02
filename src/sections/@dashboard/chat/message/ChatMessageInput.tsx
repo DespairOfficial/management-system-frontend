@@ -10,7 +10,7 @@ import Iconify from '../../../../components/iconify';
 
 // ----------------------------------------------------------------------
 
-const CURRENT_USER_ID = +(localStorage.getItem('userId') ?? 0);
+const CURRENT_USER_ID = localStorage.getItem('userId') ?? '';
 
 interface Props extends InputBaseProps {
   conversationId: number | null;
@@ -38,7 +38,7 @@ export default function ChatMessageInput({
     const files = event.target?.files;
     const attachmentsList = [];
     if (files) {
-      for (let i = 0; i < files.length; i+=1) {
+      for (let i = 0; i < files.length; i += 1) {
         attachmentsList.push(files[i]);
       }
     }

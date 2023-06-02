@@ -13,7 +13,7 @@ export default function KanbanDetailsCommentInput() {
 
   return (
     <Stack direction="row" spacing={2} sx={{ py: 3, px: 2.5 }}>
-      <CustomAvatar src={user?.photoURL} alt={user?.displayName} name={user?.displayName} />
+      <CustomAvatar src={user?.image ?? undefined} alt={user?.username} name={user?.username} />
 
       <Paper variant="outlined" sx={{ p: 1, flexGrow: 1 }}>
         <InputBase fullWidth multiline rows={2} placeholder="Type a message" sx={{ px: 1 }} />

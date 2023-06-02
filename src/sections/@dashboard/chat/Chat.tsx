@@ -31,7 +31,7 @@ import ChatHeaderCompose from './header/ChatHeaderCompose';
 
 // ----------------------------------------------------------------------
 
-const CURRENT_USER_ID = +(localStorage.getItem('userId') ?? 0);
+const CURRENT_USER_ID = localStorage.getItem('userId');
 
 export default function Chat() {
   const { themeStretch } = useSettingsContext();

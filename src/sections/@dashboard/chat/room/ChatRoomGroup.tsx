@@ -16,8 +16,8 @@ const HEIGHT = 60;
 
 type Props = {
   participants: IChatParticipant[];
-  selectUserId: number | null;
-  onOpenUserInfo: (id: number | null) => void;
+  selectUserId: string | null;
+  onOpenUserInfo: (id: string | null) => void;
   isCollapse: boolean;
   onCollapse: VoidFunction;
 };

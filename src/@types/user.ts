@@ -1,3 +1,4 @@
+import { AuthUserType } from './../auth/types';
 // ----------------------------------------------------------------------
 
 export type IUserSocialLink = {
@@ -97,22 +98,7 @@ export type IUserCard = {
 
 // ----------------------------------------------------------------------
 
-export type IUserAccountGeneral = {
-  id: string;
-  avatarUrl: string;
-  name: string;
-  email: string;
-  phoneNumber: string;
-  address: string;
-  country: string;
-  state: string;
-  city: string;
-  zipCode: string;
-  company: string;
-  isVerified: boolean;
-  status: string;
-  role: string;
-};
+export interface IUserAccountGeneral extends AuthUserType {}
 
 export type IUserAccountBillingCreditCard = {
   id: string;
@@ -153,3 +139,23 @@ export type IUserAccountNotificationSettings = {
   applicationProduct: boolean;
   applicationBlog: boolean;
 };
+
+export type OnlineStatus = 'online' | 'offline' | 'away' | 'busy' | 'banned';
+
+export interface IUser {
+  id: string;
+  email: string;
+  name: string;
+  username: string;
+  gender: boolean;
+  isVerified: boolean;
+  image: string | null;
+  country: string | null;
+  phoneNumber: string | null;
+  company: string | null;
+  role: string | null;
+  about: string | null;
+  address: string | null;
+  lastActivity: Date | null;
+  status: OnlineStatus;
+}

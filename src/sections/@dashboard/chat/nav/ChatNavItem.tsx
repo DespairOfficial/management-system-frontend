@@ -16,7 +16,7 @@ import BadgeStatus from '../../../../components/badge-status';
 
 // ----------------------------------------------------------------------
 
-const CURRENT_USER_ID = +(localStorage.getItem('userId') ?? 0);
+const CURRENT_USER_ID = localStorage.getItem('userId') ?? ''
 
 type Props = {
   conversation: IChatConversation;
@@ -83,7 +83,7 @@ export default function ChatNavItem({ conversation, openNav, isSelected, onSelec
       {openNav && (
         <>
           <ListItemText
-            primary={details.displayNames}
+            primary={details.usernames}
             primaryTypographyProps={{ noWrap: true, variant: 'subtitle2' }}
             secondary={details.displayText}
             secondaryTypographyProps={{
@@ -119,12 +119,12 @@ export default function ChatNavItem({ conversation, openNav, isSelected, onSelec
 
 // ----------------------------------------------------------------------
 
-const getDetails = (conversation: IChatConversation, currentUserId: number) => {
+const getDetails = (conversation: IChatConversation, currentUserId: string) => {
   const otherParticipants = conversation.participants.filter(
     (participant) => participant.id !== currentUserId
   );
 
-  const displayNames = otherParticipants.map((participant) => participant.name).join(', ');
+  const usernames = otherParticipants.map((participant) => participant.name).join(', ');
 
   let displayText = '';
 
@@ -137,5 +137,5 @@ const getDetails = (conversation: IChatConversation, currentUserId: number) => {
 
     displayText = `${sender}${message}`;
   }
-  return { otherParticipants, displayNames, displayText };
+  return { otherParticipants, usernames, displayText };
 };

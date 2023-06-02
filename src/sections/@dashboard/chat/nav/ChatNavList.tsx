@@ -14,7 +14,7 @@ import ChatNavItem from './ChatNavItem';
 
 // ----------------------------------------------------------------------
 
-const CURRENT_USER_ID = +(localStorage.getItem('userId') ?? 0);;
+const CURRENT_USER_ID = localStorage.getItem('userId');;
 
 type Props = {
   conversations: IChatConversationsState;

@@ -57,7 +57,7 @@ export default function ChatRoom({ conversation, participants }: Props) {
 
   const [openParticipants, setOpenParticipants] = useState(true);
 
-  const [selectUser, setSelectUser] = useState<number | null>(null);
+  const [selectUser, setSelectUser] = useState<string | null>(null);
 
   const onOpenNav = () => {
     setOpenNav(true);

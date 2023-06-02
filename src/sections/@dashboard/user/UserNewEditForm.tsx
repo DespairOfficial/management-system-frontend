@@ -28,13 +28,13 @@ import FormProvider, {
 
 // ----------------------------------------------------------------------
 
-interface FormValuesProps extends Omit<IUserAccountGeneral, 'avatarUrl'> {
-  avatarUrl: CustomFile | string | null;
+interface FormValuesProps extends Omit<IUserAccountGeneral, 'image'> {
+  image: File | string | null;
 }
 
 type Props = {
   isEdit?: boolean;
-  currentUser?: IUserAccountGeneral;
+  currentUser?: IUserAccountGeneral | null;
 };
 
 export default function UserNewEditForm({ isEdit = false, currentUser }: Props) {
@@ -49,25 +49,18 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: Props) 
     address: Yup.string().required('Address is required'),
     country: Yup.string().required('Country is required'),
     company: Yup.string().required('Company is required'),
-    state: Yup.string().required('State is required'),
-    city: Yup.string().required('City is required'),
     role: Yup.string().required('Role is required'),
     avatarUrl: Yup.mixed().required('Avatar is required'),
   });
 
   const defaultValues = useMemo(
     () => ({
-      name: currentUser?.name || '',
+      name: currentUser?.username || '',
       email: currentUser?.email || '',
       phoneNumber: currentUser?.phoneNumber || '',
       address: currentUser?.address || '',
       country: currentUser?.country || '',
-      state: currentUser?.state || '',
-      city: currentUser?.city || '',
-      zipCode: currentUser?.zipCode || '',
-      avatarUrl: currentUser?.avatarUrl || null,
-      isVerified: currentUser?.isVerified || true,
-      status: currentUser?.status,
+      image: currentUser?.image || null,
       company: currentUser?.company || '',
       role: currentUser?.role || '',
     }),
@@ -122,7 +115,7 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: Props) 
       });
 
       if (file) {
-        setValue('avatarUrl', newFile, { shouldValidate: true });
+        setValue('image', newFile, { shouldValidate: true });
       }
     },
     [setValue]
@@ -135,7 +128,7 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: Props) 
           <Card sx={{ pt: 10, pb: 5, px: 3 }}>
             {isEdit && (
               <Label
-                color={values.status === 'active' ? 'success' : 'error'}
+                color={values.status === 'online' ? 'success' : 'error'}
                 sx={{ textTransform: 'uppercase', position: 'absolute', top: 24, right: 24 }}
               >
                 {values.status}
@@ -175,7 +168,7 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: Props) 
                     render={({ field }) => (
                       <Switch
                         {...field}
-                        checked={field.value !== 'active'}
+                        checked={field.value !== 'online'}
                         onChange={(event) =>
                           field.onChange(event.target.checked ? 'banned' : 'active')
                         }
