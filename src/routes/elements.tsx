@@ -109,12 +109,6 @@ export const PaymentPage = Loadable(lazy(() => import('../pages/PaymentPage')));
 export const ComingSoonPage = Loadable(lazy(() => import('../pages/ComingSoonPage')));
 export const MaintenancePage = Loadable(lazy(() => import('../pages/MaintenancePage')));
 
-// DEMO COMPONENTS
-// ----------------------------------------------------------------------
-
-export const ComponentsOverviewPage = Loadable(
-  lazy(() => import('../pages/components/ComponentsOverviewPage'))
-);
 
 // FOUNDATION
 export const FoundationColorsPage = Loadable(

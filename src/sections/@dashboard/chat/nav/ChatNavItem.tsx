@@ -13,10 +13,11 @@ import { IChatConversation } from '../../../../@types/chat';
 // components
 import { CustomAvatar, CustomAvatarGroup } from '../../../../components/custom-avatar';
 import BadgeStatus from '../../../../components/badge-status';
+import { staticFilePath } from '../../../../components/file-thumbnail';
 
 // ----------------------------------------------------------------------
 
-const CURRENT_USER_ID = localStorage.getItem('userId') ?? ''
+const CURRENT_USER_ID = localStorage.getItem('userId') ?? '';
 
 type Props = {
   conversation: IChatConversation;
@@ -62,7 +63,7 @@ export default function ChatNavItem({ conversation, openNav, isSelected, onSelec
                 <CustomAvatar
                   key={`user_custom_avatar_${participant.id ?? Math.random()}`}
                   alt={participant.name}
-                  src={participant.image}
+                  src={staticFilePath(participant.image)}
                 />
               ))}
             </CustomAvatarGroup>
@@ -71,7 +72,7 @@ export default function ChatNavItem({ conversation, openNav, isSelected, onSelec
           <CustomAvatar
             key={details.otherParticipants[0].id}
             alt={details.otherParticipants[0].name}
-            src={details.otherParticipants[0].image}
+            src={staticFilePath(details.otherParticipants[0].image)}
             BadgeProps={{
               badgeContent: <BadgeStatus status={details.otherParticipants[0].status} />,
             }}
@@ -137,5 +138,6 @@ const getDetails = (conversation: IChatConversation, currentUserId: string) => {
 
     displayText = `${sender}${message}`;
   }
+
   return { otherParticipants, usernames, displayText };
 };

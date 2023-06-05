@@ -5,8 +5,8 @@ import { Avatar, Typography, Stack } from '@mui/material';
 import { IChatConversation, IChatMessage } from '../../../../@types/chat';
 // components
 import Image from '../../../../components/image';
-import { HOST_API_KEY } from '../../../../config-global';
 import { AttachmentItem } from '../room/ChatRoomAttachments';
+import { staticFilePath } from '../../../../components/file-thumbnail';
 
 // ----------------------------------------------------------------------
 
@@ -106,7 +106,7 @@ export default function ChatMessageItem({ message, conversation, onOpenLightbox 
                 <Image
                   key={attachment.path}
                   alt="attachment"
-                  src={`${HOST_API_KEY}/${attachment.path}`}
+                  src={staticFilePath(attachment.path)}
                   onClick={() => onOpenLightbox(attachment.path)}
                   sx={{
                     cursor: 'pointer',

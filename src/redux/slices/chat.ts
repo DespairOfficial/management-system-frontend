@@ -18,7 +18,6 @@ export const sendSocketMessage = createAsyncThunk(
       type: file.type,
       file,
     }));
-
     const newMessage: ICreateMessage = {
       body: args.message,
       conversationId: args.conversationId,
@@ -33,6 +32,8 @@ export const sendSocketMessage = createAsyncThunk(
         res(message);
       });
     });
+    console.log(response);
+
     return response;
   }
 );

@@ -4,6 +4,7 @@ import { Typography, Dialog, DialogContent, Stack, IconButton } from '@mui/mater
 import { IChatParticipant } from '../../../../@types/chat';
 // components
 import { CustomAvatar } from '../../../../components/custom-avatar';
+import { staticFilePath } from '../../../../components/file-thumbnail/utils';
 import Iconify from '../../../../components/iconify';
 
 // ----------------------------------------------------------------------
@@ -16,7 +17,7 @@ type Props = {
 
 export default function ChatRoomParticipantInfoDialog({ participant, open, onClose }: Props) {
   const { name, image, role, address } = participant;
-
+	
   return (
     <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose}>
       <IconButton onClick={onClose} sx={{ position: 'absolute', right: 8, top: 8 }}>
@@ -25,7 +26,12 @@ export default function ChatRoomParticipantInfoDialog({ participant, open, onClo
 
       <DialogContent sx={{ p: 5 }}>
         <Stack direction="row" spacing={3}>
-          <CustomAvatar alt={name} src={image} name={name} sx={{ width: 96, height: 96 }} />
+          <CustomAvatar
+            alt={name}
+            src={staticFilePath(image)}
+            name={name}
+            sx={{ width: 96, height: 96 }}
+          />
 
           <Stack spacing={1}>
             <Typography variant="caption" sx={{ color: 'primary.main' }}>

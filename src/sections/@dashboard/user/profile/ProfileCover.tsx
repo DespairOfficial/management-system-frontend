@@ -10,6 +10,7 @@ import { useAuthContext } from '../../../../auth/useAuthContext';
 // components
 import Image from '../../../../components/image';
 import { CustomAvatar } from '../../../../components/custom-avatar';
+import { staticFilePath } from '../../../../components/file-thumbnail/utils';
 
 // ----------------------------------------------------------------------
 
@@ -51,7 +52,7 @@ export default function ProfileCover({ name, role, cover }: IUserProfileCover) {
     <StyledRoot>
       <StyledInfo>
         <CustomAvatar
-          src={user?.image ?? undefined}
+          src={staticFilePath(user?.image ?? undefined)}
           alt={user?.username}
           name={user?.username}
           sx={{

@@ -5,6 +5,7 @@ import { useAuthContext } from '../../../../auth/useAuthContext';
 // components
 import Iconify from '../../../../components/iconify';
 import { CustomAvatar } from '../../../../components/custom-avatar';
+import { staticFilePath } from '../../../../components/file-thumbnail/utils';
 
 // ----------------------------------------------------------------------
 
@@ -13,7 +14,7 @@ export default function KanbanDetailsCommentInput() {
 
   return (
     <Stack direction="row" spacing={2} sx={{ py: 3, px: 2.5 }}>
-      <CustomAvatar src={user?.image ?? undefined} alt={user?.username} name={user?.username} />
+      <CustomAvatar src={staticFilePath(user?.image ?? undefined)} alt={user?.username} name={user?.username} />
 
       <Paper variant="outlined" sx={{ p: 1, flexGrow: 1 }}>
         <InputBase fullWidth multiline rows={2} placeholder="Type a message" sx={{ px: 1 }} />

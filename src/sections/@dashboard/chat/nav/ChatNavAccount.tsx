@@ -17,6 +17,7 @@ import Iconify from '../../../../components/iconify';
 import { CustomAvatar } from '../../../../components/custom-avatar';
 import MenuPopover from '../../../../components/menu-popover';
 import BadgeStatus, { BadgeStatusValue } from '../../../../components/badge-status';
+import { staticFilePath } from '../../../../components/file-thumbnail/utils';
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +41,7 @@ export default function ChatNavAccount() {
   return (
     <>
       <CustomAvatar
-        src={user?.image ?? undefined}
+        src={staticFilePath(user?.image ?? undefined)}
         alt={user?.username}
         name={user?.username}
         BadgeProps={{

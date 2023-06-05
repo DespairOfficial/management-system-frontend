@@ -149,9 +149,10 @@ export interface IUser {
   username: string;
   gender: boolean;
   isVerified: boolean;
+  isPublic: boolean;
   image: string | null;
   country: string | null;
-  phoneNumber: string | null;
+  phone: string | null;
   company: string | null;
   role: string | null;
   about: string | null;

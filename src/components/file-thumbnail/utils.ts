@@ -1,3 +1,4 @@
+import { HOST_API_KEY } from '../../config-global';
 // components
 import { ExtendFile } from './types';
 
@@ -122,6 +123,16 @@ export function fileTypeByUrl(fileUrl = '') {
 
 export function fileNameByUrl(fileUrl: string) {
   return fileUrl.split('/').pop();
+}
+
+// ----------------------------------------------------------------------
+
+export function staticFilePath(filePathName: string | undefined | null) {
+  if (filePathName) {
+    return `${HOST_API_KEY}/static/uploads/${filePathName}`;
+    // return join(HOST_API_KEY, 'static', 'uploads', filePathName);
+  }
+  return undefined;
 }
 
 // ----------------------------------------------------------------------

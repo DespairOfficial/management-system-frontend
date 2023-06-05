@@ -2,6 +2,7 @@
 import { Avatar, Divider, Collapse, Typography, Stack } from '@mui/material';
 // @types
 import { IChatParticipant } from '../../../../@types/chat';
+import { staticFilePath } from '../../../../components/file-thumbnail/utils';
 // components
 import Iconify from '../../../../components/iconify';
 //
@@ -25,7 +26,7 @@ export default function ChatRoomSingle({ participant, isCollapse, onCollapse }: 
       <Stack alignItems="center" sx={{ py: 4 }}>
         <Avatar
           alt={participant.name}
-          src={participant.image}
+          src={staticFilePath(participant.image)}
           sx={{ width: 96, height: 96, mb: 2 }}
         />
 

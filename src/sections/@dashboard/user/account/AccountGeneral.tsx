@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { Box, Grid, Card, Stack, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+
 // auth
 import { useAuthContext } from '../../../../auth/useAuthContext';
 // utils
@@ -13,7 +14,6 @@ import { fData } from '../../../../utils/formatNumber';
 // assets
 import { countries } from '../../../../assets/data';
 // components
-import { CustomFile } from '../../../../components/upload';
 import { useSnackbar } from '../../../../components/snackbar';
 import FormProvider, {
   RHFSwitch,
@@ -21,19 +21,20 @@ import FormProvider, {
   RHFTextField,
   RHFUploadAvatar,
 } from '../../../../components/hook-form';
+import { staticFilePath } from '../../../../components/file-thumbnail/utils';
+import axios from '../../../../utils/axios';
 
 // ----------------------------------------------------------------------
 
 type FormValuesProps = {
   username: string;
-  email: string;
+  name: string;
+  gender: boolean;
+  company: string;
   image: File | string | null;
-  phoneNumber: string | null;
+  phone: string | null;
   country: string | null;
   address: string | null;
-  state: string | null;
-  city: string | null;
-  zipCode: string | null;
   about: string | null;
   isPublic: boolean;
 };
@@ -42,25 +43,28 @@ export default function AccountGeneral() {
   const { enqueueSnackbar } = useSnackbar();
 
   const { user } = useAuthContext();
-	
+
   const UpdateUserSchema = Yup.object().shape({
-    username: Yup.string().required('Name is required'),
-    email: Yup.string().required('Email is required').email('Email must be a valid email address'),
+    username: Yup.string().required('Username is required'),
+    name: Yup.string().required('Name is required'),
     image: Yup.mixed().required('Avatar is required'),
-    phoneNumber: Yup.string().required('Phone number is required'),
+    phone: Yup.string().required('Phone number is required'),
     country: Yup.string().required('Country is required'),
     address: Yup.string().required('Address is required'),
-    city: Yup.string().required('City is required'),
-    about: Yup.string().required('About is required'),
+    gender: Yup.boolean().required('Gender is required'),
   });
 
   const defaultValues = {
-    email: user?.email || '',
-    image: user?.image || null,
-    phoneNumber: user?.phoneNumber || '',
+    image: staticFilePath(user?.image) || null,
+    phone: user?.phone || '',
     country: user?.country || '',
     address: user?.address || '',
     about: user?.about || '',
+    isPublic: user?.isPublic,
+    name: user?.name || '',
+    username: user?.username || '',
+    gender: user?.gender || true,
+    company: user?.company || '',
   };
 
   const methods = useForm<FormValuesProps>({
@@ -75,10 +79,34 @@ export default function AccountGeneral() {
   } = methods;
 
   const onSubmit = async (data: FormValuesProps) => {
+    const formData = new FormData();
+
+    const { ...rest } = data;
+
+    const restKeys = Object.keys(rest);
+    const restValues = Object.values(rest);
+
+    restKeys.forEach((key, i) => {
+      const value: any = restValues[i];
+      if (value instanceof File) {
+        formData.append(key, value as Blob);
+      } else if (value instanceof Array) {
+        value.forEach((item) => {
+          formData.append(`${key}[]`, item);
+        });
+      } else {
+        formData.append(key, value as string);
+      }
+    });
+
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      enqueueSnackbar('Update success!');
-      console.log('DATA', data);
+      await axios({
+        method: 'patch',
+        url: 'api/users/',
+        data: formData,
+      }).then(() => {
+        enqueueSnackbar('Update success!');
+      });
     } catch (error) {
       console.error(error);
     }
@@ -145,11 +173,11 @@ export default function AccountGeneral() {
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFTextField name="username" label="Name" />
+              <RHFTextField name="username" label="Nickname" />
 
-              <RHFTextField name="email" label="Email Address" />
+              <RHFTextField name="name" label="Actial name" />
 
-              <RHFTextField name="phoneNumber" label="Phone Number" />
+              <RHFTextField name="phone" label="Phone Number" />
 
               <RHFTextField name="address" label="Address" />
 
@@ -162,12 +190,19 @@ export default function AccountGeneral() {
                 ))}
               </RHFSelect>
 
-              <RHFTextField name="state" label="State/Region" />
-
-              <RHFTextField name="city" label="City" />
-
-              <RHFTextField name="zipCode" label="Zip/Code" />
+              <RHFSelect native name="gender" label="Sex" placeholder="Sex">
+                <option value="" />
+                <option key="Male" value="true">
+                  Male
+                </option>
+                <option key="Female" value="false">
+                  Female
+                </option>
+              </RHFSelect>
             </Box>
+            <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
+              <RHFTextField name="company" label="Company" />
+            </Stack>
 
             <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
               <RHFTextField name="about" multiline rows={4} label="About" />

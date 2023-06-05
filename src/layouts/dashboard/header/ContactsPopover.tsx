@@ -13,6 +13,7 @@ import Scrollbar from '../../../components/scrollbar';
 import MenuPopover from '../../../components/menu-popover';
 import BadgeStatus from '../../../components/badge-status';
 import { IconButtonAnimate } from '../../../components/animate';
+import { staticFilePath } from '../../../components/file-thumbnail/utils';
 
 // ----------------------------------------------------------------------
 
@@ -56,7 +57,7 @@ export default function ContactsPopover() {
             <MenuItem key={contact.id} sx={{ height: ITEM_HEIGHT }}>
               <ListItemAvatar>
                 <CustomAvatar
-                  src={contact.avatar}
+                  src={staticFilePath(contact.avatar)}
                   BadgeProps={{
                     badgeContent: <BadgeStatus status={contact.status} />,
                   }}

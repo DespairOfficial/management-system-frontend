@@ -16,6 +16,7 @@ import { CustomAvatar } from '../../../../components/custom-avatar';
 import Iconify from '../../../../components/iconify';
 //
 import MailItemAction from './MailItemAction';
+import { staticFilePath } from '../../../../components/file-thumbnail/utils';
 
 // ----------------------------------------------------------------------
 
@@ -177,7 +178,7 @@ export default function MailItem({
       >
         <CustomAvatar
           alt={mail.from.name}
-          src={mail.from.avatar || ''}
+          src={staticFilePath(mail.from.avatar || '')}
           name={mail.from.name}
           sx={{ width: 32, height: 32, mr: 2 }}
         />

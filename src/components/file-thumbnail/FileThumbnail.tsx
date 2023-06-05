@@ -1,9 +1,8 @@
 import { Theme } from '@mui/material/styles';
 import { Box, Tooltip, SxProps, Stack } from '@mui/material';
 //
-import { fileData, fileFormat, fileThumb } from './utils';
+import { fileData, fileFormat, fileThumb, staticFilePath } from './utils';
 import DownloadButton from './DownloadButton';
-import { HOST_API_KEY } from '../../config-global';
 
 // ----------------------------------------------------------------------
 
@@ -24,9 +23,8 @@ export default function FileThumbnail({
   sx,
   imgSx,
 }: FileIconProps) {
-	
-  const path = `${HOST_API_KEY}/${fileData(file).path}`;
-  const preview = `${HOST_API_KEY}/${fileData(file).preview}`;
+  const path = staticFilePath(fileData(file).path);
+  const preview = staticFilePath(fileData(file).preview);
   const name = fileData(file).name;
 
   const format = fileFormat(path || preview);

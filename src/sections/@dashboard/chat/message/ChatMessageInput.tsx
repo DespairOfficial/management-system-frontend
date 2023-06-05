@@ -1,6 +1,6 @@
 import { useRef, useState, ChangeEvent } from 'react';
 // @mui
-import { Stack, InputBase, InputBaseProps, IconButton, InputAdornment } from '@mui/material';
+import { Stack, InputBase, InputBaseProps, IconButton, InputAdornment, Badge } from '@mui/material';
 // utils
 import uuidv4 from '../../../../utils/uuidv4';
 // @types
@@ -77,12 +77,18 @@ export default function ChatMessageInput({
         }
         endAdornment={
           <Stack direction="row" spacing={1} sx={{ flexShrink: 0, mr: 1.5 }}>
-            <IconButton disabled={disabled} size="small" onClick={handleClickAttach}>
+            {/* <IconButton disabled={disabled} size="small" onClick={handleClickAttach}>
               <Iconify icon="ic:round-add-photo-alternate" />
-            </IconButton>
+            </IconButton> */}
 
             <IconButton disabled={disabled} size="small" onClick={handleClickAttach}>
-              <Iconify icon="eva:attach-2-fill" />
+              {attachments.length ? (
+                <Badge badgeContent={attachments.length} color="error">
+                  <Iconify icon="eva:attach-2-fill" />
+                </Badge>
+              ) : (
+                <Iconify icon="eva:attach-2-fill" />
+              )}
             </IconButton>
 
             <IconButton disabled={disabled} size="small">

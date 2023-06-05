@@ -4,6 +4,7 @@ import { io } from 'socket.io-client';
 const URL = 'http://localhost:5001';
 
 const token = localStorage.getItem('accessToken');
+
 export const socket = io(URL, {
   extraHeaders: {
     authorization: `Bearer ${token}`,

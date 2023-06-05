@@ -9,6 +9,7 @@ import BadgeStatus from '../../../../components/badge-status';
 //
 import ChatRoomParticipantInfoDialog from './ChatRoomParticipantInfoDialog';
 import ChatRoomCollapseButton from './ChatRoomCollapseButton';
+import { staticFilePath } from '../../../../components/file-thumbnail/utils';
 
 // ----------------------------------------------------------------------
 
@@ -78,7 +79,7 @@ function Participant({ participant, open, onClose, onOpen }: ParticipantProps) {
         <ListItemAvatar>
           <CustomAvatar
             alt={name}
-            src={image}
+            src={staticFilePath(image)}
             BadgeProps={{
               badgeContent: <BadgeStatus status={status} />,
             }}

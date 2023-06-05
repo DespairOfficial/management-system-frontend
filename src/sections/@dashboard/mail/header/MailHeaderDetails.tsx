@@ -12,6 +12,7 @@ import { IMailSender } from '../../../../@types/mail';
 // components
 import { CustomAvatar } from '../../../../components/custom-avatar';
 import Iconify from '../../../../components/iconify';
+import { staticFilePath } from '../../../../components/file-thumbnail/utils';
 
 // ----------------------------------------------------------------------
 
@@ -60,7 +61,7 @@ export default function MailHeaderDetails({ mailFrom, mailTo, createdAt, sx, ...
           </IconButton>
         </Tooltip>
 
-        <CustomAvatar alt={mailFrom.name} src={mailFrom.avatar || ''} name={mailFrom.name} />
+        <CustomAvatar alt={mailFrom.name} src={staticFilePath(mailFrom.avatar || '')} name={mailFrom.name} />
 
         <Box sx={{ ml: 2 }}>
           <Typography display="inline" variant="subtitle2">

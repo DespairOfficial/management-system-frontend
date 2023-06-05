@@ -8,6 +8,7 @@ import { IChatParticipant } from '../../../../@types/chat';
 import Iconify from '../../../../components/iconify';
 import BadgeStatus from '../../../../components/badge-status';
 import { CustomAvatar, CustomAvatarGroup } from '../../../../components/custom-avatar';
+import { staticFilePath } from '../../../../components/file-thumbnail/utils';
 
 // ----------------------------------------------------------------------
 
@@ -32,7 +33,7 @@ export default function ChatHeaderDetail({ participants }: Props) {
         <Stack flexGrow={1}>
           <CustomAvatarGroup max={3}>
             {participants.map((participant) => (
-              <CustomAvatar key={participant.id} alt={participant.name} src={participant.image} />
+              <CustomAvatar key={participant.id} alt={participant.name} src={staticFilePath(participant.image)} />
             ))}
           </CustomAvatarGroup>
 
@@ -52,7 +53,7 @@ export default function ChatHeaderDetail({ participants }: Props) {
       ) : (
         <Stack flexGrow={1} direction="row" alignItems="center" spacing={2}>
           <CustomAvatar
-            src={participantInfo?.image}
+            src={staticFilePath(participantInfo?.image)}
             alt={participantInfo?.name}
             BadgeProps={{
               badgeContent: <BadgeStatus status={participantInfo?.status} />,

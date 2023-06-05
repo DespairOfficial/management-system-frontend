@@ -45,7 +45,7 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: Props) 
   const NewUserSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-    phoneNumber: Yup.string().required('Phone number is required'),
+    phone: Yup.string().required('Phone number is required'),
     address: Yup.string().required('Address is required'),
     country: Yup.string().required('Country is required'),
     company: Yup.string().required('Company is required'),
@@ -57,7 +57,7 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: Props) 
     () => ({
       name: currentUser?.username || '',
       email: currentUser?.email || '',
-      phoneNumber: currentUser?.phoneNumber || '',
+      phone: currentUser?.phone || '',
       address: currentUser?.address || '',
       country: currentUser?.country || '',
       image: currentUser?.image || null,
@@ -221,7 +221,7 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: Props) 
             >
               <RHFTextField name="name" label="Full Name" />
               <RHFTextField name="email" label="Email Address" />
-              <RHFTextField name="phoneNumber" label="Phone Number" />
+              <RHFTextField name="phone" label="Phone Number" />
 
               <RHFSelect native name="country" label="Country" placeholder="Country">
                 <option value="" />
