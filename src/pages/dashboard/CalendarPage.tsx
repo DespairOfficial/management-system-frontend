@@ -360,7 +360,8 @@ const useGetEvents = () => {
   const dispatch = useDispatch();
 
   const { events: data } = useSelector((state) => state.calendar);
-
+	console.log(data);
+	
   const getAllEvents = useCallback(() => {
     dispatch(getEvents());
   }, [dispatch]);
