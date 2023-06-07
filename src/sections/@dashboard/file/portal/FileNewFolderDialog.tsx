@@ -13,7 +13,8 @@ import {
 // components
 import Iconify from '../../../../components/iconify';
 import { Upload } from '../../../../components/upload';
-
+import { IFileManager } from '../../../../@types/file';
+import axios from '../../../../utils/axios';
 // ----------------------------------------------------------------------
 
 interface Props extends DialogProps {
@@ -21,6 +22,7 @@ interface Props extends DialogProps {
   //
   onCreate?: VoidFunction;
   onUpdate?: VoidFunction;
+  onUploadFiles?: (files: IFileManager[]) => void;
   //
   folderName?: string;
   onChangeFolderName?: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -33,6 +35,7 @@ export default function FileNewFolderDialog({
   title = 'Upload Files',
   open,
   onClose,
+  onUploadFiles,
   //
   onCreate,
   onUpdate,
@@ -41,7 +44,7 @@ export default function FileNewFolderDialog({
   onChangeFolderName,
   ...other
 }: Props) {
-  const [files, setFiles] = useState<(File | string)[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
 
   useEffect(() => {
     if (!open) {
@@ -62,11 +65,6 @@ export default function FileNewFolderDialog({
     [files]
   );
 
-  const handleUpload = () => {
-    onClose();
-    console.log('ON UPLOAD');
-  };
-
   const handleRemoveFile = (inputFile: File | string) => {
     const filtered = files.filter((file) => file !== inputFile);
     setFiles(filtered);
@@ -76,10 +74,26 @@ export default function FileNewFolderDialog({
     setFiles([]);
   };
 
+  const handleUpload = () => {
+    const formData = new FormData();
+
+    files.forEach((file) => {
+      formData.append('files', file);
+    });
+
+    const sharedPromise = axios.post('/api/shared', formData);
+    return sharedPromise.then((response) => {
+      const uploadedFiles: IFileManager[] = response.data;
+      if (onUploadFiles) {
+        onUploadFiles(uploadedFiles);
+      }
+      onClose();
+    });
+  };
+
   return (
     <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose} {...other}>
       <DialogTitle sx={{ p: (theme) => theme.spacing(3, 3, 2, 3) }}> {title} </DialogTitle>
-
       <DialogContent dividers sx={{ pt: 1, pb: 0, border: 'none' }}>
         {(onCreate || onUpdate) && (
           <TextField

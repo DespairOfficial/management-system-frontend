@@ -11,10 +11,11 @@ import {
   DialogContent,
 } from '@mui/material';
 // @types
-import { IFileShared } from '../../../../@types/file';
+import { IFileContributor } from '../../../../@types/file';
 // components
 import Iconify from '../../../../components/iconify';
 import Scrollbar from '../../../../components/scrollbar';
+import axios from '../../../../utils/axios';
 //
 import FileInvitedItem from '../FileInvitedItem';
 
@@ -22,25 +23,39 @@ import FileInvitedItem from '../FileInvitedItem';
 
 interface Props extends DialogProps {
   inviteEmail?: string;
-  shared?: IFileShared[] | null;
+  contributors?: IFileContributor[] | null;
   onCopyLink?: VoidFunction;
   onChangeInvite?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   //
+  fileId: string;
   open: boolean;
   onClose: VoidFunction;
 }
 
 export default function FileShareDialog({
-  shared,
+  contributors,
   inviteEmail,
   onCopyLink,
   onChangeInvite,
+  fileId,
   //
   open,
   onClose,
   ...other
 }: Props) {
-  const hasShared = shared && !!shared.length;
+  const hasContributors = contributors && !!contributors.length;
+
+  const inviteNewContributor = (fileToShareId: string, contributorEmail: string) => {
+    axios.post(`api/shared/${fileToShareId}/contributors`, {
+      contributorEmail,
+    });
+  };
+
+  const onSendInvite = () => {
+    if (inviteEmail) {
+      inviteNewContributor(fileId, inviteEmail);
+    }
+  };
 
   return (
     <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose} {...other}>
@@ -56,17 +71,22 @@ export default function FileShareDialog({
               placeholder="Email"
               onChange={onChangeInvite}
             />
-            <Button disabled={!inviteEmail} variant="contained" sx={{ flexShrink: 0 }}>
+            <Button
+              disabled={!inviteEmail}
+              variant="contained"
+              sx={{ flexShrink: 0 }}
+              onClick={() => onSendInvite()}
+            >
               Send Invite
             </Button>
           </Stack>
         )}
 
-        {hasShared && (
+        {hasContributors && (
           <Scrollbar sx={{ maxHeight: 60 * 6 }}>
             <List disablePadding>
-              {shared.map((person) => (
-                <FileInvitedItem key={person.id} person={person} />
+              {contributors.map((person) => (
+                <FileInvitedItem key={person.id} person={person} fileId={fileId} />
               ))}
             </List>
           </Scrollbar>

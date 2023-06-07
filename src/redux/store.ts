@@ -5,7 +5,7 @@ import {
   useSelector as useAppSelector,
 } from 'react-redux';
 import { persistStore, persistReducer } from 'redux-persist';
-import rootReducer, { rootPersistConfig } from './rootReducer';
+import rootReducer, { middlewareArray, rootPersistConfig } from './rootReducer';
 
 // ----------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: false,
       immutableCheck: false,
-    }),
+    }).concat(middlewareArray),
 });
 
 const persistor = persistStore(store);

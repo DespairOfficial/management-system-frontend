@@ -1,7 +1,7 @@
 // @mui
 import { Table, Tooltip, TableBody, IconButton, TableContainer, Box } from '@mui/material';
 // @types
-import { IFile } from '../../../../@types/file';
+import { IFile, IFileManager } from '../../../../@types/file';
 // components
 import Iconify from '../../../../components/iconify';
 import {

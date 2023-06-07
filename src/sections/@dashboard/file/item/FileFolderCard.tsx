@@ -262,8 +262,9 @@ export default function FileFolderCard({
 
       <FileShareDialog
         open={openShare}
-        shared={folder.shared}
+        contributors={folder.contributors}
         inviteEmail={inviteEmail}
+        fileId={folder.id}
         onChangeInvite={handleChangeInvite}
         onCopyLink={handleCopy}
         onClose={() => {

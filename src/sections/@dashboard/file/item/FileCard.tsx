@@ -235,10 +235,11 @@ export default function FileCard({ file, selected, onSelect, onDelete, sx, ...ot
 
       <FileShareDialog
         open={openShare}
-        shared={file.shared}
+        contributors={file.contributors}
         inviteEmail={inviteEmail}
         onChangeInvite={handleChangeInvite}
         onCopyLink={handleCopy}
+				fileId={file.id}
         onClose={() => {
           handleCloseShare();
           setInviteEmail('');

@@ -154,7 +154,7 @@ export default function FileGeneralRecentCard({ file, onDelete, sx, ...other }: 
               },
             }}
           >
-            {file?.shared?.map((person) => (
+            {file?.contributors?.map((person) => (
               <Avatar key={person.id} alt={person.name} src={person.avatar} />
             ))}
           </AvatarGroup>
@@ -240,8 +240,9 @@ export default function FileGeneralRecentCard({ file, onDelete, sx, ...other }: 
       />
 
       <FileShareDialog
+				fileId={file.id}
         open={openShare}
-        shared={file.shared}
+        contributors={file.contributors}
         inviteEmail={inviteEmail}
         onChangeInvite={handleChangeInvite}
         onCopyLink={handleCopy}

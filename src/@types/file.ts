@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------
 
-export type IFileShared = {
+export type IFileContributor = {
   id: string;
   name: string;
   email: string;
@@ -17,7 +17,7 @@ export type IFolderManager = {
   tags: string[];
   totalFiles?: number;
   isFavorited: boolean;
-  shared: IFileShared[] | null;
+  contributors: IFileContributor[] | null;
   dateCreated: Date | number | string;
   dateModified: Date | number | string;
 };
@@ -30,9 +30,18 @@ export type IFileManager = {
   url: string;
   tags: string[];
   isFavorited: boolean;
-  shared: IFileShared[] | null;
+  contributors: IFileContributor[] | null;
   dateCreated: Date | number | string;
   dateModified: Date | number | string;
 };
 
-export type IFile = IFileManager | IFolderManager;
+export interface IUploadFile {
+  name: string;
+  size: number;
+  type: string;
+  dateCreated: Date | number;
+  dateModified: Date | number;
+	buffer: Buffer | File
+}
+
+export type IFile = IFileManager

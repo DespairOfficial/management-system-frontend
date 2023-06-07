@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // @mui
 import {
   Box,
@@ -28,6 +28,8 @@ import FileThumbnail, { fileFormat } from '../../../../components/file-thumbnail
 //
 import FileShareDialog from './FileShareDialog';
 import FileInvitedItem from '../FileInvitedItem';
+import axios from '../../../../utils/axios';
+import { useGetTagsOptionsQuery } from '../../../../redux/api/tagsApi';
 
 // ----------------------------------------------------------------------
 
@@ -53,9 +55,9 @@ export default function FileDetailsDrawer({
   onDelete,
   ...other
 }: Props) {
-  const { name, size, url, type, shared, dateModified } = item;
+  const { name, size, url, type, contributors, dateModified } = item;
 
-  const hasShared = shared && !!shared.length;
+  const hasContributors = contributors && !!contributors.length;
 
   const [openShare, setOpenShare] = useState(false);
 
@@ -63,7 +65,7 @@ export default function FileDetailsDrawer({
 
   const [inviteEmail, setInviteEmail] = useState('');
 
-  const [tags, setTags] = useState(item.tags.slice(0, 3));
+  const [tags, setTags] = useState(item.tags);
 
   const [toggleProperties, setToggleProperties] = useState(true);
 
@@ -85,6 +87,15 @@ export default function FileDetailsDrawer({
 
   const handleChangeInvite = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInviteEmail(event.target.value);
+  };
+
+
+  const { data: tagsOptions } = useGetTagsOptionsQuery();
+
+  const setNewTags = (fileId: string, newTagNames: string[]) => {
+    axios.patch(`api/shared/tags/${fileId}`, {
+      tags: newTagNames,
+    });
   };
 
   return (
@@ -140,11 +151,12 @@ export default function FileDetailsDrawer({
                 <Autocomplete
                   multiple
                   freeSolo
-                  limitTags={2}
-                  options={item.tags.map((option) => option)}
+                  limitTags={3}
+                  options={tagsOptions ?? []}
                   value={tags}
                   onChange={(event, newValue) => {
-                    setTags([...tags, ...newValue.filter((option) => tags.indexOf(option) === -1)]);
+                    setTags(newValue);
+                    setNewTags(item.id, newValue);
                   }}
                   renderTags={(value: readonly string[], getTagProps) =>
                     value.map((option: string, index: number) => (
@@ -153,7 +165,7 @@ export default function FileDetailsDrawer({
                         size="small"
                         variant="soft"
                         label={option}
-                        key={option}
+                        key={option + index}
                       />
                     ))
                   }
@@ -203,10 +215,10 @@ export default function FileDetailsDrawer({
             </IconButton>
           </Stack>
 
-          {hasShared && (
+          {hasContributors && (
             <List disablePadding sx={{ pl: 2.5, pr: 1 }}>
-              {shared.map((person) => (
-                <FileInvitedItem key={person.id} person={person} />
+              {contributors.map((person) => (
+                <FileInvitedItem key={person.id} person={person} fileId={item.id}  />
               ))}
             </List>
           )}
@@ -228,7 +240,8 @@ export default function FileDetailsDrawer({
 
       <FileShareDialog
         open={openShare}
-        shared={shared}
+        contributors={contributors}
+				fileId={item.id}
         inviteEmail={inviteEmail}
         onChangeInvite={handleChangeInvite}
         onCopyLink={onCopyLink}

@@ -11,18 +11,21 @@ import {
   ListItemAvatar,
 } from '@mui/material';
 // @types
-import { IFileShared } from '../../../@types/file';
+import { IFileContributor } from '../../../@types/file';
 // components
 import Iconify from '../../../components/iconify';
 import MenuPopover from '../../../components/menu-popover';
+import { staticFilePath } from '../../../components/file-thumbnail';
+import axios from '../../../utils/axios';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  person: IFileShared;
+  person: IFileContributor;
+  fileId: string;
 };
 
-export default function FileInvitedItem({ person }: Props) {
+export default function FileInvitedItem({ person, fileId }: Props) {
   const [permission, setPermission] = useState(person.permission);
 
   const [openPopover, setOpenPopover] = useState<HTMLElement | null>(null);
@@ -35,6 +38,13 @@ export default function FileInvitedItem({ person }: Props) {
     setOpenPopover(null);
   };
 
+  const handleRemoveContributor = () => {
+    handleClosePopover();
+    axios.post(`api/shared/${fileId}/contributors/remove`, {
+      contributorId: person.id,
+    });
+  };
+
   const handleChangePermission = (newPermission: string) => {
     setPermission(newPermission);
   };
@@ -43,7 +53,7 @@ export default function FileInvitedItem({ person }: Props) {
     <>
       <ListItem disableGutters>
         <ListItemAvatar>
-          <Avatar alt={person.name} src={person.avatar} />
+          <Avatar alt={person.name} src={staticFilePath(person.avatar)} />
         </ListItemAvatar>
 
         <ListItemText
@@ -115,7 +125,7 @@ export default function FileInvitedItem({ person }: Props) {
 
           <MenuItem
             onClick={() => {
-              handleClosePopover();
+              handleRemoveContributor();
             }}
             sx={{ color: 'error.main' }}
           >

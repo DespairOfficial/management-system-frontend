@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // @mui
 import { Stack, Button, Container } from '@mui/material';
 // routes
@@ -9,7 +9,7 @@ import { fTimestamp } from '../../utils/formatTime';
 // _mock_
 import { _allFiles } from '../../_mock/arrays';
 // @types
-import { IFile } from '../../@types/file';
+import { IFile, IFileManager } from '../../@types/file';
 // components
 import Iconify from '../../components/iconify';
 import ConfirmDialog from '../../components/confirm-dialog';
@@ -28,6 +28,7 @@ import {
   FileChangeViewButton,
   FileNewFolderDialog,
 } from '../../sections/@dashboard/file';
+import axios from '../../utils/axios';
 
 // ----------------------------------------------------------------------
 
@@ -71,7 +72,7 @@ export default function FileManagerPage() {
 
   const [filterName, setFilterName] = useState('');
 
-  const [tableData, setTableData] = useState(_allFiles);
+  const [tableData, setTableData] = useState<IFileManager[]>([]);
 
   const [filterType, setFilterType] = useState<string[]>([]);
 
@@ -107,6 +108,16 @@ export default function FileManagerPage() {
     }
   };
 
+  useEffect(() => {
+    const getShared = async () => {
+      const result = await axios.get('api/shared');
+      const fileData: IFileManager[] = result.data;
+
+      setTableData(fileData);
+    };
+    getShared();
+  }, []);
+
   const handleFilterName = (event: React.ChangeEvent<HTMLInputElement>) => {
     table.setPage(0);
     setFilterName(event.target.value);
@@ -134,9 +145,10 @@ export default function FileManagerPage() {
   const handleDeleteItem = (id: string) => {
     const { page, setPage, setSelected } = table;
     const deleteRow = tableData.filter((row) => row.id !== id);
+
     setSelected([]);
     setTableData(deleteRow);
-
+    deleteRowRequest(id);
     if (page > 0) {
       if (dataInPage.length < 2) {
         setPage(page - 1);
@@ -144,11 +156,26 @@ export default function FileManagerPage() {
     }
   };
 
+  const handleUploadedFiles = (files: IFileManager[]) => {
+    setTableData([...tableData, ...files]);
+  };
+
   const handleDeleteItems = (selected: string[]) => {
     const { page, rowsPerPage, setPage, setSelected } = table;
-    const deleteRows = tableData.filter((row) => !selected.includes(row.id));
+    const rowsToDelete: IFileManager[] = [];
+    const deleteRows = tableData.filter((row) => {
+      if (!selected.includes(row.id)) {
+        return true;
+      }
+      rowsToDelete.push(row);
+      return false;
+    });
     setSelected([]);
     setTableData(deleteRows);
+
+    rowsToDelete.forEach((row) => {
+      deleteRowRequest(row.id);
+    });
 
     if (page > 0) {
       if (selected.length === dataInPage.length) {
@@ -170,7 +197,7 @@ export default function FileManagerPage() {
     setFilterType([]);
   };
 
-  const handleOpenConfirm = () => {
+  const handleOpenConfirm = (): any => {
     setOpenConfirm(true);
   };
 
@@ -186,10 +213,14 @@ export default function FileManagerPage() {
     setOpenUploadFile(false);
   };
 
+  const deleteRowRequest = (fileId: string) => {
+    axios.delete(`/api/shared/${fileId}`);
+  };
+
   return (
     <>
       <Helmet>
-        <title> File Manager | Minimal UI</title>
+        <title> File Manager</title>
       </Helmet>
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -294,7 +325,11 @@ export default function FileManagerPage() {
         )}
       </Container>
 
-      <FileNewFolderDialog open={openUploadFile} onClose={handleCloseUploadFile} />
+      <FileNewFolderDialog
+        open={openUploadFile}
+        onClose={handleCloseUploadFile}
+        onUploadFiles={handleUploadedFiles}
+      />
 
       <ConfirmDialog
         open={openConfirm}

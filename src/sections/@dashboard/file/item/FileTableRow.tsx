@@ -26,7 +26,7 @@ import Iconify from '../../../../components/iconify';
 import MenuPopover from '../../../../components/menu-popover';
 import { useSnackbar } from '../../../../components/snackbar';
 import ConfirmDialog from '../../../../components/confirm-dialog';
-import FileThumbnail from '../../../../components/file-thumbnail';
+import FileThumbnail, { staticFilePath } from '../../../../components/file-thumbnail';
 //
 import FileShareDialog from '../portal/FileShareDialog';
 import FileDetailsDrawer from '../portal/FileDetailsDrawer';
@@ -41,7 +41,7 @@ type Props = {
 };
 
 export default function FileTableRow({ row, selected, onSelectRow, onDeleteRow }: Props) {
-  const { name, size, type, dateModified, shared, isFavorited } = row;
+  const { name, size, type, dateModified, contributors, isFavorited } = row;
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -189,9 +189,9 @@ export default function FileTableRow({ row, selected, onSelectRow, onDeleteRow }
               },
             }}
           >
-            {shared &&
-              shared.map((person) => (
-                <Avatar key={person.id} alt={person.name} src={person.avatar} />
+            {contributors &&
+              contributors.map((person) => (
+                <Avatar key={person.id} alt={person.name} src={staticFilePath(person.avatar)} />
               ))}
           </AvatarGroup>
         </TableCell>
@@ -271,7 +271,8 @@ export default function FileTableRow({ row, selected, onSelectRow, onDeleteRow }
 
       <FileShareDialog
         open={openShare}
-        shared={shared}
+        contributors={contributors}
+        fileId={row.id}
         inviteEmail={inviteEmail}
         onChangeInvite={handleChangeInvite}
         onCopyLink={handleCopy}

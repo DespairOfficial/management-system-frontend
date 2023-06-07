@@ -201,7 +201,8 @@ export default function FileGridView({
         )}
       </Box>
 
-      <FileShareDialog
+      {/* <FileShareDialog
+				fileId={file.id}
         open={openShare}
         inviteEmail={inviteEmail}
         onChangeInvite={handleChangeInvite}
@@ -209,7 +210,7 @@ export default function FileGridView({
           handleCloseShare();
           setInviteEmail('');
         }}
-      />
+      /> */}
 
       <FileNewFolderDialog open={openUploadFile} onClose={handleCloseUploadFile} />
 

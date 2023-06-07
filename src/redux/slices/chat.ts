@@ -32,8 +32,6 @@ export const sendSocketMessage = createAsyncThunk(
         res(message);
       });
     });
-    console.log(response);
-
     return response;
   }
 );
@@ -102,23 +100,6 @@ const slice = createSlice({
       }
     },
 
-    // ON SEND MESSAGE
-    // sendMessage(state, action) {
-    //   const conversation = action.payload;
-    //   const { conversationId, messageId, message, contentType, attachments, createdAt, senderId } =
-    //     conversation;
-
-    //   const attachmentsTyped: File[] = attachments;
-    //   const attachmentsFiles = attachmentsTyped.map((file) => ({
-    //     name: file.name,
-    //     size: file.size,
-    //     type: file.type,
-    //     file,
-    //   }));
-
-    //   const newMessage = sendMessageSocket(message, conversationId, contentType, attachmentsFiles);
-    //   state.conversations.byId[conversationId].messages.push(newMessage);
-    // },
 
     markConversationAsReadSuccess(state, action) {
       const { conversationId } = action.payload;

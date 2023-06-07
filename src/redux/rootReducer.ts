@@ -7,6 +7,7 @@ import chatReducer from './slices/chat';
 import productReducer from './slices/product';
 import calendarReducer from './slices/calendar';
 import kanbanReducer from './slices/kanban';
+import { tagsApi } from './api/tagsApi';
 
 // ----------------------------------------------------------------------
 
@@ -30,6 +31,11 @@ const rootReducer = combineReducers({
   calendar: calendarReducer,
   kanban: kanbanReducer,
   product: persistReducer(productPersistConfig, productReducer),
+  [tagsApi.reducerPath]: tagsApi.reducer,
 });
+
+export const middlewareArray = [
+	tagsApi.middleware,
+]
 
 export default rootReducer;

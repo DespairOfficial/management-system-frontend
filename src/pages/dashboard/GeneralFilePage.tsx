@@ -217,7 +217,7 @@ export default function GeneralFilePage() {
                 sx={{ mt: 5 }}
               />
 
-              <Scrollbar>
+              {/* <Scrollbar>
                 <Stack direction="row" spacing={3} sx={{ pb: 3 }}>
                   {_folders.map((folder) => (
                     <FileFolderCard
@@ -232,7 +232,7 @@ export default function GeneralFilePage() {
                     />
                   ))}
                 </Stack>
-              </Scrollbar>
+              </Scrollbar> */}
 
               <FilePanel
                 title="Recent Files"

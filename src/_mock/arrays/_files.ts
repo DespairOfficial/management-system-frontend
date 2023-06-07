@@ -107,7 +107,7 @@ export const _folders = FOLDER_NAME.map((folder, index) => ({
   type: 'folder',
   totalFiles: (index + 1) * 100,
   isFavorited: _mock.boolean(index + 1),
-  shared: SHARED_PERSON.slice(index, 5),
+  contributors: SHARED_PERSON.slice(index, 5),
   url: FILE_URL[index],
   tags: ['Docs', 'Projects', 'Work', 'Training', 'Sport', 'Foods'],
   dateCreated: _mock.time(index),
@@ -122,7 +122,7 @@ export const _files = FILE_NAME.map((file, index) => ({
   size: GB / ((index + 1) * 500),
   type: FILE_TYPE[index],
   isFavorited: _mock.boolean(index + 1),
-  shared: index === 0 ? null : SHARED_PERSON.slice(index, 8),
+  contributors: index === 0 ? null : SHARED_PERSON.slice(index, 8),
   url: FILE_URL[index],
   tags: ['Docs', 'Projects', 'Work', 'Training', 'Sport', 'Foods'],
   dateCreated: _mock.time(index),
@@ -131,4 +131,4 @@ export const _files = FILE_NAME.map((file, index) => ({
 
 // ----------------------------------------------------------------------
 
-export const _allFiles = [..._folders, ..._files];
+export const _allFiles = [..._files];
