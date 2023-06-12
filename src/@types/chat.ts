@@ -48,7 +48,7 @@ export type IChatContact = {
 export type IChatParticipant = {
   id: string;
   name: string;
-  userName: string;
+  username: string;
   image: string;
   address?: string;
   phone?: string;

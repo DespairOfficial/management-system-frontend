@@ -70,11 +70,11 @@ export default function ChatNavItem({ conversation, openNav, isSelected, onSelec
           </Badge>
         ) : (
           <CustomAvatar
-            key={details.otherParticipants[0].id}
-            alt={details.otherParticipants[0].name}
-            src={staticFilePath(details.otherParticipants[0].image)}
+            key={details.otherParticipants[0]?.id}
+            alt={details.otherParticipants[0]?.name}
+            src={staticFilePath(details.otherParticipants[0]?.image)}
             BadgeProps={{
-              badgeContent: <BadgeStatus status={details.otherParticipants[0].status} />,
+              badgeContent: <BadgeStatus status={details.otherParticipants[0]?.status} />,
             }}
             sx={{ width: 48, height: 48 }}
           />

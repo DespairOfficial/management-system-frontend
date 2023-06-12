@@ -14,7 +14,7 @@ import ChatNavItem from './ChatNavItem';
 
 // ----------------------------------------------------------------------
 
-const CURRENT_USER_ID = localStorage.getItem('userId');;
+const CURRENT_USER_ID = localStorage.getItem('userId');
 
 type Props = {
   conversations: IChatConversationsState;
@@ -48,8 +48,8 @@ export default function ChatNavList({
         (participant) => participant.id !== CURRENT_USER_ID
       );
 
-      if (otherParticipant?.userName) {
-        conversationKey = otherParticipant?.userName;
+      if (otherParticipant?.username) {
+        conversationKey = `${otherParticipant?.username.split('_')}_${conversationId}`;
       }
     }
 
