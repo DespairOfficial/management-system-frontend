@@ -7,7 +7,7 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 import { useSettingsContext } from '../../components/settings';
 import CustomBreadcrumbs from '../../components/custom-breadcrumbs';
 // sections
-import ProductNewEditForm from '../../sections/@dashboard/e-commerce/ProductNewEditForm';
+import ProductNewEditForm from '../../sections/@dashboard/project/ProjectNewEditForm';
 
 // ----------------------------------------------------------------------
 

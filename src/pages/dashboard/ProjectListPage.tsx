@@ -16,11 +16,11 @@ import {
 import { SelectChangeEvent } from '@mui/material/Select';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
-import { getProducts } from '../../redux/slices/product';
+import { getProjects } from '../../redux/slices/project';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // @types
-import { IProduct } from '../../@types/product';
+import { IProject } from '../../@types/project';
 // components
 import { useSettingsContext } from '../../components/settings';
 import {
@@ -39,22 +39,22 @@ import Scrollbar from '../../components/scrollbar';
 import CustomBreadcrumbs from '../../components/custom-breadcrumbs';
 import ConfirmDialog from '../../components/confirm-dialog';
 // sections
-import { ProductTableRow, ProductTableToolbar } from '../../sections/@dashboard/e-commerce/list';
+import { ProjectTableRow, ProjectTableToolbar } from '../../sections/@dashboard/project/list';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Product', align: 'left' },
-  { id: 'createdAt', label: 'Create at', align: 'left' },
-  { id: 'inventoryType', label: 'Status', align: 'center', width: 180 },
-  { id: 'price', label: 'Price', align: 'right' },
+  { id: 'name', label: 'Project', align: 'left' },
+  { id: 'creator', label: 'Creator', align: 'left' },
+  { id: 'status', label: 'Status', align: 'center', width: 180 },
+  { id: 'participants', label: 'Participants', align: 'right' },
   { id: '' },
 ];
 
-const STATUS_OPTIONS = [
-  { value: 'in_stock', label: 'In stock' },
-  { value: 'low_stock', label: 'Low stock' },
-  { value: 'out_of_stock', label: 'Out of stock' },
+export const STATUS_OPTIONS = [
+  { value: 'in_progress', label: 'In progress' },
+  { value: 'closing', label: 'Closing' },
+  { value: 'closed', label: 'Closed' },
 ];
 
 // ----------------------------------------------------------------------
@@ -87,9 +87,9 @@ export default function ProjectListPage() {
 
   const dispatch = useDispatch();
 
-  const { products, isLoading } = useSelector((state) => state.product);
+  const { projects, isLoading } = useSelector((state) => state.project);
 
-  const [tableData, setTableData] = useState<IProduct[]>([]);
+  const [tableData, setTableData] = useState<IProject[]>([]);
 
   const [filterName, setFilterName] = useState('');
 
@@ -98,14 +98,14 @@ export default function ProjectListPage() {
   const [openConfirm, setOpenConfirm] = useState(false);
 
   useEffect(() => {
-    dispatch(getProducts());
+    dispatch(getProjects());
   }, [dispatch]);
 
   useEffect(() => {
-    if (products.length) {
-      setTableData(products);
+    if (projects.length) {
+      setTableData(projects);
     }
-  }, [products]);
+  }, [projects]);
 
   const dataFiltered = applyFilter({
     inputData: tableData,
@@ -188,12 +188,12 @@ export default function ProjectListPage() {
   return (
     <>
       <Helmet>
-        <title> Ecommerce: Product List | Minimal UI</title>
+        <title> Project list</title>
       </Helmet>
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="Product List"
+          heading="Project List"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
@@ -209,13 +209,13 @@ export default function ProjectListPage() {
               variant="contained"
               startIcon={<Iconify icon="eva:plus-fill" />}
             >
-              New Product
+              New Project
             </Button>
           }
         />
 
         <Card>
-          <ProductTableToolbar
+          <ProjectTableToolbar
             filterName={filterName}
             filterStatus={filterStatus}
             onFilterName={handleFilterName}
@@ -267,7 +267,7 @@ export default function ProjectListPage() {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) =>
                       row ? (
-                        <ProductTableRow
+                        <ProjectTableRow
                           key={row.id}
                           row={row}
                           selected={selected.includes(row.id)}
@@ -339,7 +339,7 @@ function applyFilter({
   filterName,
   filterStatus,
 }: {
-  inputData: IProduct[];
+  inputData: IProject[];
   comparator: (a: any, b: any) => number;
   filterName: string;
   filterStatus: string[];
@@ -356,13 +356,13 @@ function applyFilter({
 
   if (filterName) {
     inputData = inputData.filter(
-      (product) => product.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
+      (project) => project.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
     );
   }
 
-  if (filterStatus.length) {
-    inputData = inputData.filter((product) => filterStatus.includes(product.inventoryType));
-  }
+  // if (filterStatus.length) {
+  //   inputData = inputData.filter((project) => filterStatus.includes(project.inventoryType));
+  // }
 
   return inputData;
 }

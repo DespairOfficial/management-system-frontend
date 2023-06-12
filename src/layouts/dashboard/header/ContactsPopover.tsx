@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Typography, ListItemText, ListItemAvatar, MenuItem } from '@mui/material';
@@ -14,6 +14,8 @@ import MenuPopover from '../../../components/menu-popover';
 import BadgeStatus from '../../../components/badge-status';
 import { IconButtonAnimate } from '../../../components/animate';
 import { staticFilePath } from '../../../components/file-thumbnail/utils';
+import axios from '../../../utils/axios';
+import { IUser } from '../../../@types/user';
 
 // ----------------------------------------------------------------------
 
@@ -25,6 +27,16 @@ export default function ContactsPopover() {
   const handleOpenPopover = (event: React.MouseEvent<HTMLElement>) => {
     setOpenPopover(event.currentTarget);
   };
+
+  const [contacts, setContacts] = useState<IUser[]>([]);
+
+  useEffect(() => {
+    const getContacts = async () => {
+      const response = await axios.get('api/contacts');
+      setContacts(response.data);
+    };
+    getContacts();
+  }, []);
 
   const handleClosePopover = () => {
     setOpenPopover(null);
@@ -49,11 +61,11 @@ export default function ContactsPopover() {
 
       <MenuPopover open={openPopover} onClose={handleClosePopover} sx={{ width: 320 }}>
         <Typography variant="h6" sx={{ p: 1.5 }}>
-          Contacts <Typography component="span">({_contacts.length})</Typography>
+          Contacts <Typography component="span">({contacts.length})</Typography>
         </Typography>
 
         <Scrollbar sx={{ height: ITEM_HEIGHT * 6 }}>
-          {_contacts.map((contact) => (
+          {contacts.map((contact) => (
             <MenuItem key={contact.id} sx={{ height: ITEM_HEIGHT }}>
               <ListItemAvatar>
                 <CustomAvatar

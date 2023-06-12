@@ -39,7 +39,7 @@ const ar = {
   checkout: `الدفع`,
   calendar: `التقويم`,
   analytics: `التحليلات`,
-  ecommerce: `التجارة الإلكترونية`,
+  project: `التجارة الإلكترونية`,
   management: `إدارة`,
   menu_level: `مستوى القائمة `,
   menu_level_2a: `مستوى القائمة 2 أ`,

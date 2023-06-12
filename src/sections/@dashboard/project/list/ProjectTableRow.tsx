@@ -11,22 +11,20 @@ import {
   TableCell,
   IconButton,
 } from '@mui/material';
-// utils
-import { fDate } from '../../../../utils/formatTime';
-import { fCurrency } from '../../../../utils/formatNumber';
-// @types
-import { IProduct } from '../../../../@types/product';
+
 // components
 import Label from '../../../../components/label';
 import Image from '../../../../components/image';
 import Iconify from '../../../../components/iconify';
 import MenuPopover from '../../../../components/menu-popover';
 import ConfirmDialog from '../../../../components/confirm-dialog';
+import { IProject } from '../../../../@types/project';
+import { staticFilePath } from '../../../../components/file-thumbnail';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  row: IProduct;
+  row: IProject;
   selected: boolean;
   onEditRow: VoidFunction;
   onViewRow: VoidFunction;
@@ -34,7 +32,7 @@ type Props = {
   onDeleteRow: VoidFunction;
 };
 
-export default function ProductTableRow({
+export default function ProjectTableRow({
   row,
   selected,
   onSelectRow,
@@ -42,7 +40,7 @@ export default function ProductTableRow({
   onEditRow,
   onViewRow,
 }: Props) {
-  const { name, cover, createdAt, inventoryType, price } = row;
+  const { name, creator, status, participants } = row;
 
   const [openConfirm, setOpenConfirm] = useState(false);
 
@@ -77,7 +75,7 @@ export default function ProductTableRow({
               disabledEffect
               visibleByDefault
               alt={name}
-              src={cover}
+              src={staticFilePath(row.image)}
               sx={{ borderRadius: 1.5, width: 48, height: 48 }}
             />
 
@@ -93,23 +91,21 @@ export default function ProductTableRow({
           </Stack>
         </TableCell>
 
-        <TableCell>{fDate(createdAt)}</TableCell>
+        <TableCell>{creator?.name}</TableCell>
 
         <TableCell align="center">
           <Label
             variant="soft"
             color={
-              (inventoryType === 'out_of_stock' && 'error') ||
-              (inventoryType === 'low_stock' && 'warning') ||
-              'success'
+              (status === 'closed' && 'error') || (status === 'closing' && 'warning') || 'success'
             }
             sx={{ textTransform: 'capitalize' }}
           >
-            {inventoryType ? sentenceCase(inventoryType) : ''}
+            {status ? sentenceCase(status) : ''}
           </Label>
         </TableCell>
 
-        <TableCell align="right">{fCurrency(price)}</TableCell>
+        <TableCell align="right">participants</TableCell>
 
         <TableCell align="right">
           <IconButton color={openPopover ? 'primary' : 'default'} onClick={handleOpenPopover}>

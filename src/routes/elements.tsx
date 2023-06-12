@@ -38,17 +38,14 @@ export const GeneralFilePage = Loadable(lazy(() => import('../pages/dashboard/Ge
 
 // DASHBOARD: Project
 
-export const EcommerceProductDetailsPage = Loadable(
-  lazy(() => import('../pages/dashboard/EcommerceProductDetailsPage'))
-);
-export const EcommerceProductListPage = Loadable(
+export const ProjectListPage = Loadable(
   lazy(() => import('../pages/dashboard/ProjectListPage'))
 );
-export const EcommerceProductCreatePage = Loadable(
-  lazy(() => import('../pages/dashboard/EcommerceProductCreatePage'))
+export const ProjectCreatePage = Loadable(
+  lazy(() => import('../pages/dashboard/ProjectCreatePage'))
 );
-export const EcommerceProductEditPage = Loadable(
-  lazy(() => import('../pages/dashboard/EcommerceProductEditPage'))
+export const ProjectEditPage = Loadable(
+  lazy(() => import('../pages/dashboard/ProjectEditPage'))
 );
 
 

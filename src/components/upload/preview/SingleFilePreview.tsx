@@ -1,4 +1,5 @@
 //
+import { staticFilePath } from '../../file-thumbnail';
 import Image from '../../image';
 //
 import { CustomFile } from '../types';
@@ -14,7 +15,7 @@ export default function SingleFilePreview({ file }: Props) {
     return null;
   }
 
-  const imgUrl = typeof file === 'string' ? file : file.preview;
+  const imgUrl = typeof file === 'string' ? staticFilePath(file) : file.preview;
 
   return (
     <Image

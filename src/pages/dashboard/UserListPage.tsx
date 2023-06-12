@@ -99,7 +99,7 @@ export default function UserListPage() {
 
   useEffect(() => {
     const getUsers = async () => {
-      const response = await axios.get('/api/users');
+      const response = await axios.get('/api/users/notInContacts');
       setTableData(response.data);
       console.log(response.data);
     };
@@ -169,9 +169,19 @@ export default function UserListPage() {
   };
 
   const handleDeleteRows = (selectedRows: string[]) => {
-    const deleteRows = tableData.filter((row) => !selectedRows.includes(row.id));
+    const idsToContacts: string[] = [];
+    const deleteRows = tableData.filter((row) => {
+      if (!selectedRows.includes(row.id)) {
+        return true;
+      }
+      idsToContacts.push(row.id);
+      return false;
+    });
+
     setSelected([]);
     setTableData(deleteRows);
+
+    addToContacts(idsToContacts);
 
     if (page > 0) {
       if (selectedRows.length === dataInPage.length) {
@@ -271,9 +281,9 @@ export default function UserListPage() {
                 )
               }
               action={
-                <Tooltip title="Delete">
+                <Tooltip title="To contacts">
                   <IconButton color="primary" onClick={handleOpenConfirm}>
-                    <Iconify icon="eva:trash-2-outline" />
+                    <Iconify icon="eva:person-add-outline" />
                   </IconButton>
                 </Tooltip>
               }
@@ -338,10 +348,10 @@ export default function UserListPage() {
       <ConfirmDialog
         open={openConfirm}
         onClose={handleCloseConfirm}
-        title="Delete"
+        title="Add to contacts"
         content={
           <>
-            Are you sure want to delete <strong> {selected.length} </strong> items?
+            Are you sure want to add <strong> {selected.length} </strong> items to contacts?
           </>
         }
         action={
@@ -353,7 +363,7 @@ export default function UserListPage() {
               handleCloseConfirm();
             }}
           >
-            Delete
+            Add
           </Button>
         }
       />

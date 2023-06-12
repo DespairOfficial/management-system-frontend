@@ -30,11 +30,10 @@ import {
   UserCreatePage,
   UserProfilePage,
   UserAccountPage,
-  // Dashboard: Ecommerce
-  EcommerceProductListPage,
-  EcommerceProductEditPage,
-  EcommerceProductCreatePage,
-  EcommerceProductDetailsPage,
+  // Dashboard: Project
+  ProjectListPage,
+  ProjectEditPage,
+  ProjectCreatePage,
   // Dashboard: Invoice
   InvoiceListPage,
   InvoiceDetailsPage,
@@ -128,10 +127,9 @@ export default function Router() {
           path: 'project',
           children: [
             { element: <Navigate to="/dashboard/project/list" replace />, index: true },
-            { path: 'product/:name', element: <EcommerceProductDetailsPage /> },
-            { path: 'list', element: <EcommerceProductListPage /> },
-            { path: 'product/new', element: <EcommerceProductCreatePage /> },
-            { path: 'product/:name/edit', element: <EcommerceProductEditPage /> },
+            { path: 'list', element: <ProjectListPage /> },
+            { path: 'new', element: <ProjectCreatePage /> },
+            { path: ':name/edit', element: <ProjectEditPage /> },
           ],
         },
         {

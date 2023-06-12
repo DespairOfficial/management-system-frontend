@@ -145,7 +145,7 @@ export default function UserTableRow({
             handleClosePopover();
           }}
         >
-          <Iconify icon="eva:edit-fill" />
+          <Iconify icon="eva:person-add-outline" />
           To contacts
         </MenuItem>
       </MenuPopover>

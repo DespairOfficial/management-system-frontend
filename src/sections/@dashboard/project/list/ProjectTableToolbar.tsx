@@ -31,7 +31,7 @@ type Props = {
   onFilterName: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export default function ProductTableToolbar({
+export default function ProjectTableToolbar({
   isFiltered,
   filterName,
   filterStatus,

@@ -70,9 +70,7 @@ export const PATH_DASHBOARD = {
   },
   project: {
     root: path(ROOTS_DASHBOARD, '/project'),
-    shop: path(ROOTS_DASHBOARD, '/project/shop'),
     list: path(ROOTS_DASHBOARD, '/project/list'),
-    checkout: path(ROOTS_DASHBOARD, '/project/checkout'),
     new: path(ROOTS_DASHBOARD, '/project/new'),
     view: (name: string) => path(ROOTS_DASHBOARD, `/project/${name}`),
     edit: (name: string) => path(ROOTS_DASHBOARD, `/project/${name}/edit`),

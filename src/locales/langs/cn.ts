@@ -39,7 +39,7 @@ const cn = {
   checkout: `退房`,
   calendar: `日历`,
   analytics: `分析`,
-  ecommerce: `电子商务`,
+  project: `电子商务`,
   management: `管理`,
   menu_level: `菜单级别`,
   menu_level_2a: `菜单级别 2a`,

@@ -39,7 +39,7 @@ const vi = {
   checkout: `thanh toán`,
   calendar: `lịch`,
   analytics: `phân tích`,
-  ecommerce: `thương mại điện tử`,
+  project: `thương mại điện tử`,
   management: `quản lý`,
   menu_level: `menu`,
   menu_level_2a: `menu cấp 2a`,

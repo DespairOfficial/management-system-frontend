@@ -6,36 +6,36 @@ import { useParams } from 'react-router-dom';
 import { Container } from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
-import { getProducts } from '../../redux/slices/product';
+import { getProjects } from '../../redux/slices/project';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // components
 import CustomBreadcrumbs from '../../components/custom-breadcrumbs';
 import { useSettingsContext } from '../../components/settings';
+import ProjectNewEditForm from '../../sections/@dashboard/project/ProjectNewEditForm';
 // sections
-import ProductNewEditForm from '../../sections/@dashboard/e-commerce/ProductNewEditForm';
 
 // ----------------------------------------------------------------------
 
-export default function EcommerceProductEditPage() {
+export default function ProjectEditPage() {
   const { themeStretch } = useSettingsContext();
 
   const dispatch = useDispatch();
 
   const { name } = useParams();
 
-  const currentProduct = useSelector((state) =>
-    state.product.products.find((product) => paramCase(product.name) === name)
+  const currentProject = useSelector((state) =>
+    state.project.projects.find((project) => paramCase(project.name) === name)
   );
 
   useEffect(() => {
-    dispatch(getProducts());
+    dispatch(getProjects());
   }, [dispatch]);
 
   return (
     <>
       <Helmet>
-        <title> Ecommerce: Edit product | Minimal UI</title>
+        <title> Edit project</title>
       </Helmet>
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -47,11 +47,11 @@ export default function EcommerceProductEditPage() {
               name: 'E-Commerce',
               href: PATH_DASHBOARD.project.root,
             },
-            { name: currentProduct?.name },
+            { name: currentProject?.name },
           ]}
         />
 
-        <ProductNewEditForm isEdit currentProduct={currentProduct} />
+        <ProjectNewEditForm isEdit currentProject={currentProject} />
       </Container>
     </>
   );
