@@ -26,6 +26,18 @@ import axios from '../../../../utils/axios';
 
 // ----------------------------------------------------------------------
 
+const ROLE_OPTIONS = [
+  'ux designer',
+  'full stack designer',
+  'backend developer',
+  'project manager',
+  'leader',
+  'ui designer',
+  'ui/ux designer',
+  'front end developer',
+  'full stack developer',
+];
+
 type FormValuesProps = {
   username: string;
   name: string;
@@ -36,6 +48,7 @@ type FormValuesProps = {
   country: string | null;
   address: string | null;
   about: string | null;
+  role: string | null;
   isPublic: boolean;
 };
 
@@ -52,6 +65,7 @@ export default function AccountGeneral() {
     country: Yup.string().required('Country is required'),
     address: Yup.string().required('Address is required'),
     gender: Yup.boolean().required('Gender is required'),
+    role: Yup.string().required('Role is required'),
   });
 
   const defaultValues = {
@@ -65,6 +79,7 @@ export default function AccountGeneral() {
     username: user?.username || '',
     gender: user?.gender || true,
     company: user?.company || '',
+    role: user?.role || '',
   };
 
   const methods = useForm<FormValuesProps>({
@@ -199,10 +214,20 @@ export default function AccountGeneral() {
                   Female
                 </option>
               </RHFSelect>
-            </Box>
-            <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
+
               <RHFTextField name="company" label="Company" />
-            </Stack>
+
+              <RHFSelect native name="role" label="Role" placeholder="role">
+                <option value="" />
+                {ROLE_OPTIONS.map((role) => (
+                  <option key={role} value={role}>
+                    {role}
+                  </option>
+                ))}
+              </RHFSelect>
+            </Box>
+            {/* <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
+            </Stack> */}
 
             <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
               <RHFTextField name="about" multiline rows={4} label="About" />

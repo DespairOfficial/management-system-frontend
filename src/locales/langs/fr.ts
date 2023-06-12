@@ -39,7 +39,7 @@ const fr = {
   checkout: `vérifier`,
   calendar: `calendrier`,
   analytics: `analytique`,
-  ecommerce: `e-commerce`,
+  project: `project`,
   management: `management`,
   menu_level: `niveau menu`,
   menu_level_2a: `niveau menu 2a`,

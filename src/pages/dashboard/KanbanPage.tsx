@@ -22,8 +22,9 @@ export default function KanbanPage() {
   const dispatch = useDispatch();
 
   const { board } = useSelector((state) => state.kanban);
-
-  useEffect(() => {
+	console.log(board);
+	
+	useEffect(() => {
     dispatch(getBoard());
   }, [dispatch]);
 
@@ -143,7 +144,7 @@ export default function KanbanPage() {
                 )}
 
                 {provided.placeholder}
-                <KanbanColumnAdd />
+                <KanbanColumnAdd boardId={board.id} />
               </Stack>
             )}
           </Droppable>

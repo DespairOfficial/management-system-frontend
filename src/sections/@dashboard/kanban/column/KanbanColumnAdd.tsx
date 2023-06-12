@@ -9,7 +9,10 @@ import Iconify from '../../../../components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function KanbanColumnAdd() {
+interface Props {
+  boardId: string;
+}
+export default function KanbanColumnAdd({ boardId }: Props) {
   const dispatch = useDispatch();
 
   const [name, setName] = useState('');
@@ -31,7 +34,7 @@ export default function KanbanColumnAdd() {
   const handleCreateColumn = async () => {
     try {
       if (name) {
-        dispatch(createColumn({ name }));
+        dispatch(createColumn(name, boardId));
         setName('');
       }
       handleClose();

@@ -98,11 +98,11 @@ export default function EcommerceProductDetailsPage() {
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
               name: 'E-Commerce',
-              href: PATH_DASHBOARD.eCommerce.root,
+              href: PATH_DASHBOARD.project.root,
             },
             {
               name: 'Shop',
-              href: PATH_DASHBOARD.eCommerce.shop,
+              href: PATH_DASHBOARD.project.shop,
             },
             { name: product?.name },
           ]}

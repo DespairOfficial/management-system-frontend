@@ -41,6 +41,7 @@ import {
 // sections
 import { UserTableToolbar, UserTableRow } from '../../sections/@dashboard/user/list';
 import axios from '../../utils/axios';
+import { useSnackbar } from '../../components/snackbar';
 
 // ----------------------------------------------------------------------
 
@@ -91,18 +92,19 @@ export default function UserListPage() {
   } = useTable();
 
   const { themeStretch } = useSettingsContext();
-
+  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
   const [tableData, setTableData] = useState<IUser[]>([]);
 
-	useEffect(()=>{
-		const getUsers = async ()=>{
-			const response: IUser[] = await axios.get('/api/users');
-			setTableData(response)
-		} 
-	},[])
-
+  useEffect(() => {
+    const getUsers = async () => {
+      const response = await axios.get('/api/users');
+      setTableData(response.data);
+      console.log(response.data);
+    };
+    getUsers();
+  }, []);
 
   const [filterName, setFilterName] = useState('');
 
@@ -187,6 +189,18 @@ export default function UserListPage() {
     navigate(PATH_DASHBOARD.user.edit(paramCase(id)));
   };
 
+  const addToContacts = (ids: string[]) => {
+    const addContacts = async () => {
+      const response = await axios.post('api/contacts', { ids });
+      if (response.status === 201) {
+        enqueueSnackbar('Contact added!', { variant: 'success' });
+      } else {
+        enqueueSnackbar('Unable to add!', { variant: 'error' });
+      }
+    };
+    addContacts();
+  };
+
   const handleResetFilter = () => {
     setFilterName('');
     setFilterRole('all');
@@ -207,16 +221,16 @@ export default function UserListPage() {
             { name: 'User', href: PATH_DASHBOARD.user.root },
             { name: 'List' },
           ]}
-          action={
-            <Button
-              component={RouterLink}
-              to={PATH_DASHBOARD.user.new}
-              variant="contained"
-              startIcon={<Iconify icon="eva:plus-fill" />}
-            >
-              New User
-            </Button>
-          }
+          // action={
+          //   <Button
+          //     component={RouterLink}
+          //     to={PATH_DASHBOARD.user.new}
+          //     variant="contained"
+          //     startIcon={<Iconify icon="eva:plus-fill" />}
+          //   >
+          //     New User
+          //   </Button>
+          // }
         />
 
         <Card>
@@ -291,8 +305,9 @@ export default function UserListPage() {
                         row={row}
                         selected={selected.includes(row.id)}
                         onSelectRow={() => onSelectRow(row.id)}
-                        onDeleteRow={() => handleDeleteRow(row.id)}
-                        onEditRow={() => handleEditRow(row.name)}
+                        onAddToContactsRow={() => addToContacts([row.id])}
+                        // onDeleteRow={() => handleDeleteRow(row.id)}
+                        // onEditRow={() => handleEditRow(row.name)}
                       />
                     ))}
 

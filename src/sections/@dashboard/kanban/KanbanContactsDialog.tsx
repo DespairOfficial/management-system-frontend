@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // @mui
 import {
   Box,
@@ -22,6 +22,9 @@ import { IKanbanAssignee } from '../../../@types/kanban';
 import Iconify from '../../../components/iconify';
 import Scrollbar from '../../../components/scrollbar';
 import SearchNotFound from '../../../components/search-not-found';
+import axios from '../../../utils/axios';
+import { IUser } from '../../../@types/user';
+import { staticFilePath } from '../../../components/file-thumbnail';
 
 // ----------------------------------------------------------------------
 
@@ -36,12 +39,22 @@ type Props = {
 export default function KanbanContactsDialog({ assignee = [], open, onClose }: Props) {
   const [searchContacts, setSearchContacts] = useState('');
 
+  const [contacts, setContacts] = useState<IUser[]>([]);
+
+  useEffect(() => {
+    const getContacts = async () => {
+      const response = await axios.get('api/contacts');
+      setContacts(response.data);
+    };
+    getContacts();
+  }, []);
+
   const handleSearchContacts = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchContacts(event.target.value);
   };
 
   const dataFiltered = applyFilter({
-    inputData: _contacts,
+    inputData: contacts,
     query: searchContacts,
   });
 
@@ -50,7 +63,7 @@ export default function KanbanContactsDialog({ assignee = [], open, onClose }: P
   return (
     <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose}>
       <DialogTitle sx={{ pb: 0 }}>
-        Contacts <Typography component="span">({_contacts.length})</Typography>
+        Contacts <Typography component="span">({contacts.length})</Typography>
       </DialogTitle>
 
       <Box sx={{ px: 3, py: 2.5 }}>
@@ -100,7 +113,7 @@ export default function KanbanContactsDialog({ assignee = [], open, onClose }: P
                   sx={{ height: ITEM_HEIGHT }}
                 >
                   <ListItemAvatar>
-                    <Avatar src={contact.avatar} />
+                    <Avatar src={staticFilePath(contact.image)} />
                   </ListItemAvatar>
 
                   <ListItemText

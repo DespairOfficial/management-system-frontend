@@ -28,7 +28,7 @@ export default function ShopProductCard({ product }: Props) {
 
   const dispatch = useDispatch();
 
-  const linkTo = PATH_DASHBOARD.eCommerce.view(paramCase(name));
+  const linkTo = PATH_DASHBOARD.project.view(paramCase(name));
 
   const handleAddCart = async () => {
     const newProduct = {

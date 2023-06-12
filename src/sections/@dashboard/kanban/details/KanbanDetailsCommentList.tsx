@@ -43,7 +43,7 @@ export default function KanbanDetailsCommentList({ comments }: Props) {
       >
         {comments.map((comment) => (
           <Stack key={comment.id} direction="row" spacing={2}>
-            <Avatar src={comment.avatar} />
+            <Avatar src={comment.image} />
 
             <Stack>
               <Stack direction="row" alignItems="center" spacing={1}>

@@ -105,7 +105,7 @@ export default function EcommerceCheckoutPage() {
   const handleReset = () => {
     if (completed) {
       dispatch(resetCart());
-      navigate(PATH_DASHBOARD.eCommerce.shop, { replace: true });
+      navigate(PATH_DASHBOARD.project.shop, { replace: true });
     }
   };
 
@@ -121,8 +121,8 @@ export default function EcommerceCheckoutPage() {
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
-              name: 'E-Commerce',
-              href: PATH_DASHBOARD.eCommerce.root,
+              name: 'Project',
+              href: PATH_DASHBOARD.project.root,
             },
             { name: 'Checkout' },
           ]}

@@ -44,7 +44,7 @@ export const EcommerceProductDetailsPage = Loadable(
   lazy(() => import('../pages/dashboard/EcommerceProductDetailsPage'))
 );
 export const EcommerceProductListPage = Loadable(
-  lazy(() => import('../pages/dashboard/EcommerceProductListPage'))
+  lazy(() => import('../pages/dashboard/ProjectProductListPage'))
 );
 export const EcommerceProductCreatePage = Loadable(
   lazy(() => import('../pages/dashboard/EcommerceProductCreatePage'))
@@ -73,11 +73,6 @@ export const UserListPage = Loadable(lazy(() => import('../pages/dashboard/UserL
 export const UserAccountPage = Loadable(lazy(() => import('../pages/dashboard/UserAccountPage')));
 export const UserCreatePage = Loadable(lazy(() => import('../pages/dashboard/UserCreatePage')));
 export const UserEditPage = Loadable(lazy(() => import('../pages/dashboard/UserEditPage')));
-
-// DASHBOARD: BLOG
-export const BlogPostsPage = Loadable(lazy(() => import('../pages/dashboard/BlogPostsPage')));
-export const BlogPostPage = Loadable(lazy(() => import('../pages/dashboard/BlogPostPage')));
-export const BlogNewPostPage = Loadable(lazy(() => import('../pages/dashboard/BlogNewPostPage')));
 
 // DASHBOARD: FILE MANAGER
 export const FileManagerPage = Loadable(lazy(() => import('../pages/dashboard/FileManagerPage')));

@@ -26,6 +26,7 @@ import { fShortenNumber } from '../../../../../utils/formatNumber';
 import Image from '../../../../../components/image';
 import Iconify from '../../../../../components/iconify';
 import { CustomAvatar, CustomAvatarGroup } from '../../../../../components/custom-avatar';
+import { staticFilePath } from '../../../../../components/file-thumbnail';
 
 // ----------------------------------------------------------------------
 
@@ -80,7 +81,13 @@ export default function ProfilePostCard({ post }: Props) {
     <Card>
       <CardHeader
         disableTypography
-        avatar={<CustomAvatar src={user?.image ?? undefined} alt={user?.username} name={user?.username} />}
+        avatar={
+          <CustomAvatar
+            src={staticFilePath(user?.image)}
+            alt={user?.username}
+            name={user?.username}
+          />
+        }
         title={
           <Link color="inherit" variant="subtitle2">
             {user?.username}
@@ -190,7 +197,11 @@ export default function ProfilePostCard({ post }: Props) {
           p: (theme) => theme.spacing(0, 3, 3, 3),
         }}
       >
-        <CustomAvatar src={user?.image ?? undefined} alt={user?.username} name={user?.username} />
+        <CustomAvatar
+          src={staticFilePath(user?.image)}
+          alt={user?.username}
+          name={user?.username}
+        />
 
         <InputBase
           fullWidth

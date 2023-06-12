@@ -16,6 +16,7 @@ import KanbanDetailsCommentList from './KanbanDetailsCommentList';
 import KanbanDetailsAttachments from './KanbanDetailsAttachments';
 import KanbanDetailsPrioritizes from './KanbanDetailsPrioritizes';
 import KanbanDetailsCommentInput from './KanbanDetailsCommentInput';
+import { staticFilePath } from '../../../../components/file-thumbnail';
 
 // ----------------------------------------------------------------------
 
@@ -137,8 +138,13 @@ export default function KanbanDetails({ task, openDetails, onCloseDetails, onDel
             <StyledLabel sx={{ height: 40, lineHeight: '40px', my: 0.5 }}>Assignee</StyledLabel>
 
             <Stack direction="row" flexWrap="wrap" alignItems="center">
-              {task.assignee.map((user) => (
-                <Avatar key={user.id} alt={user.name} src={user.avatar} sx={{ m: 0.5 }} />
+              {task.assignee.map((user, index) => (
+                <Avatar
+                  key={user.id ?? `avatar_for_kanban_details_${index}`}
+                  alt={user.name}
+                  src={staticFilePath(user.image)}
+                  sx={{ m: 0.5 }}
+                />
               ))}
 
               <Tooltip title="Add assignee">

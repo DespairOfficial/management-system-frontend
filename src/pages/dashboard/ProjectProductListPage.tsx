@@ -173,11 +173,11 @@ export default function EcommerceProductListPage() {
   };
 
   const handleEditRow = (id: string) => {
-    navigate(PATH_DASHBOARD.eCommerce.edit(paramCase(id)));
+    navigate(PATH_DASHBOARD.project.edit(paramCase(id)));
   };
 
   const handleViewRow = (id: string) => {
-    navigate(PATH_DASHBOARD.eCommerce.view(paramCase(id)));
+    navigate(PATH_DASHBOARD.project.view(paramCase(id)));
   };
 
   const handleResetFilter = () => {
@@ -198,14 +198,14 @@ export default function EcommerceProductListPage() {
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
               name: 'E-Commerce',
-              href: PATH_DASHBOARD.eCommerce.root,
+              href: PATH_DASHBOARD.project.root,
             },
             { name: 'List' },
           ]}
           action={
             <Button
               component={RouterLink}
-              to={PATH_DASHBOARD.eCommerce.new}
+              to={PATH_DASHBOARD.project.new}
               variant="contained"
               startIcon={<Iconify icon="eva:plus-fill" />}
             >

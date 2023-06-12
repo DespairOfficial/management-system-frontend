@@ -39,7 +39,7 @@ const en = {
   checkout: `checkout`,
   calendar: `calendar`,
   analytics: `analytics`,
-  ecommerce: `e-commerce`,
+  project: `project`,
   management: `management`,
   menu_level: `menu level`,
   menu_level_2a: `menu level 2a`,

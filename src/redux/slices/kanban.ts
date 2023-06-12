@@ -12,6 +12,7 @@ const initialState: IKanbanState = {
   isLoading: false,
   error: null,
   board: {
+    id: '',
     cards: {},
     columns: {},
     columnOrder: [],
@@ -39,9 +40,11 @@ const slice = createSlice({
       const board = action.payload;
       const cards = keyBy(board.cards, 'id');
       const columns = keyBy(board.columns, 'id');
+      const id = board.id;
       const { columnOrder } = board;
 
       state.board = {
+        id,
         cards,
         columns,
         columnOrder,
@@ -117,8 +120,8 @@ export function getBoard() {
   return async (dispatch: Dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('/api/kanban/board');
-      dispatch(slice.actions.getBoardSuccess(response.data.board));
+      const response = await axios.get('/api/kanban/board/01889a9e-3b03-7b98-91a1-2772fdac535d');
+      dispatch(slice.actions.getBoardSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -127,12 +130,15 @@ export function getBoard() {
 
 // ----------------------------------------------------------------------
 
-export function createColumn(newColumn: { name: string }) {
+export function createColumn(name: string, boardId: string) {
   return async (dispatch: Dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.post('/api/kanban/columns/new', newColumn);
-      dispatch(slice.actions.createColumnSuccess(response.data.column));
+      const response = await axios.post('/api/kanban/columns', {
+        name,
+        boardId,
+      });
+      dispatch(slice.actions.createColumnSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -145,11 +151,8 @@ export function updateColumn(columnId: string, column: IKanbanColumn) {
   return async (dispatch: Dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.post('/api/kanban/columns/update', {
-        columnId,
-        column,
-      });
-      dispatch(slice.actions.updateColumnSuccess(response.data.column));
+      const response = await axios.patch(`/api/kanban/columns/${columnId}`, column);
+      dispatch(slice.actions.updateColumnSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -162,7 +165,7 @@ export function deleteColumn(columnId: string) {
   return async (dispatch: Dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      await axios.post('/api/kanban/columns/delete', { columnId });
+      await axios.delete(`/api/kanban/columns/${columnId}`);
       dispatch(slice.actions.deleteColumnSuccess({ columnId }));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -188,9 +191,15 @@ export function persistCard(columns: Record<string, IKanbanColumn>) {
 
 // ----------------------------------------------------------------------
 
-export function addTask({ card, columnId }: { card: Partial<IKanbanCard>; columnId: string }) {
-  return (dispatch: Dispatch) => {
-    dispatch(slice.actions.addTask({ card, columnId }));
+export function addTask({ card, columnId }: { card: IKanbanCard; columnId: string }) {
+  return async (dispatch: Dispatch) => {
+    try {
+      const { comments, ...rest } = card;
+      await axios.post(`/api/kanban/card/${columnId}`, rest);
+      dispatch(slice.actions.addTask({ card, columnId }));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
   };
 }
 

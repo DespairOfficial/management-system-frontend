@@ -264,7 +264,6 @@ export default function CalendarPage() {
               name: 'Calendar',
             },
           ]}
-          moreLink={['https://fullcalendar.io/docs/react']}
           action={
             <Button
               variant="contained"
@@ -360,7 +359,6 @@ const useGetEvents = () => {
   const dispatch = useDispatch();
 
   const { events: data } = useSelector((state) => state.calendar);
-	console.log(data);
 	
   const getAllEvents = useCallback(() => {
     dispatch(getEvents());

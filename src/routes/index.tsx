@@ -1,4 +1,4 @@
-import { Navigate, useRoutes, redirect } from 'react-router-dom';
+import { Navigate, useRoutes } from 'react-router-dom';
 // auth
 import AuthGuard from '../auth/AuthGuard';
 import GuestGuard from '../auth/GuestGuard';
@@ -42,15 +42,10 @@ import {
   InvoiceDetailsPage,
   InvoiceCreatePage,
   InvoiceEditPage,
-  // Dashboard: Blog
-  BlogPostsPage,
-  BlogPostPage,
-  BlogNewPostPage,
   // Dashboard: FileManager
   FileManagerPage,
   // Dashboard: App
   ChatPage,
-  MailPage,
   CalendarPage,
   KanbanPage,
   //
@@ -132,10 +127,10 @@ export default function Router() {
         { path: 'booking', element: <GeneralBookingPage /> },
         { path: 'file', element: <GeneralFilePage /> },
         {
-          path: 'e-commerce',
+          path: 'project',
           children: [
-            { element: <Navigate to="/dashboard/e-commerce/shop" replace />, index: true },
-            { path: 'shop', element: <EcommerceShopPage /> },
+            { element: <Navigate to="/dashboard/project/list" replace />, index: true },
+            // { path: 'shop', element: <EcommerceShopPage /> },
             { path: 'product/:name', element: <EcommerceProductDetailsPage /> },
             { path: 'list', element: <EcommerceProductListPage /> },
             { path: 'product/new', element: <EcommerceProductCreatePage /> },
@@ -165,26 +160,17 @@ export default function Router() {
             { path: 'new', element: <InvoiceCreatePage /> },
           ],
         },
-        {
-          path: 'blog',
-          children: [
-            { element: <Navigate to="/dashboard/blog/posts" replace />, index: true },
-            { path: 'posts', element: <BlogPostsPage /> },
-            { path: 'post/:title', element: <BlogPostPage /> },
-            { path: 'new', element: <BlogNewPostPage /> },
-          ],
-        },
         { path: 'files-manager', element: <FileManagerPage /> },
-        {
-          path: 'mail',
-          children: [
-            { element: <Navigate to="/dashboard/mail/all" replace />, index: true },
-            { path: 'label/:customLabel', element: <MailPage /> },
-            { path: 'label/:customLabel/:mailId', element: <MailPage /> },
-            { path: ':systemLabel', element: <MailPage /> },
-            { path: ':systemLabel/:mailId', element: <MailPage /> },
-          ],
-        },
+        // {
+        //   path: 'mail',
+        //   children: [
+        //     { element: <Navigate to="/dashboard/mail/all" replace />, index: true },
+        //     { path: 'label/:customLabel', element: <MailPage /> },
+        //     { path: 'label/:customLabel/:mailId', element: <MailPage /> },
+        //     { path: ':systemLabel', element: <MailPage /> },
+        //     { path: ':systemLabel/:mailId', element: <MailPage /> },
+        //   ],
+        // },
         {
           path: 'chat',
           children: [

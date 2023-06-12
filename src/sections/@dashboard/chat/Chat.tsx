@@ -103,7 +103,6 @@ export default function Chat() {
 
   const handleSendMessage = async (value: IChatSendMessage) => {
     try {
-			console.log(value);
       dispatch(sendSocketMessage(value));
     } catch (error) {
       console.error(error);

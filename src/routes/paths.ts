@@ -68,16 +68,14 @@ export const PATH_DASHBOARD = {
     edit: (name: string) => path(ROOTS_DASHBOARD, `/user/${name}/edit`),
     demoEdit: path(ROOTS_DASHBOARD, `/user/reece-chung/edit`),
   },
-  eCommerce: {
-    root: path(ROOTS_DASHBOARD, '/e-commerce'),
-    shop: path(ROOTS_DASHBOARD, '/e-commerce/shop'),
-    list: path(ROOTS_DASHBOARD, '/e-commerce/list'),
-    checkout: path(ROOTS_DASHBOARD, '/e-commerce/checkout'),
-    new: path(ROOTS_DASHBOARD, '/e-commerce/product/new'),
-    view: (name: string) => path(ROOTS_DASHBOARD, `/e-commerce/product/${name}`),
-    edit: (name: string) => path(ROOTS_DASHBOARD, `/e-commerce/product/${name}/edit`),
-    demoEdit: path(ROOTS_DASHBOARD, '/e-commerce/product/nike-blazer-low-77-vintage/edit'),
-    demoView: path(ROOTS_DASHBOARD, '/e-commerce/product/nike-air-force-1-ndestrukt'),
+  project: {
+    root: path(ROOTS_DASHBOARD, '/project'),
+    shop: path(ROOTS_DASHBOARD, '/project/shop'),
+    list: path(ROOTS_DASHBOARD, '/project/list'),
+    checkout: path(ROOTS_DASHBOARD, '/project/checkout'),
+    new: path(ROOTS_DASHBOARD, '/project/new'),
+    view: (name: string) => path(ROOTS_DASHBOARD, `/project/${name}`),
+    edit: (name: string) => path(ROOTS_DASHBOARD, `/project/${name}/edit`),
   },
   invoice: {
     root: path(ROOTS_DASHBOARD, '/invoice'),
@@ -87,13 +85,6 @@ export const PATH_DASHBOARD = {
     edit: (id: string) => path(ROOTS_DASHBOARD, `/invoice/${id}/edit`),
     demoEdit: path(ROOTS_DASHBOARD, '/invoice/e99f09a7-dd88-49d5-b1c8-1daf80c2d7b1/edit'),
     demoView: path(ROOTS_DASHBOARD, '/invoice/e99f09a7-dd88-49d5-b1c8-1daf80c2d7b5'),
-  },
-  blog: {
-    root: path(ROOTS_DASHBOARD, '/blog'),
-    posts: path(ROOTS_DASHBOARD, '/blog/posts'),
-    new: path(ROOTS_DASHBOARD, '/blog/new'),
-    view: (title: string) => path(ROOTS_DASHBOARD, `/blog/post/${title}`),
-    demoView: path(ROOTS_DASHBOARD, '/blog/post/apply-these-7-secret-techniques-to-improve-event'),
   },
 };
 

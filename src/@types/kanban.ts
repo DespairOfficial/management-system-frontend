@@ -2,7 +2,7 @@
 
 export type IKanbanComment = {
   id: string;
-  avatar: string;
+  image: string;
   name: string;
   createdAt: Date | string | number;
   messageType: 'image' | 'text';
@@ -13,13 +13,13 @@ export type IKanbanAssignee = {
   id: string;
   name: string;
   username: string;
-  avatar: string;
-  address: string;
-  phone: string;
+  image: string | null;
+  address: string | null;
+  phone: string | null;
   email: string;
-  lastActivity: Date | string;
+  lastActivity: Date | string | null;
   status: string;
-  role: string;
+  role: string | null;
 };
 
 export type IKanbanCard = {
@@ -40,6 +40,7 @@ export type IKanbanColumn = {
 };
 
 export type IKanbanBoard = {
+  id: string;
   cards: IKanbanCard[];
   columns: IKanbanColumn[];
   columnOrder: string[];
@@ -51,6 +52,7 @@ export type IKanbanState = {
   isLoading: boolean;
   error: Error | string | null;
   board: {
+    id: string;
     cards: Record<string, IKanbanCard>;
     columns: Record<string, IKanbanColumn>;
     columnOrder: string[];

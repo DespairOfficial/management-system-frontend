@@ -43,7 +43,7 @@ export const _contacts = [...Array(20)].map((_, index) => ({
   id: _mock.id(index),
   name: _mock.name.fullName(index),
   username: _mock.name.fullName(index),
-  avatar: _mock.image.avatar(index),
+  image: _mock.image.avatar(index),
   address: _mock.address.fullAddress(index),
   phone: _mock.phoneNumber(index),
   email: _mock.email(index),

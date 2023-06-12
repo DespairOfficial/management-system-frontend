@@ -57,7 +57,7 @@ export default function ContactsPopover() {
             <MenuItem key={contact.id} sx={{ height: ITEM_HEIGHT }}>
               <ListItemAvatar>
                 <CustomAvatar
-                  src={staticFilePath(contact.avatar)}
+                  src={staticFilePath(contact.image)}
                   BadgeProps={{
                     badgeContent: <BadgeStatus status={contact.status} />,
                   }}
