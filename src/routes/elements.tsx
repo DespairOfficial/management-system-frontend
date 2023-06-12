@@ -36,15 +36,13 @@ export const GeneralBookingPage = Loadable(
 );
 export const GeneralFilePage = Loadable(lazy(() => import('../pages/dashboard/GeneralFilePage')));
 
-// DASHBOARD: ECOMMERCE
-export const EcommerceShopPage = Loadable(
-  lazy(() => import('../pages/dashboard/EcommerceShopPage'))
-);
+// DASHBOARD: Project
+
 export const EcommerceProductDetailsPage = Loadable(
   lazy(() => import('../pages/dashboard/EcommerceProductDetailsPage'))
 );
 export const EcommerceProductListPage = Loadable(
-  lazy(() => import('../pages/dashboard/ProjectProductListPage'))
+  lazy(() => import('../pages/dashboard/ProjectListPage'))
 );
 export const EcommerceProductCreatePage = Loadable(
   lazy(() => import('../pages/dashboard/EcommerceProductCreatePage'))
@@ -52,9 +50,7 @@ export const EcommerceProductCreatePage = Loadable(
 export const EcommerceProductEditPage = Loadable(
   lazy(() => import('../pages/dashboard/EcommerceProductEditPage'))
 );
-export const EcommerceCheckoutPage = Loadable(
-  lazy(() => import('../pages/dashboard/EcommerceCheckoutPage'))
-);
+
 
 // DASHBOARD: INVOICE
 export const InvoiceListPage = Loadable(lazy(() => import('../pages/dashboard/InvoiceListPage')));
@@ -79,7 +75,6 @@ export const FileManagerPage = Loadable(lazy(() => import('../pages/dashboard/Fi
 
 // DASHBOARD: APP
 export const ChatPage = Loadable(lazy(() => import('../pages/dashboard/ChatPage')));
-export const MailPage = Loadable(lazy(() => import('../pages/dashboard/MailPage')));
 export const CalendarPage = Loadable(lazy(() => import('../pages/dashboard/CalendarPage')));
 export const KanbanPage = Loadable(lazy(() => import('../pages/dashboard/KanbanPage')));
 

@@ -23,7 +23,6 @@ import {
   ProductDetailsReview,
   ProductDetailsCarousel,
 } from '../../sections/@dashboard/e-commerce/details';
-import CartWidget from '../../sections/@dashboard/e-commerce/CartWidget';
 
 // ----------------------------------------------------------------------
 
@@ -108,7 +107,6 @@ export default function EcommerceProductDetailsPage() {
           ]}
         />
 
-        <CartWidget totalItems={checkout.totalItems} />
 
         {product && (
           <>

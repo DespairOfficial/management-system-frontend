@@ -67,7 +67,7 @@ type Props = {
   currentProduct?: IProduct;
 };
 
-export default function ProductNewEditForm({ isEdit, currentProduct }: Props) {
+export default function ProjectNewEditForm({ isEdit, currentProduct }: Props) {
   const navigate = useNavigate();
 
   const { enqueueSnackbar } = useSnackbar();

@@ -59,7 +59,7 @@ const STATUS_OPTIONS = [
 
 // ----------------------------------------------------------------------
 
-export default function EcommerceProductListPage() {
+export default function ProjectListPage() {
   const {
     dense,
     page,
@@ -197,7 +197,7 @@ export default function EcommerceProductListPage() {
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
-              name: 'E-Commerce',
+              name: 'Project',
               href: PATH_DASHBOARD.project.root,
             },
             { name: 'List' },

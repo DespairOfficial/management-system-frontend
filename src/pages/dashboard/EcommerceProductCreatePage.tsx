@@ -11,25 +11,25 @@ import ProductNewEditForm from '../../sections/@dashboard/e-commerce/ProductNewE
 
 // ----------------------------------------------------------------------
 
-export default function EcommerceProductCreatePage() {
+export default function ProjectCreatePage() {
   const { themeStretch } = useSettingsContext();
 
   return (
     <>
       <Helmet>
-        <title> Ecommerce: Create a new product | Minimal UI</title>
+        <title> Create a new project </title>
       </Helmet>
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="Create a new product"
+          heading="Create a new project"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
-              name: 'E-Commerce',
+              name: 'Project',
               href: PATH_DASHBOARD.project.root,
             },
-            { name: 'New product' },
+            { name: 'New project' },
           ]}
         />
         <ProductNewEditForm />

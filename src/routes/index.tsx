@@ -31,8 +31,6 @@ import {
   UserProfilePage,
   UserAccountPage,
   // Dashboard: Ecommerce
-  EcommerceShopPage,
-  EcommerceCheckoutPage,
   EcommerceProductListPage,
   EcommerceProductEditPage,
   EcommerceProductCreatePage,
@@ -130,12 +128,10 @@ export default function Router() {
           path: 'project',
           children: [
             { element: <Navigate to="/dashboard/project/list" replace />, index: true },
-            // { path: 'shop', element: <EcommerceShopPage /> },
             { path: 'product/:name', element: <EcommerceProductDetailsPage /> },
             { path: 'list', element: <EcommerceProductListPage /> },
             { path: 'product/new', element: <EcommerceProductCreatePage /> },
             { path: 'product/:name/edit', element: <EcommerceProductEditPage /> },
-            { path: 'checkout', element: <EcommerceCheckoutPage /> },
           ],
         },
         {
@@ -161,16 +157,6 @@ export default function Router() {
           ],
         },
         { path: 'files-manager', element: <FileManagerPage /> },
-        // {
-        //   path: 'mail',
-        //   children: [
-        //     { element: <Navigate to="/dashboard/mail/all" replace />, index: true },
-        //     { path: 'label/:customLabel', element: <MailPage /> },
-        //     { path: 'label/:customLabel/:mailId', element: <MailPage /> },
-        //     { path: ':systemLabel', element: <MailPage /> },
-        //     { path: ':systemLabel/:mailId', element: <MailPage /> },
-        //   ],
-        // },
         {
           path: 'chat',
           children: [
