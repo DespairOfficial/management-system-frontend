@@ -58,6 +58,7 @@ export default function ChatMessageInput({
         });
       }
       setMessage('');
+      setAttachments([]);
     }
   };
 

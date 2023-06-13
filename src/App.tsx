@@ -101,7 +101,7 @@ export default function App() {
       socket.off('disconnect', onDisconnect);
       socket.off('message:new', onNewMessage);
     };
-  }, []);
+  }, [CURRENT_USER_ID]);
   return (
     <AuthProvider>
       <HelmetProvider>
