@@ -189,7 +189,7 @@ export default function ProjectNewEditForm({ isEdit, currentProject }: Props) {
                 <RHFUpload
                   thumbnail
                   name="image"
-                  maxSize={3145728} 
+                  maxSize={3145728}
                   onDrop={handleDrop}
                   onRemove={handleRemoveFile}
                   onUpload={() => console.log('ON UPLOAD')}

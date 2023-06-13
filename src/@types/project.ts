@@ -19,7 +19,7 @@ export type IProject = {
   description: string;
   budget: number;
   status: IProjectStatus;
-  startsAt: Date | string |  null;
+  startsAt: Date | string | null;
 
   participants: IUser[];
   creator: IUser | null;
@@ -44,3 +44,10 @@ export type IProjectState = {
 };
 
 export type IProjectStatus = 'in_progress' | 'closing' | 'closed';
+
+export interface IProjectInvitation {
+  userId: string;
+  projectId: string;
+  createdAt: String;
+	project: IProject
+}

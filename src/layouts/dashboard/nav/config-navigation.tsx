@@ -42,11 +42,11 @@ const navConfig = [
     subheader: 'general',
     items: [
       { title: 'app', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard },
-    //   { title: 'ecommerce', path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce },
-    //   { title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics },
-    //   { title: 'banking', path: PATH_DASHBOARD.general.banking, icon: ICONS.banking },
-    //   { title: 'booking', path: PATH_DASHBOARD.general.booking, icon: ICONS.booking },
-    //   { title: 'file', path: PATH_DASHBOARD.general.file, icon: ICONS.file },
+      //   { title: 'ecommerce', path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce },
+      //   { title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics },
+      //   { title: 'banking', path: PATH_DASHBOARD.general.banking, icon: ICONS.banking },
+      //   { title: 'booking', path: PATH_DASHBOARD.general.booking, icon: ICONS.booking },
+      //   { title: 'file', path: PATH_DASHBOARD.general.file, icon: ICONS.file },
     ],
   },
 
@@ -78,6 +78,7 @@ const navConfig = [
         children: [
           { title: 'list', path: PATH_DASHBOARD.project.list },
           { title: 'create', path: PATH_DASHBOARD.project.new },
+          { title: 'invitations', path: PATH_DASHBOARD.project.invitations },
         ],
       },
 

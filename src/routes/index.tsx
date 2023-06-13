@@ -56,6 +56,7 @@ import {
   PaymentPage,
   ComingSoonPage,
   MaintenancePage,
+  InvitationsListPage,
 } from './elements';
 
 // ----------------------------------------------------------------------
@@ -128,6 +129,7 @@ export default function Router() {
           children: [
             { element: <Navigate to="/dashboard/project/list" replace />, index: true },
             { path: 'list', element: <ProjectListPage /> },
+            { path: 'invitations', element: <InvitationsListPage /> },
             { path: 'new', element: <ProjectCreatePage /> },
             { path: ':name/edit', element: <ProjectEditPage /> },
           ],

@@ -32,7 +32,8 @@ export default function ChatNavItem({ conversation, openNav, isSelected, onSelec
   const lastActivity =
     conversation.messages[conversation.messages.length - 1]?.createdAt ?? Date.now();
 
-  const isGroup = details.otherParticipants.length > 1;
+  // const isGroup = details.otherParticipants.length > 1;
+  const isGroup = conversation.type === 'GROUP';
 
   const isUnread = conversation.unreadCount > 0;
 
@@ -53,21 +54,23 @@ export default function ChatNavItem({ conversation, openNav, isSelected, onSelec
     >
       <ListItemAvatar>
         {isGroup ? (
-          <Badge
-            overlap="circular"
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            badgeContent={hasOnlineInGroup && <BadgeStatus status="online" />}
-          >
-            <CustomAvatarGroup compact sx={{ width: 48, height: 48 }}>
-              {details.otherParticipants.slice(0, 2).map((participant) => (
-                <CustomAvatar
-                  key={`user_custom_avatar_${participant.id ?? Math.random()}`}
-                  alt={participant.name}
-                  src={staticFilePath(participant.image)}
-                />
-              ))}
-            </CustomAvatarGroup>
-          </Badge>
+          <>
+            <Badge
+              overlap="circular"
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              badgeContent={hasOnlineInGroup && <BadgeStatus status="online" />}
+            >
+              <CustomAvatarGroup compact sx={{ width: 48, height: 48 }}>
+                {details.otherParticipants.slice(0, 2).map((participant) => (
+                  <CustomAvatar
+                    key={`user_custom_avatar_${participant.id ?? Math.random()}`}
+                    alt={participant.name}
+                    src={staticFilePath(participant.image)}
+                  />
+                ))}
+              </CustomAvatarGroup>
+            </Badge>
+          </>
         ) : (
           <CustomAvatar
             key={details.otherParticipants[0]?.id}
@@ -84,7 +87,8 @@ export default function ChatNavItem({ conversation, openNav, isSelected, onSelec
       {openNav && (
         <>
           <ListItemText
-            primary={details.usernames}
+            // primary={details.usernames}
+            primary={conversation.project?.name ?? details.usernames}
             primaryTypographyProps={{ noWrap: true, variant: 'subtitle2' }}
             secondary={details.displayText}
             secondaryTypographyProps={{

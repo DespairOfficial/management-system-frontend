@@ -40,11 +40,11 @@ export default function ProjectEditPage() {
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="Edit product"
+          heading="Edit project"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
-              name: 'E-Commerce',
+              name: 'Project',
               href: PATH_DASHBOARD.project.root,
             },
             { name: currentProject?.name },

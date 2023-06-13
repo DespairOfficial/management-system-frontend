@@ -1,3 +1,4 @@
+import { IProject } from './project';
 // ----------------------------------------------------------------------
 
 export type IChatAttachment = {
@@ -62,6 +63,8 @@ export type IChatParticipant = {
 export type IChatConversation = {
   id: number;
   participants: IChatParticipant[];
+  projectId: string | null;
+  project: IProject | null;
   type: string;
   unreadCount: number;
   messages: IChatMessage[];
@@ -110,7 +113,7 @@ export type IChatState = {
   activeConversationId: null | number;
   participants: IChatParticipant[];
   recipients: IChatParticipant[];
-	notifications: INotification[];
+  notifications: INotification[];
 };
 
 export type NotificationType = 'friend_interactive' | 'chat_message';

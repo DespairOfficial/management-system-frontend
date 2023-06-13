@@ -59,6 +59,8 @@ export default function Chat() {
       participants: [],
       unreadCount: 0,
       type: '',
+      projectId: null,
+      project: null,
     };
   });
 

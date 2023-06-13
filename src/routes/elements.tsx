@@ -48,6 +48,10 @@ export const ProjectEditPage = Loadable(
   lazy(() => import('../pages/dashboard/ProjectEditPage'))
 );
 
+export const InvitationsListPage = Loadable(
+  lazy(() => import('../pages/dashboard/InvitationsListPage'))
+);
+
 
 // DASHBOARD: INVOICE
 export const InvoiceListPage = Loadable(lazy(() => import('../pages/dashboard/InvoiceListPage')));
