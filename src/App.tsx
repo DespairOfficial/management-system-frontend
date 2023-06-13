@@ -63,6 +63,8 @@ import { getNewMessage, addNotification } from './redux/slices/chat';
 // ----------------------------------------------------------------------
 
 export default function App() {
+  const CURRENT_USER_ID = localStorage.getItem('userId');
+
   const [isConnected, setIsConnected] = useState(socket.connected);
 
   useEffect(() => {
@@ -74,28 +76,30 @@ export default function App() {
       setIsConnected(false);
     }
 
-    function onFooEvent(createdMessage: IChatMessage) {
-      dispatch(getNewMessage(createdMessage));
-      dispatch(
-        addNotification({
-          title: `New message`,
-          description: createdMessage.body,
-          avatar: createdMessage.senderId,
-          type: 'chat_message',
-          createdAt: new Date(),
-          isUnRead: true,
-        })
-      );
+    function onNewMessage(createdMessage: IChatMessage) {
+      if (createdMessage.senderId !== CURRENT_USER_ID) {
+        dispatch(getNewMessage(createdMessage));
+        dispatch(
+          addNotification({
+            title: `New message`,
+            description: createdMessage.body,
+            avatar: createdMessage.senderId,
+            type: 'chat_message',
+            createdAt: new Date(),
+            isUnRead: true,
+          })
+        );
+      }
     }
 
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
-    socket.on('message:new', onFooEvent);
+    socket.on('message:new', onNewMessage);
 
     return () => {
       socket.off('connect', onConnect);
       socket.off('disconnect', onDisconnect);
-      socket.off('message:new', onFooEvent);
+      socket.off('message:new', onNewMessage);
     };
   }, []);
   return (
