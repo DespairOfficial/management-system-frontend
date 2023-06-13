@@ -1,10 +1,11 @@
 import keyBy from 'lodash/keyBy';
 import { createAsyncThunk, createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
+
 import { socket } from '../../socket';
 // utils
 import axios from '../../utils/axios';
 // @types
-import { IChatState, IChatMessage, IChatSendMessage, ICreateMessage } from '../../@types/chat';
+import { IChatState, IChatMessage, IChatSendMessage, ICreateMessage, INotification } from '../../@types/chat';
 
 // ----------------------------------------------------------------------
 
@@ -52,6 +53,7 @@ const initialState: IChatState = {
   participants: [],
   // set of the users, to write all of them at the time
   recipients: [],
+  notifications: [],
 };
 
 const slice = createSlice({
@@ -100,7 +102,6 @@ const slice = createSlice({
       }
     },
 
-
     markConversationAsReadSuccess(state, action) {
       const { conversationId } = action.payload;
       const conversation = state.conversations.byId[conversationId];
@@ -115,6 +116,13 @@ const slice = createSlice({
       state.participants = participants;
     },
 
+    getNewMessageSuccess(state, action) {
+      const message: IChatMessage = action.payload;
+      if (message.conversationId) {
+        state.conversations.byId[message.conversationId].messages.push(message);
+      }
+    },
+
     // RESET ACTIVE CONVERSATION
     resetActiveConversation(state) {
       state.activeConversationId = null;
@@ -124,7 +132,18 @@ const slice = createSlice({
       const recipients = action.payload;
       state.recipients = recipients;
     },
+
+    setNotifications(state, action) {
+      const notifications: INotification[] = action.payload;
+      state.notifications = notifications;
+    },
+
+    addNotification(state, action) {
+      const notification: INotification = action.payload;
+      state.notifications.push(notification);
+    },
   },
+
   extraReducers: (builder) => {
     builder.addCase(sendSocketMessage.fulfilled, (state, action) => {
       state.conversations.byId[action.meta.arg.conversationId].messages.push(action.payload);
@@ -146,6 +165,17 @@ export function getContacts() {
     try {
       const response = await axios.get('/api/contacts');
       dispatch(slice.actions.getContactsSuccess(response.data.contacts));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function getNewMessage(newMessage: IChatMessage) {
+  return async (dispatch: Dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      dispatch(slice.actions.getNewMessageSuccess(newMessage));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -209,3 +239,25 @@ export function getParticipants(conversationKey: string) {
 }
 
 // ----------------------------------------------------------------------
+
+export function setNotifications(notifications: INotification[]) {
+  return async (dispatch: Dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      dispatch(slice.actions.setNotifications(notifications));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function addNotification(notification: INotification) {
+  return async (dispatch: Dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      dispatch(slice.actions.addNotification(notification));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}

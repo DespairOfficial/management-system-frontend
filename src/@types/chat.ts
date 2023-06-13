@@ -17,6 +17,7 @@ export type IChatTextMessage = {
   attachments: IChatAttachment[];
   createdAt: Date;
   senderId: string;
+  conversationId?: number;
 };
 
 export type IChatImageMessage = {
@@ -109,4 +110,17 @@ export type IChatState = {
   activeConversationId: null | number;
   participants: IChatParticipant[];
   recipients: IChatParticipant[];
+	notifications: INotification[];
 };
+
+export type NotificationType = 'friend_interactive' | 'chat_message';
+
+export interface INotification {
+  id?: number;
+  title: string;
+  description: string;
+  avatar: string;
+  type: NotificationType;
+  createdAt: Date;
+  isUnRead: boolean;
+}

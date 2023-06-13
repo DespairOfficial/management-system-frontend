@@ -1,7 +1,8 @@
 import { io } from 'socket.io-client';
+import { HOST_API_KEY } from './config-global';
 
 // "undefined" means the URL will be computed from the `window.location` object
-const URL = 'http://localhost:5001';
+const URL = HOST_API_KEY;
 
 const token = localStorage.getItem('accessToken');
 

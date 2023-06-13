@@ -1,3 +1,5 @@
+import * as FingerprintJS from '@fingerprintjs/fingerprintjs';
+
 import { createContext, useEffect, useReducer, useCallback, useMemo } from 'react';
 // utils
 import axios from '../utils/axios';
@@ -95,6 +97,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const initialize = useCallback(async () => {
     try {
       const accessToken = storageAvailable ? localStorage.getItem('accessToken') : '';
+
+      const fpPromise = await FingerprintJS.load();
+
+      // Get the visitor identifier when you need it.
+      const result = await fpPromise.get();
+      axios.defaults.headers.common.fingerprint = result.visitorId;
 
       if (accessToken && isValidToken(accessToken)) {
         setSession(accessToken);

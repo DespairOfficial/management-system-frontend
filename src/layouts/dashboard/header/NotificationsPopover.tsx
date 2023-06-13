@@ -26,13 +26,16 @@ import Iconify from '../../../components/iconify';
 import Scrollbar from '../../../components/scrollbar';
 import MenuPopover from '../../../components/menu-popover';
 import { IconButtonAnimate } from '../../../components/animate';
+import { INotification } from '../../../@types/chat';
+import { useSelector } from '../../../redux/store';
+import { setNotifications } from '../../../redux/slices/chat';
 
 // ----------------------------------------------------------------------
 
 export default function NotificationsPopover() {
-  const [openPopover, setOpenPopover] = useState<HTMLElement | null>(null);
+  const { notifications } = useSelector((state) => state.chat);
 
-  const [notifications, setNotifications] = useState(_notifications);
+  const [openPopover, setOpenPopover] = useState<HTMLElement | null>(null);
 
   const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
 
@@ -95,8 +98,11 @@ export default function NotificationsPopover() {
               </ListSubheader>
             }
           >
-            {notifications.slice(0, 2).map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} />
+            {notifications.slice(0, 2).map((notification, index) => (
+              <NotificationItem
+                key={notification.id ?? `notification_${index}`}
+                notification={notification}
+              />
             ))}
           </List>
 
@@ -108,8 +114,11 @@ export default function NotificationsPopover() {
               </ListSubheader>
             }
           >
-            {notifications.slice(2, 5).map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} />
+            {notifications.slice(2, 5).map((notification, index) => (
+              <NotificationItem
+                key={notification.id ?? `notification_${index}`}
+                notification={notification}
+              />
             ))}
           </List>
         </Scrollbar>
@@ -129,7 +138,7 @@ export default function NotificationsPopover() {
 // ----------------------------------------------------------------------
 
 type NotificationItemProps = {
-  id: string;
+  id?: string | number;
   title: string;
   description: string;
   avatar: string | null;

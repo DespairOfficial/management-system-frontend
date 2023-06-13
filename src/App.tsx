@@ -1,5 +1,3 @@
-import * as FingerprintJS from '@fingerprintjs/fingerprintjs';
-
 import React, { useState, useEffect } from 'react';
 // i18n
 
@@ -38,7 +36,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { socket } from './socket';
 
-import { store, persistor } from './redux/store';
+import { store, persistor, dispatch } from './redux/store';
 // routes
 import Router from './routes';
 // theme
@@ -56,6 +54,8 @@ import { ThemeSettings, SettingsProvider } from './components/settings';
 // https://docs.minimals.cc/authentication/ts-version
 
 import { AuthProvider } from './auth/JwtContext';
+import { IChatMessage } from './@types/chat';
+import { getNewMessage, addNotification } from './redux/slices/chat';
 // import { AuthProvider } from './auth/Auth0Context';
 // import { AuthProvider } from './auth/FirebaseContext';
 // import { AuthProvider } from './auth/AwsCognitoContext';
@@ -63,40 +63,40 @@ import { AuthProvider } from './auth/JwtContext';
 // ----------------------------------------------------------------------
 
 export default function App() {
-    const [isConnected, setIsConnected] = useState(socket.connected);
-	const [fooEvents, setFooEvents] = useState<string[]>([]);
+  const [isConnected, setIsConnected] = useState(socket.connected);
 
   useEffect(() => {
-    const fpPromise = FingerprintJS.load();
+    function onConnect() {
+      setIsConnected(true);
+    }
 
-    (async () => {
-      // Get the visitor identifier when you need it.
-      const fp = await fpPromise;
-      const result = await fp.get();
-      localStorage.setItem('fingerprint', result.visitorId);
-    })();
+    function onDisconnect() {
+      setIsConnected(false);
+    }
 
-	function onConnect() {
-		setIsConnected(true);
-	  }
-  
-	  function onDisconnect() {
-		setIsConnected(false);
-	  }
-  
-	  function onFooEvent(value: string) {
-		setFooEvents(previous => [...previous, value]);
-	  }
-  
-	  socket.on('connect', onConnect);
-	  socket.on('disconnect', onDisconnect);
-	  socket.on('foo', onFooEvent);
-  
-	  return () => {
-		socket.off('connect', onConnect);
-		socket.off('disconnect', onDisconnect);
-		socket.off('foo', onFooEvent);
-	  };
+    function onFooEvent(createdMessage: IChatMessage) {
+      dispatch(getNewMessage(createdMessage));
+      dispatch(
+        addNotification({
+          title: `New message`,
+          description: createdMessage.body,
+          avatar: createdMessage.senderId,
+          type: 'chat_message',
+          createdAt: new Date(),
+          isUnRead: true,
+        })
+      );
+    }
+
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+    socket.on('message:new', onFooEvent);
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+      socket.off('message:new', onFooEvent);
+    };
   }, []);
   return (
     <AuthProvider>
