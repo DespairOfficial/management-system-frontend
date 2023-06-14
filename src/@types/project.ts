@@ -1,3 +1,4 @@
+import { IKanbanBoard } from './kanban';
 // ----------------------------------------------------------------------
 
 import { IUser } from './user';
@@ -23,6 +24,7 @@ export type IProject = {
 
   participants: IUser[];
   creator: IUser | null;
+  kanbanBoard?: IKanbanBoard[];
 };
 
 export type IProjectFilter = {
@@ -49,5 +51,5 @@ export interface IProjectInvitation {
   userId: string;
   projectId: string;
   createdAt: String;
-	project: IProject
+  project: IProject;
 }

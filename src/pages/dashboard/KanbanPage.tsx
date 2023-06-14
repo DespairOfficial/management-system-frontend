@@ -1,7 +1,15 @@
 import { Helmet } from 'react-helmet-async';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 // @mui
-import { Container, Stack } from '@mui/material';
+import {
+  Container,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Stack,
+} from '@mui/material';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
@@ -15,6 +23,8 @@ import CustomBreadcrumbs from '../../components/custom-breadcrumbs';
 import { SkeletonKanbanColumn } from '../../components/skeleton';
 // sections
 import { KanbanColumn, KanbanColumnAdd } from '../../sections/@dashboard/kanban';
+import { IProject } from '../../@types/project';
+import axios from '../../utils/axios';
 
 // ----------------------------------------------------------------------
 
@@ -22,11 +32,35 @@ export default function KanbanPage() {
   const dispatch = useDispatch();
 
   const { board } = useSelector((state) => state.kanban);
-	console.log(board);
-	
-	useEffect(() => {
-    dispatch(getBoard());
-  }, [dispatch]);
+
+  const [projects, setProjects] = useState<IProject[]>([]);
+
+  const [currentProject, setCurrentProject] = useState<IProject | undefined>(undefined);
+
+  const [idForProject, setIdForProject] = useState('Not selected');
+  console.log(idForProject);
+
+  const handleChangeProject = (event: SelectChangeEvent) => {
+    const id = event.target.value as string;
+    setIdForProject(id);
+    const foundedProject = projects.find((item) => item.id === id);
+
+    setCurrentProject(foundedProject);
+  };
+
+  useEffect(() => {
+    const getProjectsWithBoards = async () => {
+      const response = await axios.get('/api/project');
+      setProjects(response.data);
+    };
+    getProjectsWithBoards();
+  }, []);
+
+  useEffect(() => {
+    if (currentProject && currentProject.kanbanBoard) {
+      dispatch(getBoard(currentProject.kanbanBoard[0].id));
+    }
+  }, [dispatch, currentProject]);
 
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result;
@@ -103,6 +137,24 @@ export default function KanbanPage() {
       <Helmet>
         <title> Kanban </title>
       </Helmet>
+      <Container sx={{ mb: 2 }}>
+        <FormControl>
+          <InputLabel id="demo-simple-select-label">Project</InputLabel>
+          <Select
+            id="demo-simple-select"
+						labelId="demo-simple-select-label"
+            value={idForProject}
+            onChange={handleChangeProject}
+            label="Select project"
+          >
+            {projects.map((item) => (
+              <MenuItem key={item.id} value={item.id}>
+                {item.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Container>
 
       <Container maxWidth={false} sx={{ height: 1 }}>
         <CustomBreadcrumbs
@@ -115,6 +167,7 @@ export default function KanbanPage() {
             { name: 'Kanban' },
           ]}
         />
+
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="all-columns" direction="horizontal" type="column">
             {(provided) => (

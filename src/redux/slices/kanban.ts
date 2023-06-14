@@ -116,11 +116,11 @@ export const { actions } = slice;
 
 // ----------------------------------------------------------------------
 
-export function getBoard() {
+export function getBoard(kanbanId: string) {
   return async (dispatch: Dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('/api/kanban/board/01889a9e-3b03-7b98-91a1-2772fdac535d');
+      const response = await axios.get(`/api/kanban/board/${kanbanId}`);
       dispatch(slice.actions.getBoardSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
