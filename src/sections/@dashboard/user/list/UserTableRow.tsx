@@ -17,7 +17,6 @@ import { IUserAccountGeneral } from '../../../../@types/user';
 import Label from '../../../../components/label';
 import Iconify from '../../../../components/iconify';
 import MenuPopover from '../../../../components/menu-popover';
-import ConfirmDialog from '../../../../components/confirm-dialog';
 import { staticFilePath } from '../../../../components/file-thumbnail';
 
 // ----------------------------------------------------------------------
@@ -26,7 +25,7 @@ type Props = {
   row: IUserAccountGeneral;
   selected: boolean;
   onSelectRow: VoidFunction;
-	onAddToContactsRow: VoidFunction;
+  onAddToContactsRow: VoidFunction;
   // onEditRow: VoidFunction;
   // onDeleteRow: VoidFunction;
 };
@@ -35,10 +34,12 @@ export default function UserTableRow({
   row,
   selected,
   onSelectRow,
-	onAddToContactsRow,
-  // onEditRow,
-  // onDeleteRow,
-}: Props) {
+  onAddToContactsRow,
+}: // onEditRow,
+// onDeleteRow,
+Props) {
+  console.log(row);
+
   const { name, image, company, role, isVerified, status } = row;
 
   const [openConfirm, setOpenConfirm] = useState(false);
@@ -106,10 +107,16 @@ export default function UserTableRow({
           </Label>
         </TableCell>
 
-        <TableCell align="right">
-          <IconButton color={openPopover ? 'inherit' : 'default'} onClick={handleOpenPopover}>
-            <Iconify icon="eva:more-vertical-fill" />
-          </IconButton>
+        <TableCell align="left">
+          {row.isContact ? (
+            <Label variant="soft" color="success" sx={{ textTransform: 'capitalize' }}>
+              In contacts
+            </Label>
+          ) : (
+            <IconButton color={openPopover ? 'inherit' : 'default'} onClick={handleOpenPopover}>
+              <Iconify icon="eva:more-vertical-fill" />
+            </IconButton>
+          )}
         </TableCell>
       </TableRow>
 
@@ -119,29 +126,9 @@ export default function UserTableRow({
         arrow="right-top"
         sx={{ width: 140 }}
       >
-        {/* <MenuItem
+        <MenuItem
           onClick={() => {
-            handleOpenConfirm();
-            handleClosePopover();
-          }}
-          sx={{ color: 'error.main' }}
-        >
-          <Iconify icon="eva:trash-2-outline" />
-          Delete
-        </MenuItem> */}
-
-        {/* <MenuItem
-          onClick={() => {
-            onEditRow();
-            handleClosePopover();
-          }}
-        >
-          <Iconify icon="eva:edit-fill" />
-          Edit
-        </MenuItem> */}
-				<MenuItem
-          onClick={() => {
-            onAddToContactsRow()
+            onAddToContactsRow();
             handleClosePopover();
           }}
         >
@@ -149,18 +136,6 @@ export default function UserTableRow({
           To contacts
         </MenuItem>
       </MenuPopover>
-
-      {/* <ConfirmDialog
-        open={openConfirm}
-        onClose={handleCloseConfirm}
-        title="Delete"
-        content="Are you sure want to delete?"
-        action={
-          <Button variant="contained" color="error" onClick={onDeleteRow}>
-            Delete
-          </Button>
-        }
-      /> */}
     </>
   );
 }

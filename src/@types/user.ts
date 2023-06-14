@@ -159,4 +159,5 @@ export interface IUser {
   address: string | null;
   lastActivity: Date | null;
   status: OnlineStatus;
+  isContact: boolean;
 }

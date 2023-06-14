@@ -66,7 +66,7 @@ const TABLE_HEAD = [
   { id: 'role', label: 'Role', align: 'left' },
   { id: 'isVerified', label: 'Verified', align: 'center' },
   { id: 'status', label: 'Status', align: 'left' },
-  { id: '' },
+  { id: '', label: 'Contact', align: 'left'  },
 ];
 
 // ----------------------------------------------------------------------
@@ -99,9 +99,8 @@ export default function UserListPage() {
 
   useEffect(() => {
     const getUsers = async () => {
-      const response = await axios.get('/api/users/notInContacts');
+      const response = await axios.get('/api/users/withContacts');
       setTableData(response.data);
-      console.log(response.data);
     };
     getUsers();
   }, []);

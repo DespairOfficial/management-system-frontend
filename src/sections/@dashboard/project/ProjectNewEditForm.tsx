@@ -6,7 +6,16 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { LoadingButton } from '@mui/lab';
-import { Box, Card, Grid, Stack, Typography, InputAdornment, Button } from '@mui/material';
+import {
+  Box,
+  Card,
+  Grid,
+  Stack,
+  Typography,
+  InputAdornment,
+  Button,
+  TextField,
+} from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 // routes
@@ -152,12 +161,17 @@ export default function ProjectNewEditForm({ isEdit, currentProject }: Props) {
 
     restKeys.forEach((key, i) => {
       const value: any = restValues[i];
+
       if (value instanceof File) {
         formData.append(key, value as Blob);
       } else if (value instanceof Array) {
         value.forEach((item) => {
           formData.append(`${key}[]`, item);
         });
+      } else if (value instanceof Date) {
+        console.log(value);
+
+        formData.append(key, value.toISOString());
       } else {
         formData.append(key, value as string);
       }
@@ -245,14 +259,22 @@ export default function ProjectNewEditForm({ isEdit, currentProject }: Props) {
                   <RHFRadioGroup row spacing={4} name="status" options={STATUS_OPTIONS} />
                 </Stack>
 
+                {/* <RHFTextField name="startsAt" label="startsAt" type="date" placeholder="0.00" /> */}
+
                 <DatePicker
-                  label="Project starts at"
-                  value={values.startsAt}
-                  onChange={(value: Date | null) => {
-                    setValue('startsAt', value?.toISOString() ?? null);
+                  label="Start date"
+                  value={values.startsAt ?? ''}
+                  onChange={(value) => {
+                    setValue('startsAt', value);
                   }}
-                  renderInput={(params: any) => (
-                    <RHFTextField name="startsAt" label="startsAt" placeholder="0.00" {...params} />
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      fullWidth
+                      sx={{
+                        maxWidth: { md: 160 },
+                      }}
+                    />
                   )}
                 />
               </Stack>
@@ -295,32 +317,33 @@ export default function ProjectNewEditForm({ isEdit, currentProject }: Props) {
               {!isEdit ? 'Create Project' : 'Save Changes'}
             </LoadingButton>
           </Stack>
+          {isEdit && currentProject && (
+            <Card sx={{ p: 3, mt: 2 }}>
+              <Stack spacing={3} mb={2}>
+                <RHFAutocomplete
+                  name="uninvited"
+                  label="Invite"
+                  multiple
+                  options={usersToInviteOptions}
+                  getOptionLabel={(user) =>
+                    user && typeof user === 'object' ? `${user.username} - ${user.name}` : ''
+                  }
+                  isOptionEqualToValue={(option, value) => option.id === value.id}
+                  ChipProps={{ size: 'small' }}
+                />
 
-          <Card sx={{ p: 3, mt: 2 }}>
-            <Stack spacing={3} mb={2}>
-              <RHFAutocomplete
-                name="uninvited"
-                label="Invite"
-                multiple
-                options={usersToInviteOptions}
-                getOptionLabel={(user) =>
-                  user && typeof user === 'object' ? `${user.username} - ${user.name}` : ''
-                }
-                isOptionEqualToValue={(option, value) => option.id === value.id}
-                ChipProps={{ size: 'small' }}
-              />
-
-              <Button
-                variant="contained"
-                startIcon={<Iconify icon="eva:plus-fill" />}
-                onClick={() => {
-                  onSendInvitations();
-                }}
-              >
-                Send invitations
-              </Button>
-            </Stack>
-          </Card>
+                <Button
+                  variant="contained"
+                  startIcon={<Iconify icon="eva:plus-fill" />}
+                  onClick={() => {
+                    onSendInvitations();
+                  }}
+                >
+                  Send invitations
+                </Button>
+              </Stack>
+            </Card>
+          )}
         </Grid>
       </Grid>
     </FormProvider>

@@ -13,6 +13,7 @@ import { useSnackbar } from '../../../components/snackbar';
 import MenuPopover from '../../../components/menu-popover';
 import { IconButtonAnimate } from '../../../components/animate';
 import { staticFilePath } from '../../../components/file-thumbnail';
+import { socket } from '../../../socket';
 
 // ----------------------------------------------------------------------
 
@@ -53,6 +54,7 @@ export default function AccountPopover() {
   const handleLogout = async () => {
     try {
       logout();
+      socket.disconnect();
       navigate(PATH_AUTH.login, { replace: true });
       handleClosePopover();
     } catch (error) {
@@ -85,7 +87,11 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <CustomAvatar src={staticFilePath(user?.image ?? undefined)} alt={user?.username} name={user?.username} />
+        <CustomAvatar
+          src={staticFilePath(user?.image ?? undefined)}
+          alt={user?.username}
+          name={user?.username}
+        />
       </IconButtonAnimate>
 
       <MenuPopover open={openPopover} onClose={handleClosePopover} sx={{ width: 200, p: 0 }}>

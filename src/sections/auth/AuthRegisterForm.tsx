@@ -17,8 +17,8 @@ import FormProvider, { RHFTextField } from '../../components/hook-form';
 type FormValuesProps = {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
+  name: string;
+  username: string;
   afterSubmit?: string;
 };
 
@@ -56,7 +56,7 @@ export default function AuthRegisterForm() {
   const onSubmit = async (data: FormValuesProps) => {
     try {
       if (register) {
-        await register(data.email, data.password, data.firstName, data.lastName);
+        await register(data.email, data.password, data.name, data.username);
       }
     } catch (error) {
       console.error(error);
