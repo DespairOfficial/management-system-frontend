@@ -177,7 +177,7 @@ export default function ProjectListPage() {
   };
 
   const handleViewRow = (id: string) => {
-    navigate(PATH_DASHBOARD.project.view(paramCase(id)));
+    navigate(PATH_DASHBOARD.project.edit(paramCase(id)));
   };
 
   const handleResetFilter = () => {
