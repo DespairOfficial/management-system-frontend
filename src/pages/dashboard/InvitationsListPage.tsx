@@ -182,7 +182,7 @@ export default function InvitationsListPage() {
   };
 
   const handleEditRow = (id: string) => {
-    navigate(PATH_DASHBOARD.user.edit(paramCase(id)));
+    navigate(PATH_DASHBOARD.project.edit(paramCase(id)));
   };
 
   const acceptInvitations = (ids: string[]) => {
@@ -208,15 +208,15 @@ export default function InvitationsListPage() {
   return (
     <>
       <Helmet>
-        <title> User: List | Minimal UI</title>
+        <title> Invitations</title>
       </Helmet>
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="User List"
+          heading="Invitation List"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'User', href: PATH_DASHBOARD.user.root },
+            { name: 'Project', href: PATH_DASHBOARD.project.root },
             { name: 'List' },
           ]}
           // action={

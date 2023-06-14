@@ -1,12 +1,12 @@
 import * as Yup from 'yup';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { LoadingButton } from '@mui/lab';
-import { Box, Card, Grid, Stack, Typography, InputAdornment } from '@mui/material';
+import { Box, Card, Grid, Stack, Typography, InputAdornment, Button } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 // routes
@@ -24,6 +24,7 @@ import FormProvider, {
 } from '../../../components/hook-form';
 import axiosInstance from '../../../utils/axios';
 import { IUser } from '../../../@types/user';
+import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
 
@@ -41,6 +42,7 @@ interface FormValuesProps {
   startsAt: Date | string | null;
   participants: IUser[];
   creator: IUser | null;
+  uninvited: IUser[];
 
   tags: string[];
 }
@@ -56,6 +58,8 @@ export default function ProjectNewEditForm({ isEdit, currentProject }: Props) {
     { value: 'closing', label: 'Closing' },
     { value: 'closed', label: 'Closed' },
   ];
+
+  const [usersToInviteOptions, setUsersToInviteOptions] = useState<IUser[]>([]);
 
   const navigate = useNavigate();
 
@@ -78,6 +82,7 @@ export default function ProjectNewEditForm({ isEdit, currentProject }: Props) {
       startsAt: currentProject?.startsAt || null,
       participants: currentProject?.participants || [],
       creator: currentProject?.creator || null,
+      uninvited: [],
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentProject]
@@ -98,8 +103,37 @@ export default function ProjectNewEditForm({ isEdit, currentProject }: Props) {
 
   const values = watch();
 
+  const onSendInvitations = () => {
+    const sendInvitationToUser = (userId: string) => {
+      if (currentProject) {
+        const sendInvitation = async () => {
+          await axiosInstance.post(`api/project/invitation`, {
+            userId,
+            projectId: currentProject.id,
+          });
+        };
+        sendInvitation();
+      }
+    };
+
+    values.uninvited.forEach((user) => {
+      sendInvitationToUser(user.id);
+    });
+
+    setUsersToInviteOptions(
+      usersToInviteOptions.filter((item) => !values.uninvited.includes(item))
+    );
+    enqueueSnackbar('Invitations was sent!');
+  };
   useEffect(() => {
     if (isEdit && currentProject) {
+      const getUsersToInvite = async () => {
+        const response = await axiosInstance.get(
+          `api/project/notInvitedUsers/${currentProject.id}`
+        );
+        setUsersToInviteOptions(response.data);
+      };
+      getUsersToInvite();
       reset(defaultValues);
     }
     if (!isEdit) {
@@ -138,7 +172,7 @@ export default function ProjectNewEditForm({ isEdit, currentProject }: Props) {
       if (response.status === 201) {
         enqueueSnackbar(!isEdit ? 'Create success!' : 'Update success!');
       } else {
-        enqueueSnackbar('Error durint creating', { variant: 'error' });
+        enqueueSnackbar('Error during creating', { variant: 'error' });
       }
       navigate(PATH_DASHBOARD.project.list);
     } catch (error) {
@@ -261,6 +295,32 @@ export default function ProjectNewEditForm({ isEdit, currentProject }: Props) {
               {!isEdit ? 'Create Project' : 'Save Changes'}
             </LoadingButton>
           </Stack>
+
+          <Card sx={{ p: 3, mt: 2 }}>
+            <Stack spacing={3} mb={2}>
+              <RHFAutocomplete
+                name="uninvited"
+                label="Invite"
+                multiple
+                options={usersToInviteOptions}
+                getOptionLabel={(user) =>
+                  user && typeof user === 'object' ? `${user.username} - ${user.name}` : ''
+                }
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+                ChipProps={{ size: 'small' }}
+              />
+
+              <Button
+                variant="contained"
+                startIcon={<Iconify icon="eva:plus-fill" />}
+                onClick={() => {
+                  onSendInvitations();
+                }}
+              >
+                Send invitations
+              </Button>
+            </Stack>
+          </Card>
         </Grid>
       </Grid>
     </FormProvider>
