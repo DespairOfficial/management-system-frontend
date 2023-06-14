@@ -65,7 +65,7 @@ export default function Router() {
   return useRoutes([
     {
       path: '/',
-      element: <Navigate to="/dashboard" replace />,
+      element: <Navigate to="/dashboard/project/list" replace />,
     },
     // Auth
     {

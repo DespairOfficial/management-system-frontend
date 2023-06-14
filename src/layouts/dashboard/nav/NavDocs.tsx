@@ -2,6 +2,7 @@
 import { Stack, Button, Typography, Box } from '@mui/material';
 // auth
 import { useAuthContext } from '../../../auth/useAuthContext';
+import { HOST_API_KEY } from '../../../config-global';
 // locales
 import { useLocales } from '../../../locales';
 // routes
@@ -38,7 +39,7 @@ export default function NavDocs() {
         </Typography>
       </div>
 
-      <Button href={PATH_DOCS.root} target="_blank" rel="noopener" variant="contained">
+      <Button href={`${HOST_API_KEY}/api/docs`} target="_blank" rel="noopener" variant="contained">
         {`${translate('docs.documentation')}`}
       </Button>
     </Stack>
