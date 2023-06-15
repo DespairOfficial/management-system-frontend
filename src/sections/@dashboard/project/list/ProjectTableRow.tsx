@@ -10,6 +10,8 @@ import {
   MenuItem,
   TableCell,
   IconButton,
+	Avatar,
+	AvatarGroup,
 } from '@mui/material';
 
 // components
@@ -104,8 +106,26 @@ export default function ProjectTableRow({
             {status ? sentenceCase(status) : ''}
           </Label>
         </TableCell>
-
-        <TableCell align="right">participants</TableCell>
+						
+        <TableCell align="center" >
+          <AvatarGroup
+            max={4}
+            sx={{
+              '& .MuiAvatarGroup-avatar': {
+                width: 24,
+                height: 24,
+                '&:first-of-type': {
+                  fontSize: 12,
+                },
+              },
+            }}
+          >
+            {participants &&
+              participants.map((person) => (
+                <Avatar key={person.id} alt={person.name} src={staticFilePath(person.image)} />
+              ))}
+          </AvatarGroup>
+        </TableCell>
 
         <TableCell align="right">
           <IconButton color={openPopover ? 'primary' : 'default'} onClick={handleOpenPopover}>
