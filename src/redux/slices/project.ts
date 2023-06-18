@@ -53,7 +53,7 @@ export function getProjects() {
   return async (dispatch: Dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('/api/project/my');
+      const response = await axios.get('/api/project');
       dispatch(slice.actions.getProjectsSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));

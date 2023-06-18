@@ -2,10 +2,17 @@
 
 export type IKanbanComment = {
   id: string;
-  image: string;
+  image?: string;
   name: string;
   createdAt: Date | string | number;
-  messageType: 'image' | 'text';
+  message: string;
+};
+
+export type IEditKanbanComment = {
+  id?: string;
+  image?: File | string;
+  name: string;
+  createdAt?: Date | string | number;
   message: string;
 };
 
@@ -27,10 +34,25 @@ export type IKanbanCard = {
   name: string;
   description?: string;
   assignee: IKanbanAssignee[];
+  prioritize: string;
   due: [Date | null, Date | null];
   attachments: string[];
   comments: IKanbanComment[];
   completed: boolean;
+  boardId?: string;
+};
+
+export type IEditKanbanCard = {
+  id: string;
+  name: string;
+  description?: string;
+  assignee: IKanbanAssignee[];
+  prioritize: string;
+  due: [Date | null, Date | null];
+  attachments: (File | string)[];
+  comments: IEditKanbanComment[];
+  completed: boolean;
+  boardId?: string;
 };
 
 export type IKanbanColumn = {

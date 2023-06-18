@@ -62,6 +62,8 @@ type Props = {
 };
 
 export default function ProjectNewEditForm({ isEdit, currentProject }: Props) {
+  const CURRENT_USER_ID = localStorage.getItem('userId');
+
   const STATUS_OPTIONS = [
     { value: 'in_progress', label: 'In progress' },
     { value: 'closing', label: 'Closing' },
@@ -114,7 +116,7 @@ export default function ProjectNewEditForm({ isEdit, currentProject }: Props) {
 
   const onSendInvitations = () => {
     const sendInvitationToUser = (userId: string) => {
-      if (currentProject) {
+      if (currentProject && currentProject.userId === CURRENT_USER_ID ) {
         const sendInvitation = async () => {
           await axiosInstance.post(`api/project/invitation`, {
             userId,
@@ -135,7 +137,7 @@ export default function ProjectNewEditForm({ isEdit, currentProject }: Props) {
     enqueueSnackbar('Invitations was sent!');
   };
   useEffect(() => {
-    if (isEdit && currentProject) {
+    if (isEdit && currentProject && currentProject.userId === CURRENT_USER_ID) {
       const getUsersToInvite = async () => {
         const response = await axiosInstance.get(
           `api/project/notInvitedUsers/${currentProject.id}`
@@ -154,7 +156,7 @@ export default function ProjectNewEditForm({ isEdit, currentProject }: Props) {
   const onSubmit = async (data: FormValuesProps) => {
     const formData = new FormData();
 
-    const { tags, creator, ...rest } = data;
+    const { participants, tags, creator, ...rest } = data;
 
     const restKeys = Object.keys(rest);
     const restValues = Object.values(rest);
@@ -180,7 +182,7 @@ export default function ProjectNewEditForm({ isEdit, currentProject }: Props) {
     try {
       const response = await axiosInstance({
         method: isEdit ? 'patch' : 'post',
-        url: 'api/project/',
+        url: isEdit ? `api/project/${currentProject?.id}` : 'api/project/',
         data: formData,
       });
       if (response.status === 201) {
@@ -313,11 +315,18 @@ export default function ProjectNewEditForm({ isEdit, currentProject }: Props) {
               </Stack>
             </Card>
 
-            <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>
-              {!isEdit ? 'Create Project' : 'Save Changes'}
-            </LoadingButton>
+            {isEdit && currentProject && currentProject.userId === CURRENT_USER_ID && (
+              <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>
+                Save Changes
+              </LoadingButton>
+            )}
+            {!isEdit && (
+              <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>
+                Create Project
+              </LoadingButton>
+            )}
           </Stack>
-          {isEdit && currentProject && (
+          {isEdit && currentProject && currentProject.userId === CURRENT_USER_ID && (
             <Card sx={{ p: 3, mt: 2 }}>
               <Stack spacing={3} mb={2}>
                 <RHFAutocomplete
@@ -331,7 +340,6 @@ export default function ProjectNewEditForm({ isEdit, currentProject }: Props) {
                   isOptionEqualToValue={(option, value) => option.id === value.id}
                   ChipProps={{ size: 'small' }}
                 />
-
                 <Button
                   variant="contained"
                   startIcon={<Iconify icon="eva:plus-fill" />}

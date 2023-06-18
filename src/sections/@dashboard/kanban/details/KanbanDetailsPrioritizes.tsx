@@ -9,7 +9,7 @@ import Iconify from '../../../../components/iconify';
 const PRIORITIZES_OPTIONS = [
   { value: 'low', label: 'Low', color: 'info' },
   { value: 'medium', label: 'Medium', color: 'warning' },
-  { value: 'hight', label: 'Hight', color: 'error' },
+  { value: 'high', label: 'High', color: 'error' },
 ] as const;
 
 type Props = {
@@ -18,6 +18,8 @@ type Props = {
 };
 
 export default function KanbanDetailsPrioritizes({ prioritize, onChangePrioritize }: Props) {
+	console.log(prioritize);
+	
   return (
     <RadioGroup row value={prioritize} onChange={onChangePrioritize}>
       {PRIORITIZES_OPTIONS.map((option) => {

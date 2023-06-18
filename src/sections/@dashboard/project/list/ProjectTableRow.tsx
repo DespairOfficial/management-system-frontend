@@ -10,8 +10,8 @@ import {
   MenuItem,
   TableCell,
   IconButton,
-	Avatar,
-	AvatarGroup,
+  Avatar,
+  AvatarGroup,
 } from '@mui/material';
 
 // components
@@ -42,6 +42,7 @@ export default function ProjectTableRow({
   onEditRow,
   onViewRow,
 }: Props) {
+  const CURRENT_USER_ID = localStorage.getItem('userId');
   const { name, creator, status, participants } = row;
 
   const [openConfirm, setOpenConfirm] = useState(false);
@@ -68,7 +69,7 @@ export default function ProjectTableRow({
     <>
       <TableRow hover selected={selected}>
         <TableCell padding="checkbox">
-          <Checkbox checked={selected} onClick={onSelectRow} />
+          {CURRENT_USER_ID === row.userId && <Checkbox checked={selected} onClick={onSelectRow} />}
         </TableCell>
 
         <TableCell>
@@ -106,8 +107,8 @@ export default function ProjectTableRow({
             {status ? sentenceCase(status) : ''}
           </Label>
         </TableCell>
-						
-        <TableCell align="center" >
+
+        <TableCell align="center">
           <AvatarGroup
             max={4}
             sx={{
@@ -128,9 +129,11 @@ export default function ProjectTableRow({
         </TableCell>
 
         <TableCell align="right">
-          <IconButton color={openPopover ? 'primary' : 'default'} onClick={handleOpenPopover}>
-            <Iconify icon="eva:more-vertical-fill" />
-          </IconButton>
+          {CURRENT_USER_ID === row.userId && (
+            <IconButton color={openPopover ? 'primary' : 'default'} onClick={handleOpenPopover}>
+              <Iconify icon="eva:more-vertical-fill" />
+            </IconButton>
+          )}
         </TableCell>
       </TableRow>
 

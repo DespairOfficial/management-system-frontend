@@ -17,7 +17,7 @@ import {
 // _mock_
 import { _contacts } from '../../../_mock/arrays';
 // @types
-import { IKanbanAssignee } from '../../../@types/kanban';
+import { IKanbanAssignee, IKanbanCard } from '../../../@types/kanban';
 // components
 import Iconify from '../../../components/iconify';
 import Scrollbar from '../../../components/scrollbar';
@@ -32,11 +32,20 @@ const ITEM_HEIGHT = 64;
 
 type Props = {
   assignee?: IKanbanAssignee[];
+  onAddAssignee?: (assignee: IKanbanAssignee) => void;
+  onRemoveAssignee?: (assignee: IKanbanAssignee) => void;
   open: boolean;
   onClose: VoidFunction;
 };
 
-export default function KanbanContactsDialog({ assignee = [], open, onClose }: Props) {
+export default function KanbanContactsDialog({
+  assignee = [],
+  open,
+  onClose,
+  onAddAssignee,
+  onRemoveAssignee,
+}: Props) {
+	
   const [searchContacts, setSearchContacts] = useState('');
 
   const [contacts, setContacts] = useState<IUser[]>([]);
@@ -102,6 +111,13 @@ export default function KanbanContactsDialog({ assignee = [], open, onClose }: P
                   secondaryAction={
                     <Button
                       size="small"
+                      onClick={() => {
+                        if (checked && onRemoveAssignee) {
+                          onRemoveAssignee(contact);
+                        } else if (onAddAssignee) {
+                          onAddAssignee(contact);
+                        }
+                      }}
                       color={checked ? 'primary' : 'inherit'}
                       startIcon={
                         <Iconify icon={checked ? 'eva:checkmark-fill' : 'eva:plus-fill'} />

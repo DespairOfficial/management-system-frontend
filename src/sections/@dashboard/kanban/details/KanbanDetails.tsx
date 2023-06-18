@@ -1,9 +1,15 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
 import { Stack, Drawer, Avatar, Tooltip, Divider, TextField, Box, IconButton } from '@mui/material';
 // @types
-import { IKanbanCard } from '../../../../@types/kanban';
+import {
+  IEditKanbanCard,
+  IEditKanbanComment,
+  IKanbanAssignee,
+  IKanbanCard,
+  IKanbanComment,
+} from '../../../../@types/kanban';
 // components
 import Iconify from '../../../../components/iconify';
 import Scrollbar from '../../../../components/scrollbar';
@@ -17,6 +23,11 @@ import KanbanDetailsAttachments from './KanbanDetailsAttachments';
 import KanbanDetailsPrioritizes from './KanbanDetailsPrioritizes';
 import KanbanDetailsCommentInput from './KanbanDetailsCommentInput';
 import { staticFilePath } from '../../../../components/file-thumbnail';
+import { useDispatch } from '../../../../redux/store';
+import { createComment, editTask } from '../../../../redux/slices/kanban';
+import useDebounce from '../../../../utils/useDebounce';
+
+// ----------------------------------------------------------------------
 
 // ----------------------------------------------------------------------
 
@@ -32,16 +43,25 @@ const StyledLabel = styled('span')(({ theme }) => ({
 type Props = {
   task: IKanbanCard;
   openDetails: boolean;
+  columnId: string;
   onCloseDetails: VoidFunction;
   onDeleteTask: VoidFunction;
 };
 
-export default function KanbanDetails({ task, openDetails, onCloseDetails, onDeleteTask }: Props) {
+export default function KanbanDetails({
+  task,
+  openDetails,
+  columnId,
+  onCloseDetails,
+  onDeleteTask,
+}: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const dispatch = useDispatch();
 
   const [liked, setLiked] = useState(false);
 
-  const [prioritize, setPrioritize] = useState('low');
+  const [prioritize, setPrioritize] = useState(task.prioritize);
 
   const [taskName, setTaskName] = useState(task.name);
 
@@ -50,6 +70,10 @@ export default function KanbanDetails({ task, openDetails, onCloseDetails, onDel
   const [completed, setCompleted] = useState(task.completed);
 
   const [taskDescription, setTaskDescription] = useState(task.description);
+
+  const debouncedName = useDebounce(taskName, 300);
+
+  const debouncedDescription = useDebounce(taskDescription, 300);
 
   const {
     startDate,
@@ -70,6 +94,7 @@ export default function KanbanDetails({ task, openDetails, onCloseDetails, onDel
 
   const handleCompleted = () => {
     setCompleted(!completed);
+    sendEditedTask({ ...task, completed: !completed });
   };
 
   const handleOpenContacts = () => {
@@ -84,6 +109,44 @@ export default function KanbanDetails({ task, openDetails, onCloseDetails, onDel
     fileInputRef.current?.click();
   };
 
+  const setAttachments = (attachments: (File | string)[]) => {
+    sendEditedTask({ ...task, attachments });
+  };
+
+  const addComment = (comment: IEditKanbanComment) => {
+    dispatch(createComment({ comment, cardId: task.id }));
+  };
+
+  const sendEditedTask = (updatedTask: IEditKanbanCard) => {
+    dispatch(
+      editTask({
+        card: updatedTask,
+        columnId,
+      })
+    );
+  };
+
+  const addAssignee = (newAssignee: IKanbanAssignee) => {
+    sendEditedTask({ ...task, assignee: [...task.assignee, newAssignee] });
+  };
+
+  const removeAssignee = (assigneeToRemove: IKanbanAssignee) => {
+    sendEditedTask({
+      ...task,
+      assignee: task.assignee.filter((item) => item.id !== assigneeToRemove.id),
+    });
+  };
+
+  useEffect(() => {
+    sendEditedTask({ ...task, name: debouncedName });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedName]);
+
+  useEffect(() => {
+    sendEditedTask({ ...task, description: debouncedDescription });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedDescription]);
+
   const handleChangeTaskName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTaskName(event.target.value);
   };
@@ -93,7 +156,9 @@ export default function KanbanDetails({ task, openDetails, onCloseDetails, onDel
   };
 
   const handleChangePrioritize = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPrioritize((event.target as HTMLInputElement).value);
+    const newPrioritize = (event.target as HTMLInputElement).value;
+    setPrioritize(newPrioritize);
+    sendEditedTask({ ...task, prioritize: newPrioritize });
   };
 
   return (
@@ -165,6 +230,8 @@ export default function KanbanDetails({ task, openDetails, onCloseDetails, onDel
                 assignee={task.assignee}
                 open={openContacts}
                 onClose={handleCloseContacts}
+                onAddAssignee={addAssignee}
+                onRemoveAssignee={removeAssignee}
               />
             </Stack>
           </Stack>
@@ -244,7 +311,10 @@ export default function KanbanDetails({ task, openDetails, onCloseDetails, onDel
           {/* Attachments */}
           <Stack direction="row">
             <StyledLabel sx={{ py: 0.5 }}>Attachments</StyledLabel>
-            <KanbanDetailsAttachments attachments={task.attachments} />
+            <KanbanDetailsAttachments
+              attachments={task.attachments}
+              setAttachments={setAttachments}
+            />
           </Stack>
         </Stack>
 
@@ -253,7 +323,7 @@ export default function KanbanDetails({ task, openDetails, onCloseDetails, onDel
 
       <Divider />
 
-      <KanbanDetailsCommentInput />
+      <KanbanDetailsCommentInput addComment={addComment} />
     </Drawer>
   );
 }

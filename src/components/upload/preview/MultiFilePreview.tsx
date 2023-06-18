@@ -17,7 +17,6 @@ export default function MultiFilePreview({ thumbnail, files, onRemove, sx }: Upl
   if (!files?.length) {
     return null;
   }
-
   return (
     <AnimatePresence initial={false}>
       {files.map((file) => {

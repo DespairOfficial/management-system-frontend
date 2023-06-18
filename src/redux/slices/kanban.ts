@@ -4,7 +4,13 @@ import { createSlice, Dispatch } from '@reduxjs/toolkit';
 // utils
 import axios from '../../utils/axios';
 // @types
-import { IKanbanState, IKanbanCard, IKanbanColumn } from '../../@types/kanban';
+import {
+  IKanbanState,
+  IKanbanCard,
+  IKanbanColumn,
+  IEditKanbanCard,
+  IEditKanbanComment,
+} from '../../@types/kanban';
 
 // ----------------------------------------------------------------------
 
@@ -76,6 +82,16 @@ const slice = createSlice({
 
       state.board.cards[card.id] = card;
       state.board.columns[columnId].cardIds.push(card.id);
+    },
+
+    addComment(state, action) {
+      const { comment, cardId } = action.payload;
+      state.board.cards[cardId].comments.push(comment);
+    },
+
+    editTask(state, action) {
+      const { card, columnId } = action.payload;
+      state.board.cards[card.id] = card;
     },
 
     deleteTask(state, action) {
@@ -207,6 +223,69 @@ export function addTask({ card, columnId }: { card: IKanbanCard; columnId: strin
 
 export function deleteTask({ cardId, columnId }: { cardId: string; columnId: string }) {
   return (dispatch: Dispatch) => {
+    axios.delete(`/api/kanban/card/${cardId}`);
+
     dispatch(slice.actions.deleteTask({ cardId, columnId }));
+  };
+}
+
+// ----------------------------------------------------------------------
+
+export function editTask({ card, columnId }: { card: IEditKanbanCard; columnId: string }) {
+  return async (dispatch: Dispatch) => {
+    try {
+      const formData = new FormData();
+      const { id, boardId, comments, assignee, attachments, ...rest } = card;
+      const restKeys = Object.keys(rest);
+      const restValues = Object.values(rest);
+
+      assignee.forEach((user) => {
+        formData.append('assignee[]', user.id);
+      });
+
+      attachments.forEach((item) => {
+        formData.append('attachments', item);
+      });
+
+      formData.append('columnId', columnId);
+
+      restKeys.forEach((key, i) => {
+        const value: any = restValues[i];
+
+        if (value instanceof File) {
+          formData.append(key, value as Blob);
+        } else if (value instanceof Array) {
+          value.forEach((item) => {
+            formData.append(`${key}[]`, item);
+          });
+        } else if (value instanceof Date) {
+          formData.append(key, value.toISOString());
+        } else {
+          formData.append(key, value as string);
+        }
+      });
+
+      axios.patch(`/api/kanban/card/${card.id}`, formData);
+      dispatch(slice.actions.editTask({ card, columnId }));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function createComment({
+  comment,
+  cardId,
+}: {
+  comment: IEditKanbanComment;
+  cardId: string;
+}) {
+  return async (dispatch: Dispatch) => {
+    try {
+      await axios.post(`/api/kanban/comment`, { ...comment, cardId });
+      dispatch(slice.actions.addComment({ comment, cardId }));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
   };
 }

@@ -19,7 +19,7 @@ export default function KanbanDetailsCommentList({ comments }: Props) {
   const [selectedImage, setSelectedImage] = useState<number>(-1);
 
   const imagesLightbox = comments
-    .filter((comment) => comment.messageType === 'image')
+    .filter((comment) => comment.image !== 'undefined')
     .map((item) => ({ src: item.message }));
 
   const handleOpenLightbox = (imageUrl: string) => {
@@ -54,7 +54,7 @@ export default function KanbanDetailsCommentList({ comments }: Props) {
                 </Typography>
               </Stack>
 
-              {comment.messageType === 'image' ? (
+              {comment.image !== 'undefined' ? (
                 <Image
                   alt={comment.message}
                   src={comment.message}

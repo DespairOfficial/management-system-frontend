@@ -72,6 +72,7 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
           name,
           due: [startDate, endDate],
           completed,
+          prioritize: 'low',
         });
       }
     }
@@ -85,6 +86,7 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
         name,
         due: [startDate, endDate],
         completed,
+        prioritize: 'low',
       });
     } else {
       onCloseAddTask();

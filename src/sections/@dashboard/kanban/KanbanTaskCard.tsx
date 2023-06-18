@@ -9,18 +9,18 @@ import Image from '../../../components/image';
 import Iconify from '../../../components/iconify';
 //
 import KanbanDetails from './details/KanbanDetails';
+import { staticFilePath } from '../../../components/file-thumbnail';
 
 // ----------------------------------------------------------------------
 
 type Props = {
   index: number;
   card: IKanbanCard;
+  columnId: string;
   onDeleteTask: (id: string) => void;
 };
 
-export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
-	console.log(card);
-	
+export default function KanbanTaskCard({ card, onDeleteTask, index, columnId }: Props) {
   const { name, attachments } = card;
 
   const [completed, setCompleted] = useState(card.completed);
@@ -63,7 +63,7 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                 <Image
                   disabledEffect
                   alt={attachments[0]}
-                  src={attachments[0]}
+                  src={staticFilePath(attachments[0])}
                   ratio="4/3"
                   sx={{
                     transition: (theme) =>
@@ -115,6 +115,7 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
         openDetails={openDetails}
         onCloseDetails={handleCloseDetails}
         onDeleteTask={() => onDeleteTask(card.id)}
+        columnId={columnId}
       />
     </>
   );

@@ -81,6 +81,8 @@ export default function ProjectListPage() {
     defaultOrderBy: 'createdAt',
   });
 
+  const CURRENT_USER_ID = localStorage.getItem('userId');
+
   const { themeStretch } = useSettingsContext();
 
   const navigate = useNavigate();
@@ -233,7 +235,7 @@ export default function ProjectListPage() {
               onSelectAllRows={(checked) =>
                 onSelectAllRows(
                   checked,
-                  tableData.map((row) => row.id)
+                  tableData.filter((row) => row.userId === CURRENT_USER_ID).map((item) => item.id)
                 )
               }
               action={
@@ -257,7 +259,9 @@ export default function ProjectListPage() {
                   onSelectAllRows={(checked) =>
                     onSelectAllRows(
                       checked,
-                      tableData.map((row) => row.id)
+                      tableData
+                        .filter((row) => row.userId === CURRENT_USER_ID)
+                        .map((item) => item.id)
                     )
                   }
                 />
@@ -360,9 +364,9 @@ function applyFilter({
     );
   }
 
-  // if (filterStatus.length) {
-  //   inputData = inputData.filter((project) => filterStatus.includes(project.inventoryType));
-  // }
+  if (filterStatus.length) {
+    inputData = inputData.filter((project) => filterStatus.includes(project.status));
+  }
 
   return inputData;
 }

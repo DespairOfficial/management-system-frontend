@@ -38,7 +38,6 @@ export default function KanbanPage() {
   const [currentProject, setCurrentProject] = useState<IProject | undefined>(undefined);
 
   const [idForProject, setIdForProject] = useState('Not selected');
-  console.log(idForProject);
 
   const handleChangeProject = (event: SelectChangeEvent) => {
     const id = event.target.value as string;
@@ -52,6 +51,8 @@ export default function KanbanPage() {
     const getProjectsWithBoards = async () => {
       const response = await axios.get('/api/project');
       setProjects(response.data);
+      setCurrentProject(response.data[0]);
+			setIdForProject(response.data[0].id)
     };
     getProjectsWithBoards();
   }, []);
@@ -142,7 +143,7 @@ export default function KanbanPage() {
           <InputLabel id="demo-simple-select-label">Project</InputLabel>
           <Select
             id="demo-simple-select"
-						labelId="demo-simple-select-label"
+            labelId="demo-simple-select-label"
             value={idForProject}
             onChange={handleChangeProject}
             label="Select project"

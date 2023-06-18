@@ -24,7 +24,7 @@ export default function FileThumbnail({
   imgSx,
 }: FileIconProps) {
   const path = staticFilePath(fileData(file).path);
-  const preview = staticFilePath(fileData(file).preview);
+  const preview = typeof file === 'string' ? staticFilePath(file) : fileData(file).preview;
   const name = fileData(file).name;
 
   const format = fileFormat(path || preview);

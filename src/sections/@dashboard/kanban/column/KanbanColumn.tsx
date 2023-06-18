@@ -119,6 +119,7 @@ export default function KanbanColumn({ column, index, cards }: Props) {
                       index={cardIndex}
                       onDeleteTask={handleDeleteTask}
                       card={cards[cardId]}
+											columnId={column.id}
                     />
                   ))}
                   {columnProvided.placeholder}
