@@ -1,9 +1,12 @@
 // ----------------------------------------------------------------------
 
+import { IUser } from './user';
+
 export type IKanbanComment = {
   id: string;
   image?: string;
-  name: string;
+  userId: string;
+  user: IUser;
   createdAt: Date | string | number;
   message: string;
 };
@@ -11,7 +14,6 @@ export type IKanbanComment = {
 export type IEditKanbanComment = {
   id?: string;
   image?: File | string;
-  name: string;
   createdAt?: Date | string | number;
   message: string;
 };
@@ -35,7 +37,7 @@ export type IKanbanCard = {
   description?: string;
   assignee: IKanbanAssignee[];
   prioritize: string;
-  due: [Date | null, Date | null];
+  due: [Date | string | null, Date | string | null];
   attachments: string[];
   comments: IKanbanComment[];
   completed: boolean;
@@ -48,7 +50,7 @@ export type IEditKanbanCard = {
   description?: string;
   assignee: IKanbanAssignee[];
   prioritize: string;
-  due: [Date | null, Date | null];
+  due: [Date | string | null, Date | string | null];
   attachments: (File | string)[];
   comments: IEditKanbanComment[];
   completed: boolean;

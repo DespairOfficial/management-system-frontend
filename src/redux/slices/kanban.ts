@@ -191,17 +191,36 @@ export function deleteColumn(columnId: string) {
 
 // ----------------------------------------------------------------------
 
-export function persistColumn(newColumnOrder: string[]) {
-  return (dispatch: Dispatch) => {
-    dispatch(slice.actions.persistColumn(newColumnOrder));
+export function persistColumn(boardId: string, newColumnOrder: string[]) {
+  return async (dispatch: Dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      await axios.patch(`/api/kanban/board/${boardId}/order`, { newColumnOrder });
+      dispatch(slice.actions.persistColumn(newColumnOrder));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
   };
 }
 
 // ----------------------------------------------------------------------
 
-export function persistCard(columns: Record<string, IKanbanColumn>) {
-  return (dispatch: Dispatch) => {
-    dispatch(slice.actions.persistCard(columns));
+export function persistCard(
+  columns: Record<string, IKanbanColumn>,
+  startColumn: IKanbanColumn,
+  finishColumn?: IKanbanColumn
+) {
+  return async (dispatch: Dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      await axios.patch(`/api/kanban/columns/cardsPosition`, {
+        startColumn,
+        finishColumn,
+      });
+      dispatch(slice.actions.persistCard(columns));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
   };
 }
 
@@ -282,8 +301,32 @@ export function createComment({
 }) {
   return async (dispatch: Dispatch) => {
     try {
-      await axios.post(`/api/kanban/comment`, { ...comment, cardId });
-      dispatch(slice.actions.addComment({ comment, cardId }));
+      const { ...rest } = comment;
+      const formData = new FormData();
+
+      formData.append('cardId', cardId);
+
+      const restKeys = Object.keys(rest);
+      const restValues = Object.values(rest);
+
+      restKeys.forEach((key, i) => {
+        const value: any = restValues[i];
+
+        if (value instanceof File) {
+          formData.append(key, value as Blob);
+        } else if (value instanceof Array) {
+          value.forEach((item) => {
+            formData.append(`${key}[]`, item);
+          });
+        } else if (value instanceof Date) {
+          formData.append(key, value.toISOString());
+        } else {
+          formData.append(key, value as string);
+        }
+      });
+
+      const response = await axios.post(`/api/kanban/comment`, formData);
+      dispatch(slice.actions.addComment({ comment: response.data, cardId }));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

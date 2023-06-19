@@ -1,5 +1,6 @@
+import { ChangeEvent, useState, useRef } from 'react';
 // @mui
-import { Stack, Paper, Button, Tooltip, IconButton, InputBase } from '@mui/material';
+import { Stack, Paper, Button, Tooltip, IconButton, InputBase, Badge } from '@mui/material';
 // auth
 import { useAuthContext } from '../../../../auth/useAuthContext';
 // components
@@ -17,8 +18,34 @@ interface Props {
 export default function KanbanDetailsCommentInput({ addComment }: Props) {
   const { user } = useAuthContext();
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const disabled = false;
+
+  const [attachments, setAttachments] = useState<File[]>([]);
+  const [message, setMessage] = useState<string>('');
+
   const onAddComment = () => {
-    console.log('adding comment');
+    addComment({
+      message,
+      image: attachments[0],
+    });
+    setMessage('');
+    setAttachments([]);
+  };
+
+  const handleClickAttach = () => {
+    fileInputRef.current?.click();
+  };
+
+  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target?.files;
+    const attachmentsList = [];
+    if (files) {
+      for (let i = 0; i < files.length; i += 1) {
+        attachmentsList.push(files[i]);
+      }
+    }
+    setAttachments(attachmentsList);
   };
 
   return (
@@ -30,18 +57,32 @@ export default function KanbanDetailsCommentInput({ addComment }: Props) {
       />
 
       <Paper variant="outlined" sx={{ p: 1, flexGrow: 1 }}>
-        <InputBase fullWidth multiline rows={2} placeholder="Type a message" sx={{ px: 1 }} />
+        <InputBase
+          value={message}
+          onChange={(event) => setMessage(event.target.value)}
+          fullWidth
+          multiline
+          rows={2}
+          placeholder="Type a message"
+          sx={{ px: 1 }}
+        />
 
         <Stack direction="row" alignItems="center">
           <Stack direction="row" flexGrow={1}>
-            <Tooltip title="Add photo">
+            {/* <Tooltip title="Add photo">
               <IconButton size="small">
                 <Iconify icon="ic:round-add-photo-alternate" />
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
 
-            <IconButton size="small">
-              <Iconify icon="eva:attach-2-fill" />
+            <IconButton disabled={disabled} size="small" onClick={handleClickAttach}>
+              {attachments.length > 0 ? (
+                <Badge badgeContent={attachments.length} color="error">
+                  <Iconify icon="eva:attach-2-fill" />
+                </Badge>
+              ) : (
+                <Iconify icon="eva:attach-2-fill" />
+              )}
             </IconButton>
           </Stack>
 
@@ -55,6 +96,13 @@ export default function KanbanDetailsCommentInput({ addComment }: Props) {
           </Button>
         </Stack>
       </Paper>
+
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        onChange={(e) => onChangeHandler(e)}
+      />
     </Stack>
   );
 }

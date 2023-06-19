@@ -1,8 +1,6 @@
 import { useRef, useState, ChangeEvent } from 'react';
 // @mui
 import { Stack, InputBase, InputBaseProps, IconButton, InputAdornment, Badge } from '@mui/material';
-// utils
-import uuidv4 from '../../../../utils/uuidv4';
 // @types
 import { IChatSendMessage } from '../../../../@types/chat';
 // components

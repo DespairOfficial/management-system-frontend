@@ -116,7 +116,7 @@ export default function ProjectNewEditForm({ isEdit, currentProject }: Props) {
 
   const onSendInvitations = () => {
     const sendInvitationToUser = (userId: string) => {
-      if (currentProject && currentProject.userId === CURRENT_USER_ID ) {
+      if (currentProject && currentProject.userId === CURRENT_USER_ID) {
         const sendInvitation = async () => {
           await axiosInstance.post(`api/project/invitation`, {
             userId,
@@ -186,7 +186,9 @@ export default function ProjectNewEditForm({ isEdit, currentProject }: Props) {
         data: formData,
       });
       if (response.status === 201) {
-        enqueueSnackbar(!isEdit ? 'Create success!' : 'Update success!');
+        enqueueSnackbar('Create success!');
+      } else if (response.status === 200) {
+        enqueueSnackbar('Update success!');
       } else {
         enqueueSnackbar('Error during creating', { variant: 'error' });
       }

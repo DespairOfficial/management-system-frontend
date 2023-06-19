@@ -8,6 +8,7 @@ import { IKanbanComment } from '../../../../@types/kanban';
 // components
 import Image from '../../../../components/image';
 import Lightbox from '../../../../components/lightbox';
+import { staticFilePath } from '../../../../components/file-thumbnail';
 
 // ----------------------------------------------------------------------
 
@@ -20,7 +21,9 @@ export default function KanbanDetailsCommentList({ comments }: Props) {
 
   const imagesLightbox = comments
     .filter((comment) => comment.image !== 'undefined')
-    .map((item) => ({ src: item.message }));
+    .map((item) => ({ src: staticFilePath(item.image) ?? '' }));
+
+  console.log(imagesLightbox);
 
   const handleOpenLightbox = (imageUrl: string) => {
     const imageIndex = imagesLightbox.findIndex((image) => image.src === imageUrl);
@@ -43,11 +46,11 @@ export default function KanbanDetailsCommentList({ comments }: Props) {
       >
         {comments.map((comment) => (
           <Stack key={comment.id} direction="row" spacing={2}>
-            <Avatar src={comment.image} />
+            <Avatar src={staticFilePath(comment.user.image)} />
 
             <Stack>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <Typography variant="subtitle2"> {comment.name}</Typography>
+                <Typography variant="subtitle2"> {comment.user.username}</Typography>
 
                 <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                   {fToNow(comment.createdAt)}
@@ -55,15 +58,20 @@ export default function KanbanDetailsCommentList({ comments }: Props) {
               </Stack>
 
               {comment.image !== 'undefined' ? (
-                <Image
-                  alt={comment.message}
-                  src={comment.message}
-                  onClick={() => handleOpenLightbox(comment.message)}
-                  sx={{
-                    mt: 1,
-                    borderRadius: 1,
-                  }}
-                />
+                <>
+                  <Typography variant="body2" sx={{ mt: 0.5 }}>
+                    {comment.message}
+                  </Typography>
+                  <Image
+                    alt={comment.message}
+                    src={staticFilePath(comment.image)}
+                    onClick={() => handleOpenLightbox(staticFilePath(comment.image) ?? '')}
+                    sx={{
+                      mt: 1,
+                      borderRadius: 1,
+                    }}
+                  />
+                </>
               ) : (
                 <Typography variant="body2" sx={{ mt: 0.5 }}>
                   {comment.message}

@@ -75,6 +75,11 @@ export default function KanbanDetails({
 
   const debouncedDescription = useDebounce(taskDescription, 300);
 
+  const startDateToPicker =
+    typeof task.due[0] === 'string' ? new Date(task.due[0]) : task.due[0] ?? null;
+
+  const endDateToPicker =
+    typeof task.due[1] === 'string' ? new Date(task.due[1]) : task.due[1] ?? null;
   const {
     startDate,
     endDate,
@@ -86,7 +91,15 @@ export default function KanbanDetails({
     isSelected: isSelectedValuePicker,
     isError,
     shortLabel,
-  } = useDateRangePicker(task.due[0], task.due[1]);
+  } = useDateRangePicker(startDateToPicker, endDateToPicker);
+
+  const onClosePickerAndSend = () => {
+    sendEditedTask({
+      ...task,
+      due: [startDate?.toISOString() ?? null, endDate?.toISOString() ?? null],
+    });
+    onClosePicker();
+  };
 
   const handleLiked = () => {
     setLiked(!liked);
@@ -275,7 +288,7 @@ export default function KanbanDetails({
                 onChangeStartDate={onChangeStartDate}
                 onChangeEndDate={onChangeEndDate}
                 open={openPicker}
-                onClose={onClosePicker}
+                onClose={onClosePickerAndSend}
                 isSelected={isSelectedValuePicker}
                 isError={isError}
               />

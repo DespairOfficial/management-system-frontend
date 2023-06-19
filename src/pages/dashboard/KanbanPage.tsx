@@ -78,7 +78,7 @@ export default function KanbanPage() {
 
       newColumnOrder.splice(destination.index, 0, draggableId);
 
-      dispatch(persistColumn(newColumnOrder));
+      dispatch(persistColumn(board.id,newColumnOrder));
       return;
     }
 
@@ -101,7 +101,7 @@ export default function KanbanPage() {
         persistCard({
           ...board.columns,
           [updatedColumn.id]: updatedColumn,
-        })
+        }, updatedColumn)
       );
       return;
     }
@@ -129,7 +129,7 @@ export default function KanbanPage() {
         ...board.columns,
         [updatedStart.id]: updatedStart,
         [updatedFinish.id]: updatedFinish,
-      })
+      }, updatedStart, updatedFinish)
     );
   };
 
